@@ -14,20 +14,38 @@ import { ListItem, Icon } from 'react-native-elements'
 const list = [
     {
         title: 'Information Sharing',
-        icon: 'info-outline'
+        icon: 'info-outline',
+        isNavigation: true,
+        function: 'handleNavigation',
+        route: 'information-sharing',
     },
     {
         title: 'Password & Security ',
-        icon: 'security'
+        icon: 'security',
+        isNavigation: true,
+        function: 'handleNavigation',
+        route: 'information-sharing',
     },
     {
         title: 'Display',
-        icon: 'grid-view'
-    },{
+        icon: 'grid-view',
+        isNavigation: true,
+        function: 'handleNavigation',
+        route: 'information-sharing',
+    }, {
         title: 'Recommend',
-        icon: 'recommend'
+        icon: 'recommend',
+        isNavigation: true,
+        function: 'handleNavigation',
+        route: 'information-sharing',
     },
-  ];
+    {
+        title: 'Log Out',
+        icon: 'logout',
+        isNavigation: false,
+        function: 'handleLogout'
+    },
+];
 export default class Settings extends React.Component {
     constructor() {
         super()
@@ -39,6 +57,17 @@ export default class Settings extends React.Component {
     componentDidMount() {
 
     }
+    handleNavigation = (route) => {
+        this.props.navigation.navigate(route)
+    }
+    handleLogout = () => {
+        this.props.logout();
+    }
+    handleCustomFunction = (type) => {
+        if (type == 'handleLogout') {
+            this.handleLogout()
+        }
+    }
 
     // Render any loading content that you like here
     render() {
@@ -48,16 +77,16 @@ export default class Settings extends React.Component {
                 flex: 1,
                 // padding: 20,
                 justifyContent: 'flex-start',
-                backgroundColor: '#403A6A',
+                backgroundColor: '#6b3871',
             }}>
                 {
                     list.map((item, i) => (
-                        <ListItem key={i} bottomDivider>
-                            <Icon name={item.icon} type='material'/>
+                        <ListItem key={i} bottomDivider onPress={() => item.isNavigation ? this.handleNavigation(item.route) : this.handleCustomFunction(item.function)} >
+                            <Icon name={item.icon} type='material' />
                             <ListItem.Content>
                                 <ListItem.Title>{item.title}</ListItem.Title>
                             </ListItem.Content>
-                            <ListItem.Chevron />
+                            <ListItem.Chevron onPress={() => this.handleNavigation('information-sharing')} />
                         </ListItem>
                     ))
                 }

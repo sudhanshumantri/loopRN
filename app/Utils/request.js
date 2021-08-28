@@ -3,11 +3,9 @@ import axios from 'axios';
 import { extend, isEmpty, isUndefined, startsWith, toNumber } from 'lodash';
 import moment from 'moment';
 import config from '../Config';
-import {
-  AsyncStorage,
-} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-bootstrapAsyncUserToken = async () => {
+async function bootstrapAsyncUserToken() {
   return {
     userId: await AsyncStorage.getItem('userId'),
     token: await AsyncStorage.getItem('token')
@@ -53,13 +51,22 @@ function makeAPICall(originalConfig, otherConfig) {
   console.log(originalConfig);
   return axios(originalConfig)
     .then(nextResponse => {
-//console.log(nextResponse)
+      //console.log(nextResponse)
       return nextResponse;
 
     })
     .catch(error => {
-      console.log(error)
-      return error;
+      // console.log(error)
+      if (error.response) {
+        return error.response;
+        // console.log(error.response.data);
+        // console.log(error.response.status);
+        // console.log(error.response.headers);
+      } else {
+        return error
+      }
+
+
       //   return handleError(response, otherConfig)
     });
 }

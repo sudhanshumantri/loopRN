@@ -14,7 +14,7 @@ export default class Login extends React.Component {
             isError: false,
             mobileErrorMessage: '',
             passwordErrorMessage: '',
-            showPassword:false
+            showPassword: false
 
         }
     }
@@ -57,10 +57,21 @@ export default class Login extends React.Component {
             this.props.authUser({ mobile, password })
         }
     }
-    toggleShowPassword=()=>{
+    toggleShowPassword = () => {
         this.setState({
-            showPassword:!this.state.showPassword
+            showPassword: !this.state.showPassword
         })
+    }
+    renderLogo = () => {
+        return (
+            <View>
+
+                <Image
+                    style={{ width: 200, height: 200,}}
+                    source={require('../../../assets/loopLogo.png')}
+                />
+            </View>
+        );
     }
 
     render() {
@@ -68,7 +79,7 @@ export default class Login extends React.Component {
         let { mobile, password, mobileErrorMessage, passwordErrorMessage } = this.state;
 
         return (
-            <SafeAreaView style={{ backgroundColor: '#2DB38D', flex: 1 }}>
+            <SafeAreaView style={{ backgroundColor: '#6b3871', flex: 1 }}>
                 <KeyboardAwareScrollView
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
@@ -78,17 +89,17 @@ export default class Login extends React.Component {
                     >
                         <View style={{
                             flex: 1,
-                            backgroundColor: '#2DB38D',
+                            backgroundColor: '#6b3871',
 
                             // width: Dimensions.get('window').width,
                             height: Dimensions.get('window').height,
-                            justifyContent: 'center',
+                            //justifyContent: 'center',
                             alignItems: 'center'
                         }}>
                             <Spinner color='grey'
                                 visible={isLoading}
                             />
-
+                            {this.renderLogo()}
                             <View style={{
                                 backgroundColor: 'white',
                                 height: Dimensions.get('window').height * 0.55,
@@ -98,6 +109,7 @@ export default class Login extends React.Component {
                                 alignItems: "center",
                                 borderRadius: 5
                             }}>
+
                                 <Card containerStyle={{
                                     borderRadius: 5,
                                     height: Dimensions.get('window').height * 0.45,
@@ -147,9 +159,9 @@ export default class Login extends React.Component {
                                         }
                                         rightIcon={
                                             <Icon
-                                                name={this.state.showPassword?'eye':'eye-off'}
+                                                name={this.state.showPassword ? 'eye' : 'eye-off'}
                                                 size={20}
-                                                color={this.state.showPassword?'#2DB38D':'grey'}
+                                                color={this.state.showPassword ? '#2DB38D' : 'grey'}
                                                 type='material-community'
                                                 onPress={this.toggleShowPassword}
                                             />

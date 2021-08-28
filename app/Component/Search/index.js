@@ -322,8 +322,8 @@ class SearchConsulation extends React.Component {
         const items = selectedItems.filter((sitem) => sitem.id !== item);
         this.setState({ selectedItems: items });
     }
-    handleClear=()=>{
-        if(this.state.modalType='symptoms'){
+    handleClear = () => {
+        if (this.state.modalType = 'symptoms') {
             this.props.fetchCommonSymptoms();
         }
     }
@@ -388,7 +388,7 @@ class SearchConsulation extends React.Component {
                                 inputContainerStyle={{ backgroundColor: 'white' }}
                                 searchIcon={{ color: '#2DB38D' }}
                                 value={searchDropdown}
-                              //  clearIcon={false}
+                                //  clearIcon={false}
                                 onClear={this.handleClear}
                             />
                         </View>
@@ -416,15 +416,11 @@ class SearchConsulation extends React.Component {
 
     render() {
         const { search, searchDropdown } = this.state;
-        let { specialities, specialityError, streams, qualifications } = this.props;
+    
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <ScrollView style={{ backgroundColor: '#2DB38D' }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 50 }}>
-
-                        {this.state.showModal && (
-                            this.renderModal())}
-
                         <SearchBar
                             placeholder="Search Symptoms ..."
                             //    onChangeText={this.updateSearch}
@@ -435,9 +431,9 @@ class SearchConsulation extends React.Component {
                                 borderRadius: 10
                             }}
 
-                            onFocus={() => {
-                                this.showModal('symptoms')
-                            }}
+                            // onFocus={() => {
+                            //     this.showModal('symptoms')
+                            // }}
                             inputStyle={{ color: '#2DB38D' }}
                             inputContainerStyle={{ backgroundColor: 'white', height: 50, }}
                             searchIcon={{ color: '#2DB38D' }}
@@ -446,8 +442,6 @@ class SearchConsulation extends React.Component {
                         />
 
                     </View>
-
-                    {this.renderCategories()}
                 </ScrollView>
             </SafeAreaView>
         )

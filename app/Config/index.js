@@ -5,9 +5,10 @@
 export default {
 
   api: {
-    //  host: 'https://aapkadoctor.azurewebsites.net/api/',
-    host:'https://svcaapkadoctor.azurewebsites.net/'
- //   host: 'https://svcaapkadoctor.azurewebsites.net/'
+    
+    // host:'http://10.0.2.2:8000/'
+    host:'https://loop-backend.herokuapp.com/'
+
   },
   //  envName: Config.NODE_ENV || 'development',
 };

@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, NetInfo } from 'react-native';
-import { connect } from 'react-redux';
-import Home from '../../Component/Home/index'
 //import { createStructuredSelector } from 'reselect';
-//import { Provider } from 'react-redux';
-//import { getAsyncInjectors } from '../../Utils/asyncInjectors';
-import AppStackNavigator from '../../Navigation/bottomNavigation';
+import { Provider } from 'react-redux';
+import { getAsyncInjectors } from '../../Utils/asyncInjectors';
+import AppNavigator from '../../Navigation/appNavigator';
+import FlashMessage from "react-native-flash-message";
 import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler';
-//import DrawerNavigator from '../../Navigation/drawerNavigator';
-//import store from '../../Store';
+import store from '../../Store';
 
-// import registerReducer from '../../Reducer/register';
-// import registerSagas from '../../Sagas/register';
-// import userReducer from '../../Reducer/user';
+import registerReducer from '../../Reducer/register';
+import registerSagas from '../../Sagas/register';
+import userReducer from '../../Reducer/user';
 // import chatReducer from '../../Reducer/chat'
-// import userSagas from '../../Sagas/user';
+import userSagas from '../../Sagas/user';
 // import cityReducer from '../../Reducer/city';
 // import citySagas from '../../Sagas/city'
-// import loginReducer from '../../Reducer/login';
-// import loginSagas from '../../Sagas/login';
+import loginReducer from '../../Reducer/login';
+import loginSagas from '../../Sagas/login';
 // import connectSagas from '../../Sagas/chat';
 // import searchReducer from '../../Reducer/search';
 // import searchSagas from '../../Sagas/search';
@@ -41,13 +38,13 @@ import * as NavigationService from '../../Navigation/navigationService';
  * We separate like this to play nice with React Native's hot reloading.
  */
 
-// const { injectReducer, injectSagas } = getAsyncInjectors(store);
-// injectReducer('login', loginReducer)
-// injectSagas(loginSagas);
-// injectReducer('register', registerReducer)
-// injectSagas(registerSagas);
-// injectReducer('userInfo', userReducer)
-// injectSagas(userSagas);
+const { injectReducer, injectSagas } = getAsyncInjectors(store);
+injectReducer('login', loginReducer)
+injectSagas(loginSagas);
+injectReducer('register', registerReducer)
+injectSagas(registerSagas);
+injectReducer('userInfo', userReducer)
+injectSagas(userSagas);
 // injectReducer('city', cityReducer)
 // injectSagas(citySagas);
 // injectReducer('chat', chatReducer)
@@ -62,7 +59,6 @@ import * as NavigationService from '../../Navigation/navigationService';
 export default class Root extends Component {
 
   componentDidMount() {
-    //    console.log('coming inside root mount')
     NavigationService.setNavigator(this.navigator);
     //  store.dispatch(setupChatConnection())
     // store.dispatch(listenNewCallRequest());
@@ -70,11 +66,15 @@ export default class Root extends Component {
 
   }
   render() {
-
     return (
-      <NavigationContainer>
-        <AppStackNavigator />
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <AppNavigator ref={nav => {
+            this.navigator = nav;
+          }} />
+        </NavigationContainer>
+        <FlashMessage position="bottom" />
+      </Provider>
     );
   }
 };

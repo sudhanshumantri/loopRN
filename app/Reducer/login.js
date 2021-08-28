@@ -1,4 +1,4 @@
-import { fromJS, List } from 'immutable';
+import { fromJS } from 'immutable';
 import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,

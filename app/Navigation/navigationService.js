@@ -12,7 +12,7 @@ export function navigate(routeName, childRoutes, params, ) {
         // ))
         // //  console.log(childRoutesNav);
         // childRoutesNav = childRoutesNav[0];
-        // console.log(childRoutesNav);
+      
         let action = NavigationActions.navigate({ routeName: routeName, action: NavigationActions.navigate({ routeName: childRoutes }), params })
   //     console.log(action);
         config.navigator.dispatch(action);

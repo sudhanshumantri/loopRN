@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { ListItem, Icon, Avatar } from 'react-native-elements'
+import { SearchBar } from 'react-native-elements';
 const list = [
     {
         name: 'Information Sharing',
@@ -35,11 +36,15 @@ export default class Contacts extends React.Component {
             currentPosition: 0,
             expanded: false,
             subscriptionPlanModalVisible: false,
+            searchText: ''
         }
     }
     componentDidMount() {
 
     }
+    updateSearch = (search) => {
+        this.setState({ search });
+    };
     renderContacts = () => {
         //  console.log(list);
         list.map((l, i) => {
@@ -78,14 +83,19 @@ export default class Contacts extends React.Component {
 
     // Render any loading content that you like here
     render() {
-        //    console.log(userInfo.user.first_name, infoLoading)
+        let { search } = this.state;
         return (
             <SafeAreaView style={{
                 flex: 1,
                 // padding: 20,
                 justifyContent: 'flex-start',
-                backgroundColor: '#403A6A',
+                backgroundColor: '#6b3871',
             }}>
+                <SearchBar
+                    placeholder="Search contacts"
+                    onChangeText={this.updateSearch}
+                    value={search}
+                />
                 {this.renderContacts()
 
                 }

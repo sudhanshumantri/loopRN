@@ -1,19 +1,38 @@
 import React from 'react';
+import {
+  ActivityIndicator,
 
+  StatusBar,
+  View,
+  Image,
+  Text, SafeAreaView,
+  ScrollView,
+  Linking,
+  TouchableOpacity,
+} from 'react-native';
+import { Icon, SearchBar } from 'react-native-elements'
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Home from '../Component/Home/index'
-import Settings from '../Component/Settings/index'
+import Home from '../Container/Home';
+import Settings from '../Container/Settings/index'
 import Contacts from '../Component/Contacts/index'
+import Profile from '../Container/Profile/index'
+import InformationSharing from '../Container/InformationSharing/index'
+import QRCodeScan from '../Container/QRCodeScanner'
+
 
 
 
 const Tab = createBottomTabNavigator();
 function MyTabs() {
   return (
-    <Tab.Navigator initialRouteName="Home">
+    <Tab.Navigator initialRouteName="Home"
+      screenOptions={{
+
+      }}
+    >
       <Tab.Screen name="Home"
         component={Home}
         options={{
@@ -31,7 +50,7 @@ function MyTabs() {
           )
         }} />
       <Tab.Screen name="Profile"
-        component={Home}
+        component={Profile}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
@@ -46,12 +65,36 @@ export default function MyStack() {
   return (
     <Stack.Navigator initialRouteName="Tabs" >
       <Stack.Screen name="Tabs" component={MyTabs} options={{
-        headerShown: false
+        headerTitle: 'LOOP',
+        headerTitleStyle: { color: 'white' },
+        headerTitleAlign: 'center',
+        // headerLeft: (props) => (
+        //   <Text>Coming</Text>
+        // ),
+        headerStyle: { backgroundColor: '#3f3969' },
+        headerRight: (props) => (
+          <Icon name='help' type='material' color='white' />
+        ),
+        headerRightContainerStyle: { marginRight: 10 }
       }} />
       <Stack.Screen name="your-contacts" component={Contacts}
         options={{
           title: "Contacts"
         }}
+
+      />
+      <Stack.Screen name="information-sharing" component={InformationSharing}
+        options={{
+          title: "Information Sharing"
+        }}
+
+      />
+      <Stack.Screen name="scan-qrcode" component={QRCodeScan}
+        options={{
+          title: "QR code scanner",
+          headerShown: false
+        }}
+
       />
 
       {/* <

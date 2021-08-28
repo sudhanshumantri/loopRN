@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     ActivityIndicator,
-    AsyncStorage,
     StatusBar,
     View,
     Image,
@@ -20,18 +19,20 @@ export default class Home extends React.Component {
         }
     }
     componentDidMount() {
-
+        this.props.fetchUserInfo();
     }
     handleNavigation = (route) => {
         this.props.navigation.navigate(route)
     }
     renderQRCode = () => {
+        console.log('render QR code',this.props.userInfo)
         return (
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Your QR Code</Text>
                 <Image
                     style={{ width: 300, height: 300, backgroundColor: 'white' }}
-                    source={require('../../../assets/qrCodeImage.png')}
+                    source={{ uri: this.props.userInfo.qrCode }}
+                //  source={require('../../../assets/qrCodeImage.png')}
                 />
             </View>
         );
@@ -41,10 +42,11 @@ export default class Home extends React.Component {
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>
                 <Button
                     title="Scan QR Code"
+                    onPress={() => this.handleNavigation('scan-qrcode')}
                     buttonStyle={{ width: 300 }}
                 />
-                <Button 
-                     onPress={() => this.handleNavigation('your-contacts')}
+                <Button
+                    onPress={() => this.handleNavigation('your-contacts')}
                     title="Your Contacts"
                     TouchableOpacity={1}
                     buttonStyle={{ width: 300, marginTop: 20 }}
@@ -54,18 +56,45 @@ export default class Home extends React.Component {
     }
     // Render any loading content that you like here
     render() {
-        //    console.log(userInfo.user.first_name, infoLoading)
-        return (
-            <SafeAreaView style={{
-                flex: 1,
-                // padding: 20,
-                justifyContent: 'flex-start',
-                backgroundColor: '#403A6A',
-            }}>
-                {this.renderQRCode()}
-                {this.renderButtons()}
-            </SafeAreaView>
+        let { error, isLoading, userInfo, } = this.props;
+        console.log(error, isLoading, userInfo)
+        if (error) {
+            return (
+                <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2DB38D', }}>
+                    <Icon type='material-community' name='refresh' size={40} color='white' onPress={() => {
+                        this.props.fetchUserInfo()
+                    }} />
+                </View>
 
-        );
+            )
+        } else if (isLoading) {
+            return (
+                <View
+                    style={{
+                        flex: 1,
+                        // padding: 20,
+                        justifyContent: 'center',
+                        backgroundColor: '#2DB38D',
+
+                    }}>
+                    <ActivityIndicator color='white' />
+                </View >
+            )
+        } else {
+            //    console.log(userInfo.user.first_name, infoLoading)
+            return (
+                <SafeAreaView style={{
+                    flex: 1,
+                    // padding: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#6b3871',
+                }}>
+                    {this.renderQRCode()}
+                    {this.renderButtons()}
+                </SafeAreaView>
+
+            );
+        }
     }
 }
