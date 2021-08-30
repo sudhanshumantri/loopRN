@@ -9,3 +9,5 @@ export const selectError = () =>
     createSelector(selectUserData, properties => properties.toJS()['error']);
 export const selectInformationSharing = () =>
     createSelector(selectUserData, properties => properties.toJS()['userSharingInfo']);
+    export const selectQRCodeData = () =>
+    createSelector(selectUserData, properties => properties.toJS()['qrCodeData']);

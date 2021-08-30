@@ -4,12 +4,12 @@ import QRCodeScanner from '../../Component/QRCodeScanner';
 import { validateQRCodeAction } from '../../Actions/user';
 
 import {
-    selectUserInfo, selectInfoLoading, selectError
+    selectQRCodeData, selectInfoLoading, selectError
 } from '../../Selectors/user';
 
 const mapStateToProps = createStructuredSelector({
     isLoading: selectInfoLoading(),
-    userInfo: selectUserInfo(),
+    qrCodeData: selectQRCodeData(),
     error: selectError()
 })
 

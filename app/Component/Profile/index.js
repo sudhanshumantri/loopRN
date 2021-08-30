@@ -157,7 +157,7 @@ export default class Profile extends React.Component {
                             borderWidth: 0.5,
                             paddingLeft: 5
                         }}
-                        editable={true}
+                        editable={false}
                         value={String(phone ? phone : userInfo.phone)}
                         onChangeText={(text) => this.handleProfileChange('phone', text)}
 

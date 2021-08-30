@@ -6,15 +6,16 @@ const styles = {
     scrollViewStyle: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#99003d'
+        backgroundColor: '#6b3871'
     },
 
     textTitle: {
         fontWeight: 'bold',
         fontSize: 18,
         textAlign: 'center',
-        padding: 16,
-        color: 'white'
+        // padding: 16,
+        color: 'white',
+        marginBottom:25
     },
     textTitle1: {
         fontWeight: 'bold',

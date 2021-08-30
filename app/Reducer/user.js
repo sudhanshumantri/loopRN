@@ -12,8 +12,9 @@ import {
     UPDATE_USER_PERSOANAL_DETAILS_FAILED,
     UPDATE_USER_SHARING_DETAILS_REQUESTED,
     UPDATE_USER_SHARING_DETAILS_SUCCESS,
-
-
+    VALIDATE_QR_CODE_REQUESTED,
+    VALIDATE_QR_CODE_SUCCESS,
+    VALIDATE_QR_CODE_FAILED,
 } from '../Actions/actionTypes';
 import { findIndex, remove } from 'lodash';
 const INITIAL_STATE = fromJS({
@@ -22,6 +23,7 @@ const INITIAL_STATE = fromJS({
     userPersonalDetails: null,
     userSharingInfo: null,
     error: null,
+    qrCodeData: null
 });
 
 export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
@@ -75,7 +77,6 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
                 fbLink: action.data.fbLink,
                 linkedinLink: action.data.linkedinLink,
             }
-            console.log('reducerData', userSharingObj);
             return state.set('isInfoLoading', false)
                 .set('userSharingInfo', userSharingObj)
                 .set('error', null);
@@ -84,7 +85,18 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
             return state.set('isInfoLoading', false)
                 .set('error', action.error);
 
-        //RESIDENTIAL ADDRESS
+        //QR Code Access
+        case VALIDATE_QR_CODE_REQUESTED:
+            return state.set('isInfoLoading', true)
+                .set('qrCodeData', action.data)
+                .set('error', null);
+        case VALIDATE_QR_CODE_SUCCESS:
+            return state.set('isInfoLoading', false)
+                .set('qrCodeData', action.data)
+                .set('error', null);
+        case VALIDATE_QR_CODE_FAILED:
+            return state.set('isInfoLoading', false)
+                .set('error', action.error);
         default:
             return state;
 

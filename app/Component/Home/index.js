@@ -25,7 +25,6 @@ export default class Home extends React.Component {
         this.props.navigation.navigate(route)
     }
     renderQRCode = () => {
-        console.log('render QR code',this.props.userInfo)
         return (
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Your QR Code</Text>

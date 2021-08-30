@@ -9,9 +9,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as NavigationService from './../Navigation/navigationService';
 
 export function* authUser({ data }) {
-   console.log('going for auth man')
+    console.log('going for auth man')
     const responseData = yield call(callUserAuthentication, data);
-    console.log(responseData);
+    console.log(responseData.data);
     if (responseData.status == 200) {
         var decoded = '';
         //= jwt_decode(responseData.data.token);
@@ -22,19 +22,20 @@ export function* authUser({ data }) {
                 responseData
             ),
         );
-      
+
     } else {
-        if (responseData && responseData.response && responseData.response.status == 404) {
+
+        if (responseData && responseData.data.msg) {
             yield put(
                 loginFailedAction(
-                    "User is not registered"
+                    responseData.data.msg
                 ),
             );
         }
         else {
             yield put(
                 loginFailedAction(
-                    'Invalid Credentials'
+                    'Something went wrong'
                 ),
             );
         }

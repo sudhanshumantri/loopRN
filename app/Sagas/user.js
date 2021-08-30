@@ -91,9 +91,8 @@ export function* updateUserSharingInfo({ data }) {
 
 export function* validateQRCode({ data }) {
     let responseData = '';
-    console.log('validateQRCode', data)
+  //  console.log('validateQRCode', data)
     responseData = yield call(callValidateQRCode, data);
-    console.log('validateQRCode response', responseData.data)
     if (responseData.status == 200 && responseData.data) {
 
         yield put(
