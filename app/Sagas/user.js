@@ -17,7 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export function* fetchUserInfo() {
     let responseData = '';
     responseData = yield call(callFetchUserInfo);
-    console.log('fetchUserInfo', responseData.data)
+//    console.log('fetchUserInfo', responseData.data)
     if (responseData.status == 200) {
 
         yield put(

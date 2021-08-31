@@ -84,7 +84,7 @@ export default class QRCodeScan extends Component {
                     showMessage({
                         message: "Contact saved successfully",
                         type: "success",
-                      });
+                    });
                 }).catch(error => {
                     console.log(error)
                 })
@@ -289,86 +289,57 @@ export default class QRCodeScan extends Component {
         </View>)
     }
     renderQRCodeFailureData = () => {
-        return (<View>
-            <Text>Failed</Text>
+        let { qrCodeData, isLoading, error } = this.props;
+        return (<View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>{error}</Text>
+            <Button onPress={this.activeQR} title="Click to Scan !" />
+            {/* <TouchableOpacity onPress={this.activeQR} style={styles.buttonTouchable}>
+                <Text style={styles.buttonTextStyle}>Click to Scan !</Text>
+            </TouchableOpacity> */}
         </View>)
     }
 
     render() {
         const { scan, ScanResult, result } = this.state;
         let { qrCodeData, isLoading, error } = this.props;
-        //    console.log(qrCodeData, isLoading, error)
-        const desccription = 'Scan the QR '
         return (
 
-            <View style={styles.scrollViewStyle}>
+            <View style={{
+                flex: 1,
+                // padding: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#6b3871',
+            }}>
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={{ marginBottom: 10 }}
                 >
-                    <Fragment>
-                        <Spinner color='grey'
-                            visible={isLoading}
+
+                    <Spinner color='grey'
+                        visible={isLoading}
+                    />
+                    {!scan && !error && qrCodeData && !isLoading && (
+                        this.renderQRCodeSuccessData()
+                    )}
+                    {!scan && error && !qrCodeData && (
+                        this.renderQRCodeFailureData()
+                    )}
+
+                    {scan &&
+                        <QRCodeScanner
+                            reactivate={true}
+                            showMarker={true}
+                            ref={(node) => { this.scanner = node }}
+                            onRead={this.onSuccess}
+                            topContent={
+                                <Text style={styles.textTitle}>
+                                    Scan QR Code</Text>
+                            }
+
                         />
-                        <StatusBar barStyle="dark-content" />
-                        {!scan && error &&
-                            <View style={styles.cardView} >
-                                <Text numberOfLines={8} style={styles.descText}>{error}</Text>
+                    }
 
-                                <TouchableOpacity onPress={this.activeQR} style={styles.buttonTouchable}>
-                                    <Text style={styles.buttonTextStyle}>Click to Scan !</Text>
-                                </TouchableOpacity>
-
-                            </View>
-                        }
-                        {!error && qrCodeData && !scan && !isLoading && (
-                            this.renderQRCodeSuccessData()
-                        )}
-                        {error && !qrCodeData && !scan && (
-                            this.renderQRCodeFailureData()
-                        )}
-
-                        {/* {ScanResult &&
-                        <Fragment>
-                            <Text style={styles.textTitle1}>Result !</Text>
-                            <View style={ScanResult ? styles.scanCardView : styles.cardView}>
-                                <Text>Type : {result.type}</Text>
-                                <Text>Result : {result.data}</Text>
-                                <Text numberOfLines={1}>RawData: {result.rawData}</Text>
-                                <TouchableOpacity onPress={this.scanAgain} style={styles.buttonTouchable}>
-                                    <Text style={styles.buttonTextStyle}>Click to Scan again!</Text>
-                                </TouchableOpacity>
-
-                            </View>
-                        </Fragment>
-                    } */}
-
-
-                        {scan &&
-                            <QRCodeScanner
-                                reactivate={true}
-                                showMarker={true}
-                                ref={(node) => { this.scanner = node }}
-                                onRead={this.onSuccess}
-                                topContent={
-                                    <Text style={styles.textTitle}>
-                                        Scan QR Code</Text>
-                                }
-                            // bottomContent={
-                            //     <View>
-                            //         <TouchableOpacity style={styles.buttonTouchable} onPress={() => this.scanner.reactivate()}>
-                            //             <Text style={styles.buttonTextStyle}>OK. Got it!</Text>
-                            //         </TouchableOpacity>
-
-                            //         <TouchableOpacity style={styles.buttonTouchable} onPress={() => this.setState({ scan: false })}>
-                            //             <Text style={styles.buttonTextStyle}>Stop Scan</Text>
-                            //         </TouchableOpacity>
-                            //     </View>
-
-                            // }
-                            />
-                        }
-                    </Fragment>
                 </ScrollView>
             </View>
 

@@ -22,7 +22,8 @@ const urls = {
         'register': 'api/auth/register',
         'profile': 'api/user/',
         'sharing-info': 'api/user/sharingInfo',
-        'scan-qrcode':'api/user/scanQRCode'
+        'scan-qrcode': 'api/user/scanQRCode',
+        'contacts': 'api/user/conatcts',
     }
 }
 
@@ -102,6 +103,15 @@ export function callValidateQRCode(data) {
     return callApi(getEndpoint('scan-qrcode'), {
         method: 'post',
         data,
+        //    headers: { 'Authorization': "bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIwIiwibmJmIjoxNTc5MDgwOTcyLCJleHAiOjE2MTA2MTY5NzIsImlhdCI6MTU3OTA4MDk3Mn0.21uvDxfuo_dBd9T0Rs4y4nXVjp3DRyVJsnzPP89umYo' },
+        removeAuthorizationHeader: false
+    });
+}
+//fetch user contact list
+export function callFetchUserContactList() {
+    //  console.log(data);
+    return callApi(getEndpoint('contacts'), {
+        method: 'get',
         //    headers: { 'Authorization': "bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIwIiwibmJmIjoxNTc5MDgwOTcyLCJleHAiOjE2MTA2MTY5NzIsImlhdCI6MTU3OTA4MDk3Mn0.21uvDxfuo_dBd9T0Rs4y4nXVjp3DRyVJsnzPP89umYo' },
         removeAuthorizationHeader: false
     });

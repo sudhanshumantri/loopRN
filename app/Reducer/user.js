@@ -88,7 +88,7 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
         //QR Code Access
         case VALIDATE_QR_CODE_REQUESTED:
             return state.set('isInfoLoading', true)
-                .set('qrCodeData', action.data)
+                .set('qrCodeData', null)
                 .set('error', null);
         case VALIDATE_QR_CODE_SUCCESS:
             return state.set('isInfoLoading', false)
@@ -96,6 +96,7 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
                 .set('error', null);
         case VALIDATE_QR_CODE_FAILED:
             return state.set('isInfoLoading', false)
+                .set('qrCodeData', null)
                 .set('error', action.error);
         default:
             return state;

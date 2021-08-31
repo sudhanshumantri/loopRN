@@ -17,7 +17,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Home from '../Container/Home';
 import Settings from '../Container/Settings/index'
-import Contacts from '../Component/Contacts/index'
+import Contacts from '../Container/Contacts/index'
 import Profile from '../Container/Profile/index'
 import InformationSharing from '../Container/InformationSharing/index'
 import QRCodeScan from '../Container/QRCodeScanner'

@@ -7,14 +7,13 @@ import FlashMessage from "react-native-flash-message";
 import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import store from '../../Store';
-
 import registerReducer from '../../Reducer/register';
 import registerSagas from '../../Sagas/register';
 import userReducer from '../../Reducer/user';
 // import chatReducer from '../../Reducer/chat'
 import userSagas from '../../Sagas/user';
-// import cityReducer from '../../Reducer/city';
-// import citySagas from '../../Sagas/city'
+import contactReducer from '../../Reducer/contacts';
+import contactSagas from '../../Sagas/contacts'
 import loginReducer from '../../Reducer/login';
 import loginSagas from '../../Sagas/login';
 // import connectSagas from '../../Sagas/chat';
@@ -45,16 +44,8 @@ injectReducer('register', registerReducer)
 injectSagas(registerSagas);
 injectReducer('userInfo', userReducer)
 injectSagas(userSagas);
-// injectReducer('city', cityReducer)
-// injectSagas(citySagas);
-// injectReducer('chat', chatReducer)
-// injectSagas(connectSagas);
-// injectReducer('streaming', streamingReducer)
-// injectReducer('search', searchReducer)
-// injectSagas(searchSagas);
-// injectReducer('services', servicesReducer)
-// injectSagas(servicesSagas);
-
+injectReducer('contacts', contactReducer)
+injectSagas(contactSagas);
 
 export default class Root extends Component {
 

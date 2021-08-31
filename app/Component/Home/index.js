@@ -56,7 +56,6 @@ export default class Home extends React.Component {
     // Render any loading content that you like here
     render() {
         let { error, isLoading, userInfo, } = this.props;
-        console.log(error, isLoading, userInfo)
         if (error) {
             return (
                 <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2DB38D', }}>

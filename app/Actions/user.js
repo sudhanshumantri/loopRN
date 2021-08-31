@@ -82,6 +82,7 @@ export function validateQRCodeSucceededAction(data) {
 export function validateQRCodeFailedAction(error) {
     return {
         type: VALIDATE_QR_CODE_FAILED,
+        error
     };
 }
 //V
