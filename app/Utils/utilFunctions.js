@@ -1,15 +1,16 @@
 import { Alert } from 'react-native';
 
 export function showAlert(dialogueMessage) {
-   // console.log(dialogueMessage);
+    // console.log(dialogueMessage);
     return new Promise((resolve, reject) => {
         Alert.alert(
             dialogueMessage,
             '',
             [
-                { text: 'OK', onPress: () => resolve('confirmed') }
+                { text: 'Yes', onPress: () => resolve('yes') },
+                { text: 'No', onPress: () => resolve('no') }
             ],
-            { cancelable: false }
+            { cancelable: true }
         )
     })
 }

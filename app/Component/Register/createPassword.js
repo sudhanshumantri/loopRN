@@ -3,58 +3,23 @@ import { View, Text, ImageBackground, Image, Dimensions, ActivityIndicator, Safe
 import { Card, Input, Button, CheckBox, Icon } from 'react-native-elements';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-export default class Login extends React.Component {
+export default class CreatePassword extends React.Component {
 
     constructor() {
         super()
         this.state = {
-            mobile: '',
             password: '',
-            checked: true,
+            passwordCheck: '',
+            passwordError: '',
             isError: false,
             mobileErrorMessage: '',
-            passwordErrorMessage: '',
             showPassword: false
 
         }
     }
-    handlemobileChange = (mobile) => {
-        if (/^[\d.]+$/.test(mobile) || mobile === '') {
-            this.setState({
-                mobile,
-                mobileErrorMessage: ''
-            })
-        }
-        //   this.props.authUser({ mobile:'PUNEBA', password:'123456' });
-    }
-    handlePasswordChange = (password) => {
-        this.setState({
-            password,
-            passwordErrorMessage: ''
-        })
-    }
-    handleRememberMe = () => {
-        this.setState({
-            checked: !this.state.checked
-        })
-    }
-    handleSubmit = () => {
-        //     alert('login submit');
-
-        const { mobile, password } = this.state;
-        if (mobile == '' || mobile.length != 10) {
-            this.setState({
-                mobileErrorMessage: 'Please enter valid mobile number'
-            })
-        }
-        if (password == '') {
-            this.setState({
-                passwordErrorMessage: 'Password cannot be blank'
-            })
-        }
-        if (mobile != '' && mobile.length == 10 && password != '') {
-            //if both are filled,call the auth api,if OK then store in async storage and redirect to home page
-            this.props.authUser({ mobile, password })
+    componentDidUpdate(prevProps, prevState) {
+        if (!prevProps.error && !this.props.error && !this.props.isUserRegistrationRequested && prevProps.isUserRegistrationRequested) {
+            this.props.navigation.navigate('PersonalInfo')
         }
     }
     toggleShowPassword = () => {
@@ -62,6 +27,38 @@ export default class Login extends React.Component {
             showPassword: !this.state.showPassword
         })
     }
+    handlePasswordChange = (password) => {
+        this.setState({
+            password,
+
+        })
+    }
+
+    handleRePasswordChange = (passwordCheck) => {
+        this.setState({
+            passwordCheck
+        })
+    }
+    handleSubmit = () => {
+        //     alert('login submit');
+        const { password, passwordCheck } = this.state;
+        if (password == '' || passwordCheck == '') {
+            this.setState({
+                passwordError: 'Password is not valid'
+            })
+        }
+        if (password == passwordCheck) {
+            let { user } = this.props.route.params;
+            user.password = password
+            this.props.registerUser(user);
+            //go ahead
+        } else {
+            this.setState({
+                passwordError: 'Password is not matching'
+            })
+        }
+    }
+
     renderLogo = () => {
         return (
             <View>
@@ -75,9 +72,9 @@ export default class Login extends React.Component {
     }
 
     render() {
-        let { isLoading, authError } = this.props;
-        let { mobile, password, mobileErrorMessage, passwordErrorMessage } = this.state;
-
+        let { isUserRegistrationRequested } = this.props;
+        console.log(isUserRegistrationRequested)
+        let { password, passwordError, passwordCheck } = this.state;
         return (
             <SafeAreaView style={{ backgroundColor: '#404040', flex: 1 }}>
                 <KeyboardAwareScrollView
@@ -96,50 +93,31 @@ export default class Login extends React.Component {
                             //justifyContent: 'center',
                             alignItems: 'center'
                         }}>
-                            <Spinner color='grey'
-                                visible={isLoading}
-                            />
+
                             {this.renderLogo()}
+                            <Spinner color='grey'
+                                visible={isUserRegistrationRequested}
+                            />
                             <View style={{
                                 backgroundColor: '#404040',
                                 width: Dimensions.get('window').width * 0.85,
                                 // alignItems: 'center',
                                 justifyContent: 'center',
-                               
+
                             }}>
                                 <View style={{ alignItems: 'center', }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, }}>Login </Text>
-                                    <Text style={{ color: 'red', fontSize: 14, }}>{authError} </Text>
+                                    {/* <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, }}>SIGN UP </Text> */}
+                                    <Text style={{ color: 'red', fontSize: 14, }}>{passwordError} </Text>
 
                                 </View>
 
                                 <Input
-                                    containerStyle={{ height: 60, marginTop: 10 }}
-                                    placeholder=' Mobile Number '
-                                    inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{color:'white' }}
-                                    leftIcon={
-                                        <Icon
-                                            name='cellphone-android'
-                                            size={24}
-                                            color='white'
-                                            type='material-community'
-                                        />
-                                    }
-                                    leftIconContainerStyle={{ marginLeft: -1 }}
-                                    value={mobile}
-                                    onChangeText={text => this.handlemobileChange(text)}
-                                    errorMessage={mobileErrorMessage}
-                                    keyboardType='phone-pad'
-                                />
-
-                                <Input
                                     containerStyle={{ height: 60, marginTop: 20 }}
-                                    inputContainerStyle={{ borderBottomWidth: 0.5,}}
-                                    inputStyle={{color:'white' }}
+                                    inputContainerStyle={{ borderBottomWidth: 0.5, }}
+                                    inputStyle={{ color: 'white' }}
                                     placeholder='Enter Password'
                                     value={password} onChangeText={text => this.handlePasswordChange(text)}
-                                    errorMessage={passwordErrorMessage}
+
                                     secureTextEntry={!this.state.showPassword}
                                     leftIcon={
                                         <Icon
@@ -160,23 +138,35 @@ export default class Login extends React.Component {
                                     }
                                     leftIconContainerStyle={{ marginLeft: -1 }}
                                 />
-                                 <TouchableOpacity style={{ marginTop:20,alignItems:'flex-end' }} onPress={() => { this.props.navigation.navigate('ForgetPassword') }}>
-                                    <Text style={{ color: 'white', textDecorationLine: 'underline' }}>Forgot Password</Text>
-                                </TouchableOpacity>
+                                <Input
+                                    containerStyle={{ height: 60, marginTop: 20 }}
+                                    inputContainerStyle={{ borderBottomWidth: 0.5, }}
+                                    inputStyle={{ color: 'white' }}
+                                    placeholder='Re Enter Password'
+                                    value={passwordCheck}
+                                    onChangeText={text => this.handleRePasswordChange(text)}
+
+                                    secureTextEntry={true}
+                                    leftIcon={
+                                        <Icon
+                                            name='account-key'
+                                            size={24}
+                                            color='white'
+                                            type='material-community'
+                                        />
+                                    }
+
+                                    leftIconContainerStyle={{ marginLeft: -1 }}
+                                />
+
+
                                 <Button color='white'
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
                                     buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'white' }}
-                                    title='SIGN IN'
+                                    title='Next'
                                     titleStyle={{ fontWeight: 'bold', color: '#404040' }}
                                     onPress={this.handleSubmit} />
-                               
 
-                                <View style={{ justifyContent: "center", alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 14, lineHeight: 20 }}>Don't  have an Account?</Text>
-                                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('Register') }}>
-                                        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 14, lineHeight: 20 }}> SIGN UP</Text>
-                                    </TouchableOpacity>
-                                </View>
                             </View>
 
                         </View >

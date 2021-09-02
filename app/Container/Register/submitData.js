@@ -1,21 +1,20 @@
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import ValidatePhone from '../../Component/Register/validatePhone';
+import CreatePassword from '../../Component/Register/createPassword';
 import { registerUserAction, registerMobileAction } from '../../Actions/register';
 
 import {
-    selectRegisterMobileRequested, selectError
+    selectIsUserRegistrationRequested, selectError
 } from '../../Selectors/register';
 
 const mapStateToProps = createStructuredSelector({
     error: selectError(),
-    phoneValidationRequested:selectRegisterMobileRequested()
+    isUserRegistrationRequested: selectIsUserRegistrationRequested()
     //   isAuthed: selectisAuthed()
 })
 
 const mapDispatchToProps = {
     registerUser: registerUserAction,
-    validatePhone: registerMobileAction
 
 };
-export default connect(mapStateToProps, mapDispatchToProps)(ValidatePhone);
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePassword);

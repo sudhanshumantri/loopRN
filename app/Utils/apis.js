@@ -18,6 +18,7 @@ const axios = require("axios");
 const endpointLocation = 'remote';
 const urls = {
     remote: {
+        'validate-phone':'api/auth/validatePhone',
         'login': 'api/auth/sign_in',
         'register': 'api/auth/register',
         'profile': 'api/user/',
@@ -64,6 +65,14 @@ export function callUserAuthentication(data) {
     });
 }
 
+export function callRegisterMobile(data) {
+    //register
+    return callApi(getEndpoint('validate-phone'), {
+        method: 'post',
+        data: data,
+        removeAuthorizationHeader: true
+    });
+}
 export function callRegisterUser(data) {
     //register
     return callApi(getEndpoint('register'), {

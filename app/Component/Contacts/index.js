@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { ListItem, Icon, Avatar } from 'react-native-elements'
 import { SearchBar } from 'react-native-elements';
+import { FlatList } from 'react-native-gesture-handler';
 const list = [
     {
         name: 'Information Sharing',
@@ -45,50 +46,51 @@ export default class Contacts extends React.Component {
     updateSearch = (search) => {
         this.setState({ search });
     };
-    renderContacts = () => {
-        let { contactList } = this.props;
-        console.log(contactList);
-        return (
-            (contactList.map((data, i) => (
-
-                <ListItem.Accordion id={i}
-                    content={
-                        <>
-                            <Avatar rounded icon={{ name: 'user', color: 'grey', type: 'font-awesome-5' }} />
-                            <ListItem.Content>
-                                <ListItem.Title>{data.contactId.name}</ListItem.Title>
-                                <ListItem.Subtitle>{data.contactId.phone}</ListItem.Subtitle>
-                            </ListItem.Content>
-                        </>
-                    }
-                    isExpanded={this.state.expanded}
-                    animation={30}
-                    onPress={() => {
-                        this.setState({
-                            expanded: !this.state.expanded
-                        });
-                    }}
-                >
-                    {list.map((l, i) => (
-                        <ListItem key={i} bottomDivider>
-                            <Avatar rounded icon={{ name: 'home' }} />
-                            <ListItem.Content>
-                                <ListItem.Title>{l.name}</ListItem.Title>
-                                <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
-                            </ListItem.Content>
-                            {/* <ListItem.Chevron /> */}
-                        </ListItem>
-                    ))}
-                </ListItem.Accordion>))))
+    refreshContacts = () => {
+        console.log('coming here');
+        this.props.fetchUserContactList()
     }
+    renderContacts = ({ item }) => {
+        //   console.log(item.contactId);
+        return (
+            <ListItem key={item.id} onPress={() => {
+                this.props.navigation.navigate('contact-details', { user: item.contactId })
+            }}>
+
+                <Avatar rounded icon={{ name: 'user', color: 'grey', type: 'font-awesome-5' }} />
+                <ListItem.Content onPress={() => {
+                    this.setState({
+                        expanded: !this.state.expanded
+                    });
+                }}>
+                    <ListItem.Title>{item.contactId.name}</ListItem.Title>
+                    <ListItem.Subtitle>{item.contactId.phone}</ListItem.Subtitle>
+                </ListItem.Content>
+                <ListItem.Chevron onPress={() => {
+                    this.props.navigation.navigate('contact-details', { user: item.contactId })
+                }} />
+
+            </ListItem>)
+    }
+    renderHeader = () => {
+        let { search } = this.state;
+        return (
+            <SearchBar
+                placeholder="Search contacts"
+                onChangeText={this.updateSearch}
+                value={search}
+            />
+        )
+    }
+    keyExtractor = (item, id) => id.toString()
 
     // Render any loading content that you like here
     render() {
-        let { search } = this.state;
+
         let { isLoading, contactList, error } = this.props;
         if (error) {
             return (
-                <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2DB38D', }}>
+                <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', }}>
                     <Icon type='material-community' name='refresh' size={40} color='white' onPress={() => {
                         this.props.fetchUserContactList()
                     }} />
@@ -102,7 +104,7 @@ export default class Contacts extends React.Component {
                         flex: 1,
                         // padding: 20,
                         justifyContent: 'center',
-                        backgroundColor: '#2DB38D',
+                        backgroundColor: 'black',
 
                     }}>
                     <ActivityIndicator color='white' />
@@ -114,16 +116,23 @@ export default class Contacts extends React.Component {
                     flex: 1,
                     // padding: 20,
                     justifyContent: 'flex-start',
-                    backgroundColor: '#6b3871',
+                    backgroundColor: 'black',
                 }}>
-                    <SearchBar
-                        placeholder="Search contacts"
-                        onChangeText={this.updateSearch}
-                        value={search}
-                    />
-                    {this.renderContacts()
 
-                    }
+                    {/* {this.renderContacts()} */}
+                    <FlatList
+                        ListHeaderComponent={this.renderHeader}
+                        keyExtractor={this.keyExtractor}
+                        data={this.props.contactList}
+                        //.initialNumToRender={4}
+                        renderItem={this.renderContacts}
+                        //extraData={this.state}
+                        //   ListEmptyComponent
+                        //ListFooterComponent={this.props.renderFooter}
+                        showsVerticalScrollIndicator={false}
+                        refreshing={true}
+                        onRefresh={() => this.props.fetchUserContactList()}
+                    />
                 </SafeAreaView>
 
             );

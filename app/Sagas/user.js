@@ -11,13 +11,14 @@ import {
     updateUserSharingInfoSucceededAction,
     updateUserSharingInfoFailedAction,
     validateQRCodeFailedAction,
-    validateQRCodeSucceededAction
+    validateQRCodeSucceededAction,
 } from '../Actions/user';
+import { fetchUserContactListAction } from '../Actions/contacts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export function* fetchUserInfo() {
     let responseData = '';
     responseData = yield call(callFetchUserInfo);
-//    console.log('fetchUserInfo', responseData.data)
+    //    console.log('fetchUserInfo', responseData.data)
     if (responseData.status == 200) {
 
         yield put(
@@ -91,7 +92,7 @@ export function* updateUserSharingInfo({ data }) {
 
 export function* validateQRCode({ data }) {
     let responseData = '';
-  //  console.log('validateQRCode', data)
+    //  console.log('validateQRCode', data)
     responseData = yield call(callValidateQRCode, data);
     if (responseData.status == 200 && responseData.data) {
 
@@ -100,20 +101,36 @@ export function* validateQRCode({ data }) {
                 responseData.data
             ),
         );
+        yield put(
+            fetchUserContactListAction(),
+        );
+
         // yield call(showMessage, {
         //     message: 'Profile updates sucessfully',
         //     type: "success",
         // });
     } else {
-        yield put(
-            validateQRCodeFailedAction(
-                'No user found'
-            ),
-        );
-        yield call(showMessage, {
-            message: 'No user found',
-            type: "danger",
-        });
+        if (responseData.data.msg) {
+            yield put(
+                validateQRCodeFailedAction(
+                    responseData.data.msg
+                ),
+            );
+            yield call(showMessage, {
+                message: responseData.data.msg,
+                type: "danger",
+            });
+        } else {
+            yield put(
+                validateQRCodeFailedAction(
+                    'No user found'
+                ),
+            );
+            yield call(showMessage, {
+                message: 'No user found',
+                type: "danger",
+            });
+        }
     }
 }
 

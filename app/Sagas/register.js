@@ -24,29 +24,31 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as NavigationService from './../Navigation/navigationService';
 
 export function* registerMobile({ data }) {
-    // alert('coming inside fetch leads count');
     const responseData = yield call(callRegisterMobile, data);
-    // console.log('registerMobile', responseData.data);
     if (responseData.status == 200) {
         yield put(
             registerMobileSuccessAction(
                 responseData.data
             ),
         );
-        NavigationService.navigate('ValidateOTP', '', data);
+        NavigationService.navigate('Auth', 'PersonalInfo');
     } else {
-        if (responseData.response) {
-            if (responseData.response.status == '409') {
-                yield put(
-                    registerMobileFailedAction(
-                        'Mobile number already registered'
-                    ),
-                );
-            }
+
+        if (responseData.data.msg) {
+            yield put(
+                registerMobileFailedAction(
+                    responseData.data.msg
+                ),
+            );
+            yield call(showMessage, {
+                message: responseData.data.msg,
+                type: "danger",
+            });
+
         } else {
             yield put(
                 registerMobileFailedAction(
-                    ''
+                    'Something Went Wrong'
                 ),
             );
             yield call(showMessage, {
@@ -57,82 +59,82 @@ export function* registerMobile({ data }) {
 
     }
 }
-export function* generateOTP({ data }) {
-    //console.log('generateOTP', data);
-    let responseData = '';
-    if (data.forgetPassword) {
-        responseData = yield call(callGenerateOTPForgetPassword, data);
-    } else {
-        responseData = yield call(callGenerateOTP, data);
-    }
-    if (responseData.status == 200) {
-        yield put(
-            generateOTPSuccessAction(
-                responseData.data
-            ),
-        );
-        if (data.forgetPassword) {
-            NavigationService.navigate('ValidateOTP', '', { mobile: data.mobile, resetPassword: true });
-        } else {
-            NavigationService.navigate('ValidateOTP', '', { mobile: data.mobile, resetPassword: false });
-        }
-    } else {
-        if (responseData && responseData.response && responseData.response.status == 409) {
+// export function* generateOTP({ data }) {
+//     //console.log('generateOTP', data);
+//     let responseData = '';
+//     if (data.forgetPassword) {
+//         responseData = yield call(callGenerateOTPForgetPassword, data);
+//     } else {
+//         responseData = yield call(callGenerateOTP, data);
+//     }
+//     if (responseData.status == 200) {
+//         yield put(
+//             generateOTPSuccessAction(
+//                 responseData.data
+//             ),
+//         );
+//         if (data.forgetPassword) {
+//             NavigationService.navigate('ValidateOTP', '', { mobile: data.mobile, resetPassword: true });
+//         } else {
+//             NavigationService.navigate('ValidateOTP', '', { mobile: data.mobile, resetPassword: false });
+//         }
+//     } else {
+//         if (responseData && responseData.response && responseData.response.status == 409) {
 
-            yield put(
-                generateOTPFailedAction(
-                    'You are already registered. Please log in.'
-                ),
-            );
-        }
-        // yield call(showMessage, {
-        //     message: "Something Went Wrong",
-        //     type: "danger",
-        // });
-    }
-
-
-}
-export function* validateOTP({ data }) {
-    //  console.log(data)
-    const responseData = yield call(callValidateOTP, data);
-    if (responseData.status == 200) {
-        if (responseData.data.status == 'failed') {
-            yield put(
-                validateOTPFailedAction(
-                    'Invalid OTP'
-                ),
-            );
-        } else {
-            yield put(
-                validateOTPSuccessAction(
-                    responseData.data
-                ),
-            );
-        }
-
-    } else {
-
-        yield put(
-            validateOTPFailedAction(
-                'Invalid OTP'
-            ),
-        );
-        // yield call(showMessage, {
-        //     message: "Something Went Wrong",
-        //     type: "danger",
-        // });
-    }
+//             yield put(
+//                 generateOTPFailedAction(
+//                     'You are already registered. Please log in.'
+//                 ),
+//             );
+//         }
+//         // yield call(showMessage, {
+//         //     message: "Something Went Wrong",
+//         //     type: "danger",
+//         // });
+//     }
 
 
-}
+// }
+// export function* validateOTP({ data }) {
+//     //  console.log(data)
+//     const responseData = yield call(callValidateOTP, data);
+//     if (responseData.status == 200) {
+//         if (responseData.data.status == 'failed') {
+//             yield put(
+//                 validateOTPFailedAction(
+//                     'Invalid OTP'
+//                 ),
+//             );
+//         } else {
+//             yield put(
+//                 validateOTPSuccessAction(
+//                     responseData.data
+//                 ),
+//             );
+//         }
+
+//     } else {
+
+//         yield put(
+//             validateOTPFailedAction(
+//                 'Invalid OTP'
+//             ),
+//         );
+//         // yield call(showMessage, {
+//         //     message: "Something Went Wrong",
+//         //     type: "danger",
+//         // });
+//     }
+
+
+// }
 //REGISTER_USER_REQUEST
 export function* registerUser({ data }) {
     let responseData = '';
     responseData = yield call(callRegisterUser, data);
     if (responseData.status == 200) {
         yield call(AsyncStorage.setItem, 'token', responseData.data.token);
-        NavigationService.navigate('App');
+        //   NavigationService.navigate('App');
         yield put(
             registerUserSuccessAction(
                 responseData.data
@@ -205,8 +207,8 @@ export function* registerSagas() {
     // By using `takeLatest` only the result of the latest API call is applied.
     // It returns task descriptor (just like fork) so we can continue execution
     yield all([takeLatest('REGISTER_MOBILE_REQUEST', registerMobile),
-    takeLatest('GENERATE_OTP_REQUEST', generateOTP),
-    takeLatest('VALIDATE_OTP_REQUEST', validateOTP),
+    // takeLatest('GENERATE_OTP_REQUEST', generateOTP),
+    // takeLatest('VALIDATE_OTP_REQUEST', validateOTP),
     takeLatest('REGISTER_USER_REQUEST', registerUser),
 
     ]);

@@ -174,7 +174,7 @@ export default class InformationSharing extends React.Component {
                     // padding: 20,
                     paddingLeft: 5,
                     paddingRight: 5,
-                    backgroundColor: '#6b3871',
+                    backgroundColor: 'black',
 
                 }} >
                 <ScrollView

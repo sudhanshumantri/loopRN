@@ -9,7 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as NavigationService from './../Navigation/navigationService';
 
 export function* authUser({ data }) {
-    console.log('going for auth man')
     const responseData = yield call(callUserAuthentication, data);
     console.log(responseData.data);
     if (responseData.status == 200) {

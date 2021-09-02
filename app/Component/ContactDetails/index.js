@@ -5,7 +5,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import moment from 'moment';
 import style from './style';
-export default class Profile extends React.Component {
+export default class ContactsDetails extends React.Component {
 
     constructor(props) {
         super(props);
@@ -25,10 +25,10 @@ export default class Profile extends React.Component {
         }
     }
     componentDidMount() {
-        let data = this.props.userInfo;
-        data.isDateTimePickerVisible = false;
-        this.setState(data)
-
+        console.log(this.props.route.params.user)
+        this.setState(
+            this.props.route.params.user
+        )
     }
     validatePersonalInfo = () => {
         let isValidated = true;
@@ -197,7 +197,7 @@ export default class Profile extends React.Component {
     }
 
     renderProfileImage = () => {
-        let { userInfo, } = this.props;
+        let { name } = this.state;
         return (
             <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', marginTop: 20 }}>
                 <Avatar
@@ -216,7 +216,7 @@ export default class Profile extends React.Component {
                     size={100}
                 // onEditPress={this.showEditProfileModal}
                 />
-                <Text style={{ color: 'black', fontSize: 22, fontWeight: "bold" }}>{userInfo.name}</Text>
+                <Text style={{ color: 'black', fontSize: 22, fontWeight: "bold" }}>{name}</Text>
             </View>
         )
 
@@ -225,16 +225,16 @@ export default class Profile extends React.Component {
         let { name, phone, email, dob, gender } = this.state;
         return (
             <View style={{ marginTop: 10 }}>
-                <Text style={style.labelStyle}>Name*</Text>
+                <Text style={style.labelStyle}>Name</Text>
                 <View>
                     <TextInput
                         style={style.inputStyle}
-                        editable={true}
+                        editable={false}
                         value={name}
                         onChangeText={(text) => this.handleProfileChange('name', text)}
                     />
                 </View>
-                <Text style={style.labelStyle}>Phone*</Text>
+                <Text style={style.labelStyle}>Phone</Text>
                 <View>
 
                     <TextInput
@@ -247,13 +247,13 @@ export default class Profile extends React.Component {
 
 
                 </View>
-                <Text style={style.labelStyle}>Email*</Text>
+                <Text style={style.labelStyle}>Email</Text>
                 <View>
 
                     <TextInput
                         style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
+                        editable={false}
                         value={email}
                         onChangeText={(text) => this.handleProfileChange('email', text)}
                         keyboardType='email-address'
@@ -261,7 +261,7 @@ export default class Profile extends React.Component {
 
 
                 </View>
-                <Text style={style.labelStyle}>Birthday*</Text>
+                <Text style={style.labelStyle}>Birthday</Text>
                 <View>
                     <TouchableOpacity onPress={this.showDateTimePicker}>
                         <TextInput
@@ -273,7 +273,7 @@ export default class Profile extends React.Component {
                     </TouchableOpacity>
                 </View>
 
-                <Text style={style.labelStyle}>Gender*</Text>
+                <Text style={style.labelStyle}>Gender</Text>
 
                 <View style={{
                     flexDirection: 'row',
@@ -315,7 +315,7 @@ export default class Profile extends React.Component {
                 <View>
                     <TextInput
                         style={style.inputStyle}
-                        editable={true}
+                        editable={false}
                         value={instaLink}
                         onChangeText={(text) => this.handleInstaIDChange(text)}
                     />
@@ -339,7 +339,7 @@ export default class Profile extends React.Component {
                     <TextInput
                         style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
+                        editable={false}
                         value={hobbies}
                         onChangeText={(text) => this.handleHobbiesChange(text)}
 
@@ -389,7 +389,7 @@ export default class Profile extends React.Component {
                 <View>
                     <TextInput
                         style={style.inputStyle}
-                        editable={true}
+                        editable={false}
                         value={linkedinLink}
                         onChangeText={(text) => this.handleLinkedinChange(text)}
                     />
@@ -413,7 +413,7 @@ export default class Profile extends React.Component {
                     <TextInput
                         style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
+                        editable={false}
                         value={currentOrganization}
                         onChangeText={(text) => this.handleCurrentOrganizationChange(text)}
 
@@ -427,7 +427,7 @@ export default class Profile extends React.Component {
                     <TextInput
                         style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
+                        editable={false}
                         value={previousOrganization}
                         onChangeText={(text) => this.handlePreviousOrganizationChange(text)}
 
@@ -439,7 +439,7 @@ export default class Profile extends React.Component {
                     <TextInput
                         style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
+                        editable={false}
                         value={professionalInterests}
                         onChangeText={(text) => this.handleProfessionalInterestsChange(text)}
 
@@ -450,7 +450,7 @@ export default class Profile extends React.Component {
                     <TextInput
                         style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
+                        editable={false}
                         value={skills}
                         onChangeText={(text) => this.handleSkillsChange(text)}
 
@@ -469,7 +469,7 @@ export default class Profile extends React.Component {
                 <View>
                     <TextInput
                         style={style.inputStyle}
-                        editable={true}
+                        editable={false}
                         value={currentLocation}
                         onChangeText={(text) => this.handleCurrentLocationChange(text)}
                     />
@@ -493,7 +493,7 @@ export default class Profile extends React.Component {
                     <TextInput
                         style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
+                        editable={false}
                         value={languages}
                         onChangeText={(text) => this.handleLanguagesChange(text)}
 
@@ -505,7 +505,7 @@ export default class Profile extends React.Component {
                     <TextInput
                         style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
+                        editable={false}
                         value={aboutMe}
                         onChangeText={(text) => this.handleAboutMeChange(text)}
 
@@ -516,49 +516,26 @@ export default class Profile extends React.Component {
     }
     render() {
         let { error, isLoading, userInfo, } = this.props;
-        console.log(this.state.name);
-        if (error) {
-            return (
-                <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2DB38D', }}>
-                    <Icon type='material-community' name='refresh' size={40} color='white' onPress={() => {
-                        this.props.fetchUserInfo()
-                    }} />
-                </View>
-
-            )
-        }
-        else {
-            return (
-                <View
-                    style={style.conatiner}>
-                    <ScrollView
-                        showsVerticalScrollIndicator={false}
-                        style={{ marginBottom: 10, paddingLeft: 10, paddingRight: 10 }}
-                    >
-                        <DateTimePickerModal
-                            isVisible={this.state.isDateTimePickerVisible}
-                            onConfirm={this.handleDatePicked}
-                            onCancel={this.hideDateTimePicker}
-                            maximumDate={new Date()}
-                        />
-                        {this.renderProfileImage()}
-                        {this.renderBasicInfo()}
-                        {this.renderPersonalInfo()}
-                        {this.renderProfessionalInfo()}
-                        {this.renderOtherInfo()}
-
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Button
-                                onPress={() => this.handleSubmit()}
-                                title="Save"
-                                TouchableOpacity={1}
-                                buttonStyle={style.buttonStyle}
-                            />
-                        </View>
-                    </ScrollView>
-                </View >
-            )
-        }
-
+        return (
+            <View
+                style={style.conatiner}>
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    style={{ marginBottom: 10, paddingLeft: 10, paddingRight: 10 }}
+                >
+                    <DateTimePickerModal
+                        isVisible={this.state.isDateTimePickerVisible}
+                        onConfirm={this.handleDatePicked}
+                        onCancel={this.hideDateTimePicker}
+                        maximumDate={new Date()}
+                    />
+                    {this.renderProfileImage()}
+                    {this.renderBasicInfo()}
+                    {this.renderPersonalInfo()}
+                    {this.renderProfessionalInfo()}
+                    {this.renderOtherInfo()}
+                </ScrollView>
+            </View >
+        )
     }
 }

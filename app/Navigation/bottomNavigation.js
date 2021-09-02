@@ -16,8 +16,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Home from '../Container/Home';
+import PersonalInfo from '../Container/Register/otherInfo';
 import Settings from '../Container/Settings/index'
 import Contacts from '../Container/Contacts/index'
+
+import ContactsDetails from '../Component/ContactDetails'
 import Profile from '../Container/Profile/index'
 import InformationSharing from '../Container/InformationSharing/index'
 import QRCodeScan from '../Container/QRCodeScanner'
@@ -30,11 +33,13 @@ function MyTabs() {
   return (
     <Tab.Navigator initialRouteName="Home"
       screenOptions={{
-
+        tabBarStyle:{backgroundColor:'black',},
+        tabBarActiveTintColor:'white'
       }}
     >
       <Tab.Screen name="Home"
         component={Home}
+        // component={PersonalInfo}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
@@ -71,15 +76,21 @@ export default function MyStack() {
         // headerLeft: (props) => (
         //   <Text>Coming</Text>
         // ),
-        headerStyle: { backgroundColor: '#3f3969' },
+        headerStyle: { backgroundColor: 'black' },
         headerRight: (props) => (
           <Icon name='help' type='material' color='white' />
         ),
-        headerRightContainerStyle: { marginRight: 10 }
+        headerRightContainerStyle: { paddingRight: 10 }
       }} />
       <Stack.Screen name="your-contacts" component={Contacts}
         options={{
           title: "Contacts"
+        }}
+
+      />
+       <Stack.Screen name="contact-details" component={ContactsDetails}
+        options={{
+          title: "Contact Details"
         }}
 
       />

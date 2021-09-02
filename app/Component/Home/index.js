@@ -27,7 +27,7 @@ export default class Home extends React.Component {
     renderQRCode = () => {
         return (
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Your QR Code</Text>
+                <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Your QR Code</Text>
                 <Image
                     style={{ width: 300, height: 300, backgroundColor: 'white' }}
                     source={{ uri: this.props.userInfo.qrCode }}
@@ -42,13 +42,13 @@ export default class Home extends React.Component {
                 <Button
                     title="Scan QR Code"
                     onPress={() => this.handleNavigation('scan-qrcode')}
-                    buttonStyle={{ width: 300 }}
+                    buttonStyle={{ width: 300,backgroundColor:'black',borderRadius:5  }}
                 />
                 <Button
                     onPress={() => this.handleNavigation('your-contacts')}
                     title="Your Contacts"
                     TouchableOpacity={1}
-                    buttonStyle={{ width: 300, marginTop: 20 }}
+                    buttonStyle={{ width: 300, marginTop: 20,backgroundColor:'black',borderRadius:5 }}
                 />
             </View>
         );
@@ -58,21 +58,21 @@ export default class Home extends React.Component {
         let { error, isLoading, userInfo, } = this.props;
         if (error) {
             return (
-                <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2DB38D', }}>
+                <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', }}>
                     <Icon type='material-community' name='refresh' size={40} color='white' onPress={() => {
                         this.props.fetchUserInfo()
                     }} />
                 </View>
 
             )
-        } else if (isLoading) {
+        } else if (isLoading || !this.props.userInfo) {
             return (
                 <View
                     style={{
                         flex: 1,
                         // padding: 20,
                         justifyContent: 'center',
-                        backgroundColor: '#2DB38D',
+                        backgroundColor: 'black',
 
                     }}>
                     <ActivityIndicator color='white' />
@@ -86,7 +86,7 @@ export default class Home extends React.Component {
                     // padding: 20,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    backgroundColor: '#6b3871',
+                    backgroundColor: 'white',
                 }}>
                     {this.renderQRCode()}
                     {this.renderButtons()}

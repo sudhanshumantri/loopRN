@@ -3,19 +3,13 @@ import { Dimensions } from 'react-native';
 const deviceWidth = Dimensions.get('screen').width;
 const deviceHeight = Dimensions.get('screen').height;
 const styles = {
-    scrollViewStyle: {
+    conatiner: {
         flex: 1,
-        justifyContent: 'center',
-        backgroundColor: '#6b3871',
-    },
-
-    textTitle: {
-        fontWeight: 'bold',
-        fontSize: 18,
-        textAlign: 'center',
-        // padding: 16,
-        color: 'black',
-        marginBottom:25
+        // padding: 20,
+        paddingLeft: 5,
+        paddingRight: 5,
+        backgroundColor: 'white',
+        justifyContent: 'center'
     },
     inputStyle: {
         height: 40,

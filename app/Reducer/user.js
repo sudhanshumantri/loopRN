@@ -18,11 +18,12 @@ import {
 } from '../Actions/actionTypes';
 import { findIndex, remove } from 'lodash';
 const INITIAL_STATE = fromJS({
-    isInfoLoading: true,
+    isInfoLoading: false,
     infoError: null,
     userPersonalDetails: null,
     userSharingInfo: null,
     error: null,
+    qrCodeError: null,
     qrCodeData: null
 });
 
@@ -89,15 +90,16 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
         case VALIDATE_QR_CODE_REQUESTED:
             return state.set('isInfoLoading', true)
                 .set('qrCodeData', null)
-                .set('error', null);
+                .set('qrCodeError', null);
         case VALIDATE_QR_CODE_SUCCESS:
             return state.set('isInfoLoading', false)
                 .set('qrCodeData', action.data)
-                .set('error', null);
+                .set('error', null)
+                .set('qrCodeError', null);
         case VALIDATE_QR_CODE_FAILED:
             return state.set('isInfoLoading', false)
                 .set('qrCodeData', null)
-                .set('error', action.error);
+                .set('qrCodeError', action.error);
         default:
             return state;
 

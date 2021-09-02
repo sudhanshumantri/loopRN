@@ -443,7 +443,7 @@ export default class ProfileRegistrationPersonalInfo extends React.Component {
         let { isLoading } = this.props;
 
         return (
-            <SafeAreaView style={{ backgroundColor: '#6b3871', flex: 1, }}>
+            <SafeAreaView style={{ backgroundColor: '#404040', flex: 1, }}>
                 <KeyboardAwareScrollView
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
@@ -461,10 +461,10 @@ export default class ProfileRegistrationPersonalInfo extends React.Component {
 
                         }}>
                             <View style={{
-                                backgroundColor: 'white',
-                                margin: 10,
-                                padding: 5,
-                                borderRadius: 5
+                                // backgroundColor: 'white',
+                                // margin: 10,
+                                // padding: 5,
+                                // borderRadius: 5
 
                             }}>
                                 {this.renderPersonalInfo()}

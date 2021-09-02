@@ -4,11 +4,11 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { Card, Input, Avatar, Button, CheckBox, Icon, Divider } from 'react-native-elements';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Contacts from 'react-native-contacts';
-import styles from './scanStyle'
+import style from './scanStyle'
 import {
     TouchableOpacity,
     Text,
-    StatusBar,
+    SafeAreaView,
     Linking,
     View,
     TextInput,
@@ -33,14 +33,13 @@ export default class QRCodeScan extends Component {
 
     onSuccess = (e) => {
         const check = e.data.substring(0, 4);
-        // alert(e.data);
-        // console.log('scanned data' + check);
-        this.props.validateQRCode({ phone: e.data })
         this.setState({
             result: e,
             scan: false,
             ScanResult: true
         })
+        this.props.validateQRCode({ phone: e.data })
+
     }
 
     activeQR = () => {
@@ -124,61 +123,37 @@ export default class QRCodeScan extends Component {
         let userInfo = this.props.qrCodeData;
         return (
             <View style={{ marginTop: 10 }}>
-                <Text style={{ fontSize: 18, color: 'white', }}>Phone*</Text>
+                <Text style={style.labelStyle}>Phone*</Text>
                 <View>
 
                     <TextInput
-                        style={{
-                            height: 40,
-                            marginTop: 3,
-                            borderRadius: 3,
-                            borderColor: 'white',
-                            color: 'white',
-                            borderWidth: 0.5,
-                            paddingLeft: 5
-                        }}
+                         style={style.inputStyle}
                         editable={false}
                         value={String(userInfo.phone)}
                     />
                 </View>
-                <Text style={{ fontSize: 18, color: 'white', }}>Email*</Text>
+                <Text style={style.labelStyle}>Email*</Text>
                 <View>
 
                     <TextInput
-                        style={{
-                            height: 40,
-                            marginTop: 3,
-                            borderRadius: 3,
-                            color: 'white',
-                            borderColor: 'white',
-                            borderWidth: 0.5,
-                            paddingLeft: 5
-                        }}
+                         style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
                         editable={false}
                         value={userInfo.email}
 
                     />
                 </View>
-                <Text style={{ fontSize: 18, color: 'white', }}>Birthday*</Text>
+                <Text style={style.labelStyle}>Birthday*</Text>
                 <View>
                     <TextInput
-                        style={{
-                            height: 40,
-                            marginTop: 3,
-                            borderRadius: 3,
-                            color: 'white',
-                            borderColor: 'white',
-                            borderWidth: 0.5,
-                            paddingLeft: 5
-                        }}
+                         style={style.inputStyle}
 
                         editable={false}
                         value={userInfo.dob}
                     />
                 </View>
 
-                <Text style={{ fontSize: 18, color: 'white', }}>Gender*</Text>
+                <Text style={style.labelStyle}>Gender*</Text>
 
                 <View style={{
                     flexDirection: 'row',
@@ -187,60 +162,44 @@ export default class QRCodeScan extends Component {
                     <CheckBox
                         title='Male'
                         checked={userInfo.gender == 'male' ? true : false}
-                        textStyle={{ marginLeft: -1, color: 'white' }}
+                        textStyle={{ marginLeft: -1, color: 'black' }}
                         containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
 
-                        checkedColor='#2DB38D'
+                        checkedColor='black'
                     />
                     <CheckBox
                         title='Female'
                         checked={userInfo.gender == 'female' ? true : false}
-                        textStyle={{ marginLeft: -1, color: 'white' }}
+                        textStyle={{ marginLeft: -1, color: 'black' }}
                         containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
 
-                        checkedColor='#2DB38D'
+                        checkedColor='black'
                     />
                     <CheckBox
                         title='Other'
                         checked={userInfo.gender == 'other' ? true : false}
-                        textStyle={{ marginLeft: -1, color: 'white' }}
+                        textStyle={{ marginLeft: -1, color: 'black' }}
                         containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
                         // onPress={() => this.handleProfileChange('gender', 'other')}
-                        checkedColor='#2DB38D'
+                        checkedColor='black'
                     />
                 </View>
-                <Text style={{ fontSize: 18, color: 'white', }}>LinkedIn Profile</Text>
+                <Text style={style.labelStyle}>LinkedIn Profile</Text>
                 <View>
 
                     <TextInput
-                        style={{
-                            height: 40,
-                            marginTop: 3,
-                            borderRadius: 3,
-                            borderColor: 'white',
-                            color: 'white',
-                            borderWidth: 0.5,
-                            paddingLeft: 5
-                        }}
+                        style={style.inputStyle}
                         value={userInfo.linkedinLink}
 
                     />
 
 
                 </View>
-                <Text style={{ fontSize: 18, color: 'white', }}>Insta Username</Text>
+                <Text style={style.labelStyle}>Insta Username</Text>
                 <View>
 
                     <TextInput
-                        style={{
-                            height: 40,
-                            marginTop: 3,
-                            borderRadius: 3,
-                            borderColor: 'white',
-                            color: 'white',
-                            borderWidth: 0.5,
-                            paddingLeft: 5
-                        }}
+                        style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
                         editable={false}
                         value={userInfo.instaLink}
@@ -248,19 +207,11 @@ export default class QRCodeScan extends Component {
 
 
                 </View>
-                <Text style={{ fontSize: 18, color: 'white', }}>FB Profile Link</Text>
+                <Text style={style.labelStyle}>FB Profile Link</Text>
                 <View>
 
                     <TextInput
-                        style={{
-                            height: 40,
-                            marginTop: 3,
-                            borderRadius: 3,
-                            borderColor: 'white',
-                            color: 'white',
-                            borderWidth: 0.5,
-                            paddingLeft: 5
-                        }}
+                         style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
                         editable={false}
                         value={userInfo.fbLink}
@@ -274,7 +225,7 @@ export default class QRCodeScan extends Component {
             </View>)
     }
     renderQRCodeSuccessData = () => {
-        return (<View>
+        return (<ScrollView showsVerticalScrollIndicator={false}>
             {this.renderProfileImage()}
             {this.renderPersonalInfo()}
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -282,17 +233,17 @@ export default class QRCodeScan extends Component {
                     onPress={() => this.openContactPicker()}
                     title="Add to Contacts"
                     TouchableOpacity={1}
-                    buttonStyle={{ width: 300, marginTop: 20 }}
+                    buttonStyle={style.buttonStyle}
                 />
             </View>
 
-        </View>)
+        </ScrollView>)
     }
     renderQRCodeFailureData = () => {
         let { qrCodeData, isLoading, error } = this.props;
-        return (<View style={{ alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>{error}</Text>
-            <Button onPress={this.activeQR} title="Click to Scan !" />
+        return (<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>{error}</Text>
+            <Button onPress={this.activeQR} title="Click to Scan again!"  buttonStyle={{ width: 200,backgroundColor:'black',borderRadius:5  }} />
             {/* <TouchableOpacity onPress={this.activeQR} style={styles.buttonTouchable}>
                 <Text style={styles.buttonTextStyle}>Click to Scan !</Text>
             </TouchableOpacity> */}
@@ -302,46 +253,47 @@ export default class QRCodeScan extends Component {
     render() {
         const { scan, ScanResult, result } = this.state;
         let { qrCodeData, isLoading, error } = this.props;
+        console.log(qrCodeData,isLoading,error);
         return (
 
-            <View style={{
+            <SafeAreaView style={{
                 flex: 1,
                 // padding: 20,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: '#6b3871',
+                backgroundColor: 'white',
             }}>
-                <ScrollView
+                {/* <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={{ marginBottom: 10 }}
-                >
+                > */}
 
-                    <Spinner color='grey'
-                        visible={isLoading}
+                <Spinner color='grey'
+                    visible={isLoading}
+                />
+                {!scan && !error && qrCodeData && !isLoading && (
+                    this.renderQRCodeSuccessData()
+                )}
+                {!scan && error && !qrCodeData && (
+                    this.renderQRCodeFailureData()
+                )}
+
+                {scan &&
+                    <QRCodeScanner
+                        reactivate={true}
+                        showMarker={true}
+                        ref={(node) => { this.scanner = node }}
+                        onRead={this.onSuccess}
+                        topContent={
+                            <Text style={style.textTitle}>
+                                Scan QR Code</Text>
+                        }
+
                     />
-                    {!scan && !error && qrCodeData && !isLoading && (
-                        this.renderQRCodeSuccessData()
-                    )}
-                    {!scan && error && !qrCodeData && (
-                        this.renderQRCodeFailureData()
-                    )}
+                }
 
-                    {scan &&
-                        <QRCodeScanner
-                            reactivate={true}
-                            showMarker={true}
-                            ref={(node) => { this.scanner = node }}
-                            onRead={this.onSuccess}
-                            topContent={
-                                <Text style={styles.textTitle}>
-                                    Scan QR Code</Text>
-                            }
-
-                        />
-                    }
-
-                </ScrollView>
-            </View>
+                {/* </ScrollView> */}
+            </SafeAreaView>
 
 
         );

@@ -2,11 +2,12 @@ import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from '../Container/Login';
-// import ForgetPassword from '../Container/ForgetPassword';
-// import ProfileRegistrationPersonalInfo from '../Container/Register/personalInfo';
-// import ProfileRegistrationAddressInfo from '../Container/Register/addressInfo';
-// import ProfileRegistrationHealthcareProfessionalInfo from '../Container/Register/healthcareProfessionalInfo';
 import Register from '../Container/Register';
+import PersonalInfo from '../Container/Register/personalInfo';
+import ProfessionalInfo from '../Container/Register/professionalInfo';
+import OtherInfo from '../Container/Register/otherInfo';
+import BasicInfo from '../Component/Register/basicInformation'
+import SubmitSingupData from '../Container/Register/submitData'
 import AuthLoadingScreen from '../Component/Auth'
 //import DrawerNavigator from './drawerNavigator';
 import AppStackNavigator from './bottomNavigation';
@@ -23,6 +24,22 @@ function MyAuthStack() {
             <AuthStack.Screen name="Register" component={Register} options={{
                 headerShown: false,
             }} />
+             <AuthStack.Screen name="BasicInfo" component={BasicInfo} options={{
+                headerShown: false,
+            }} />
+            <AuthStack.Screen name="SetPassword" component={SubmitSingupData} options={{
+                headerShown: false,
+            }} />
+             <AuthStack.Screen name="PersonalInfo" component={PersonalInfo} options={{
+                headerShown: false,
+            }} />
+             <AuthStack.Screen name="ProfessionalInfo" component={ProfessionalInfo} options={{
+                headerShown: false,
+            }} />
+             <AuthStack.Screen name="OtherInfo" component={OtherInfo} options={{
+                headerShown: false,
+            }} />
+            
 
         </AuthStack.Navigator>
     );
@@ -31,7 +48,6 @@ export default createAppContainer(
     createSwitchNavigator(
         {
             AuthLoading: AuthLoadingScreen,
-            //   App: DrawerNavigator,
             Auth: MyAuthStack,
             App: AppStackNavigator
         },

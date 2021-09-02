@@ -76,16 +76,13 @@ export default function registerReducer(state = INITIAL_STATE, action = {}) {
 
         // REGISTER_USER_
 
-
         case REGISTER_USER_REQUEST:
             return state.set('isUserRegistrationRequested', true)
                 .set('error', null);
 
         case REGISTER_USER_SUCCESS:
             return state.set('isUserRegistrationRequested', false)
-
                 .set('error', null);;
-
         case REGISTER_USER_FAILURE:
             return state.set('isUserRegistrationRequested', false)
                 .set('error', action.error);
