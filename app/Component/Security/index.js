@@ -14,41 +14,22 @@ import { ListItem, Icon } from 'react-native-elements'
 import { showAlert } from '../../Utils/utilFunctions'
 const list = [
     {
-        title: 'Information Sharing',
+        title: 'Privacy Statement',
         icon: 'info-outline',
         isNavigation: true,
         function: 'handleNavigation',
         route: 'information-sharing',
     },
     {
-        title: 'Password & Security ',
+        title: 'ChangePassword',
         icon: 'security',
         isNavigation: true,
         function: 'handleNavigation',
-        route: 'security',
-    },
-    // {
-    //     title: 'Display',
-    //     icon: 'grid-view',
-    //     isNavigation: true,
-    //     function: 'handleNavigation',
-    //     route: 'information-sharing',
-    // }, 
-    {
-        title: 'Share',
-        icon: 'share',
-        isNavigation: false,
-        function: 'handleShare',
         route: 'information-sharing',
     },
-    {
-        title: 'Log Out',
-        icon: 'logout',
-        isNavigation: false,
-        function: 'handleLogout'
-    },
+    
 ];
-export default class Settings extends React.Component {
+export default class Security extends React.Component {
     constructor() {
         super()
         this.state = {

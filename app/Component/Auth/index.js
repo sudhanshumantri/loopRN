@@ -25,7 +25,7 @@ export default class AuthLoadingScreen extends React.Component {
     // Render any loading content that you like here
     render() {
         return (
-            <SafeAreaView style={{ flex: 1, padding: 20, justifyContent: 'center', alignItems: 'center' }}>
+            <SafeAreaView style={{ flex: 1, padding: 20, justifyContent: 'center', alignItems: 'center', backgroundColor:'white' }}>
                 
                 <ActivityIndicator color='grey' />
                 <StatusBar barStyle="default" />

@@ -80,86 +80,87 @@ export default class InformationSharing extends React.Component {
         let userSharingInfo = this.state
         return (
             <View>
-                <Text style={{ fontSize: 18, color: 'white', textAlign: 'center', fontWeight: 'bold' }}>Checked information would be shared with your contacts</Text>
+                <Text style={{ fontSize: 18, color: 'black', textAlign: 'center', fontWeight: 'bold',marginBottom:20 }}>Manage your sharing preferences</Text>
+                
                 <CheckBox
+                    title='Name*'
+                    checked={true}
+                    textStyle={{ color:'white'}}
+                    containerStyle={{ backgroundColor: 'black', borderWidth: 0, }}
+                    //onPress={() => this.handleInformationChange('name')}
+                    checkedColor='white'
+                />
+                <CheckBox
+                    title='Phone No.*'
+                    checked={userSharingInfo.phone}
+                    textStyle={{ color:'white' }}
+                    containerStyle={{ backgroundColor: 'black', borderWidth: 0, }}
+                 //   onPress={() => this.handleInformationChange('phone')}
+                    checkedColor='white'
+                />
+                <CheckBox
+                    title='Personal Email*'
+                    checked={true}
+                    textStyle={{ color:'white' }}
+                    containerStyle={{ backgroundColor: 'black', borderWidth: 0, }}
+                   // onPress={() => this.handleInformationChange('email')}
+                    checkedColor='white'
+                />
+                {/* <CheckBox
                     title='Photo'
                     checked={true}
-                    textStyle={{ marginLeft: -1 }}
-                    containerStyle={{ backgroundColor: 'white', borderWidth: 0, }}
+                    textStyle={{ color:'white' }}
+                    containerStyle={{ backgroundColor: 'black', borderWidth: 0, }}
                     // onPress={() => this.props.handleDosageChange(medicineIndex, index, 'morning')}
-                    checkedColor='#2DB38D'
-                />
-                <CheckBox
-                    title='Name'
-                    checked={true}
-                    textStyle={{ marginLeft: -1 }}
-                    containerStyle={{ backgroundColor: 'white', borderWidth: 0, }}
-                    //onPress={() => this.handleInformationChange('name')}
-                    checkedColor='#2DB38D'
-                />
-                <CheckBox
-                    title='Phone No.'
-                    checked={userSharingInfo.phone}
-                    textStyle={{ marginLeft: -1 }}
-                    containerStyle={{ backgroundColor: 'white', borderWidth: 0, }}
-                    onPress={() => this.handleInformationChange('phone')}
-                    checkedColor='#2DB38D'
-                />
-                <CheckBox
-                    title='Personal Email'
-                    checked={true}
-                    textStyle={{ marginLeft: -1 }}
-                    containerStyle={{ backgroundColor: 'white', borderWidth: 0, }}
-                   // onPress={() => this.handleInformationChange('email')}
-                    checkedColor='#2DB38D'
-                />
+                    checkedColor='white'
+                /> */}
                 {/* <CheckBox
                     title='Current Location'
                     // checked={dosage.frequency.morning}
-                    textStyle={{ marginLeft: -1 }}
-                    containerStyle={{ backgroundColor: 'white', borderWidth: 0, }}
+                    textStyle={{ color:'white' }}
+                    containerStyle={{ backgroundColor: 'black', borderWidth: 0, }}
                     // onPress={() => this.props.handleDosageChange(medicineIndex, index, 'morning')}
-                    checkedColor='#2DB38D'
+                    checkedColor='white'
                 /> */}
                 <CheckBox
                     title='Birthday'
                     checked={userSharingInfo.dob}
-                    textStyle={{ marginLeft: -1 }}
-                    containerStyle={{ backgroundColor: 'white', borderWidth: 0, }}
+                    textStyle={{ color:'white' }}
+                    containerStyle={{ backgroundColor: 'black', borderWidth: 0, }}
                     onPress={() => this.handleInformationChange('dob')}
-                    checkedColor='#2DB38D'
+                    checkedColor='white'
                 />
                 <CheckBox
                     title='Gender'
                     checked={userSharingInfo.gender}
-                    textStyle={{ marginLeft: -1 }}
-                    containerStyle={{ backgroundColor: 'white', borderWidth: 0, }}
+                    textStyle={{ color:'white' }}
+                    containerStyle={{ backgroundColor: 'black', borderWidth: 0, }}
                     onPress={() => this.handleInformationChange('gender')}
-                    checkedColor='#2DB38D'
+                    checkedColor='white'
                 />
                 <CheckBox
                     title='LinkedIn Profile'
                     checked={userSharingInfo.linkedinLink}
-                    textStyle={{ marginLeft: -1 }}
-                    containerStyle={{ backgroundColor: 'white', borderWidth: 0, }}
+                    textStyle={{ color:'white' }}
+                    containerStyle={{ backgroundColor: 'black', borderWidth: 0, }}
                     onPress={() => this.handleInformationChange('linkedinLink')}
-                    checkedColor='#2DB38D'
+                    checkedColor='white'
                 />
                 <CheckBox
                     title='Insta Username'
                     checked={userSharingInfo.instaLink}
-                    textStyle={{ marginLeft: -1 }}
-                    containerStyle={{ backgroundColor: 'white', borderWidth: 0, }}
+                    textStyle={{ color:'white' }}
+                    containerStyle={{ backgroundColor: 'black', borderWidth: 0, }}
                     onPress={() => this.handleInformationChange('instaLink')}
-                    checkedColor='#2DB38D'
+                    checkedColor='white'
                 />
                 <CheckBox
                     title='FB Profile Link'
                     checked={userSharingInfo.fbLink}
-                    textStyle={{ marginLeft: -1 }}
-                    containerStyle={{ backgroundColor: 'white', borderWidth: 0, }}
+                    textStyle={{ color:'white' }}
+                    containerStyle={{ backgroundColor: 'black', borderWidth: 0, }}
                     onPress={() => this.handleInformationChange('fbLink')}
-                    checkedColor='#2DB38D'
+                    checkedColor='white'
                 />
             </View>
 
@@ -174,7 +175,7 @@ export default class InformationSharing extends React.Component {
                     // padding: 20,
                     paddingLeft: 5,
                     paddingRight: 5,
-                    backgroundColor: 'black',
+                    backgroundColor: 'white',
 
                 }} >
                 <ScrollView

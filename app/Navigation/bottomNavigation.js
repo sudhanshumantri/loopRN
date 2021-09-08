@@ -16,7 +16,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Home from '../Container/Home';
-import PersonalInfo from '../Container/Register/otherInfo';
+import Help from '../Component/Help';
+import Security from '../Component/Security';
+
 import Settings from '../Container/Settings/index'
 import Contacts from '../Container/Contacts/index'
 
@@ -24,6 +26,7 @@ import ContactsDetails from '../Component/ContactDetails'
 import Profile from '../Container/Profile/index'
 import InformationSharing from '../Container/InformationSharing/index'
 import QRCodeScan from '../Container/QRCodeScanner'
+import { color } from 'react-native-elements/dist/helpers';
 
 
 
@@ -33,8 +36,8 @@ function MyTabs() {
   return (
     <Tab.Navigator initialRouteName="Home"
       screenOptions={{
-        tabBarStyle:{backgroundColor:'black',},
-        tabBarActiveTintColor:'white'
+        tabBarStyle: { backgroundColor: 'black', },
+        tabBarActiveTintColor: 'white'
       }}
     >
       <Tab.Screen name="Home"
@@ -69,34 +72,47 @@ const Stack = createStackNavigator();
 export default function MyStack() {
   return (
     <Stack.Navigator initialRouteName="Tabs" >
-      <Stack.Screen name="Tabs" component={MyTabs} options={{
-        headerTitle: 'LOOP',
-        headerTitleStyle: { color: 'white' },
+      <Stack.Screen name="Tabs" component={MyTabs} options={({ route, navigation }) => ({
+        headerTitle: () => <Image
+          style={{ width: 120, height: 60, }}
+          source={require('../../assets/loopHorizontalWhite1.png')}
+        />,
+        // headerBackground:()=>
+        // headerTitleStyle: { color: 'white' },
         headerTitleAlign: 'center',
-        // headerLeft: (props) => (
-        //   <Text>Coming</Text>
-        // ),
+        // // headerLeft: (props) => (
+        // //   <Text>Coming</Text>
+        // // ),
         headerStyle: { backgroundColor: 'black' },
         headerRight: (props) => (
-          <Icon name='help' type='material' color='white' />
+          <Icon name='help' type='material' color='white' onPress={() => { navigation.navigate('need-help') }} />
         ),
         headerRightContainerStyle: { paddingRight: 10 }
-      }} />
+      })} />
       <Stack.Screen name="your-contacts" component={Contacts}
         options={{
-          title: "Contacts"
+          title: "Contacts",
+          headerTitleStyle: { color: 'white' },
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white'
         }}
 
       />
-       <Stack.Screen name="contact-details" component={ContactsDetails}
+      <Stack.Screen name="contact-details" component={ContactsDetails}
         options={{
-          title: "Contact Details"
+          title: "Contact Details",
+          headerTitleStyle: { color: 'white' },
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white'
         }}
 
       />
       <Stack.Screen name="information-sharing" component={InformationSharing}
         options={{
-          title: "Information Sharing"
+          title: "Information Sharing",
+          headerTitleStyle: { color: 'white' },
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white'
         }}
 
       />
@@ -104,6 +120,24 @@ export default function MyStack() {
         options={{
           title: "QR code scanner",
           headerShown: false
+        }}
+
+      />
+      <Stack.Screen name="need-help" component={Help}
+        options={{
+          title: "Feedback",
+          headerTitleStyle: { color: 'white' },
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white'
+        }}
+
+      />
+      <Stack.Screen name="security" component={Security}
+        options={{
+          title: "Password & Security",
+          headerTitleStyle: { color: 'white' },
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white'
         }}
 
       />

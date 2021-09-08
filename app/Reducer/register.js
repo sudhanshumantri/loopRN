@@ -33,6 +33,7 @@ export default function registerReducer(state = INITIAL_STATE, action = {}) {
 
         case REGISTER_MOBILE_SUCCESS:
             return state.set('isRegisterMobileRequested', false)
+                .set('otp', action.data.otp)
                 .set('error', null);;
 
         case REGISTER_MOBILE_FAILURE:

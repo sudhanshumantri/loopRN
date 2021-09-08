@@ -80,7 +80,7 @@ export default class ProfessionalInfo extends React.Component {
 
                 <Image
                     style={{ width: 200, height: 200, }}
-                    source={require('../../../assets/loopLogoWhite.png')}
+                    source={require('../../../assets/loopLogoBlack.png')}
                 />
             </View>
         );
@@ -90,7 +90,7 @@ export default class ProfessionalInfo extends React.Component {
         let { isLoading } = this.props;
         let { linkedinLink, currentOrganization, previousOrganization, professionalEmail, professionalInterests, skills } = this.state;
         return (
-            <SafeAreaView style={{ backgroundColor: '#404040', flex: 1 }}>
+            <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
                 <KeyboardAwareScrollView
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
@@ -100,7 +100,7 @@ export default class ProfessionalInfo extends React.Component {
                     >
                         <View style={{
                             flex: 1,
-                            backgroundColor: '#404040',
+                            backgroundColor: 'white',
 
                             // width: Dimensions.get('window').width,
                             // height: Dimensions.get('window').height,
@@ -113,14 +113,14 @@ export default class ProfessionalInfo extends React.Component {
                                 visible={isLoading}
                             />
                             <View style={{
-                                backgroundColor: '#404040',
+                                backgroundColor: 'white',
                                 width: Dimensions.get('window').width * 0.85,
                                 alignItems: 'center',
                                 justifyContent: 'center',
 
                             }}>
                                 <View style={{ alignItems: 'center', }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, }}>Professional Information </Text>
+                                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20, }}>Professional Information </Text>
                                     {/* <Text style={{ color: 'red', fontSize: 14, }}>{authError} </Text> */}
 
                                 </View>
@@ -128,12 +128,12 @@ export default class ProfessionalInfo extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Enter linkedin profile link'
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='linkedin'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='material-community'
                                         />
                                     }
@@ -145,12 +145,12 @@ export default class ProfessionalInfo extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Enter professional email'
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='email'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='material-community'
                                         />
                                     }
@@ -162,12 +162,12 @@ export default class ProfessionalInfo extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Enter current college/company'
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='graduation-cap'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='font-awesome'
                                         />
                                     }
@@ -181,12 +181,12 @@ export default class ProfessionalInfo extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Enter previous college/company'
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='graduation-cap'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='font-awesome'
                                         />
                                     }
@@ -198,12 +198,12 @@ export default class ProfessionalInfo extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Enter professional interests'
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='activity'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='feather'
                                         />
                                     }
@@ -215,12 +215,12 @@ export default class ProfessionalInfo extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Enter skills'
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='activity'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='feather'
                                         />
                                     }
@@ -229,18 +229,18 @@ export default class ProfessionalInfo extends React.Component {
                                     onChangeText={text => this.handleSkillsChange(text)}
                                 />
 
-                                <Button color='white'
+                                <Button color='black'
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
-                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'white' }}
+                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'black' }}
                                     title='Next'
-                                    titleStyle={{ fontWeight: 'bold', color: '#404040' }}
+                                    titleStyle={{ fontWeight: 'bold', color: 'white' }}
                                     onPress={this.handleSubmit} />
 
                                 <Button color='white'
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.50, }}
-                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: '#404040' }}
+                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'white' }}
                                     title='Skip'
-                                    titleStyle={{ fontWeight: 'bold', color: 'white' }}
+                                    titleStyle={{ fontWeight: 'bold', color: 'black' }}
                                     onPress={this.handleSkip} />
 
                             </View>

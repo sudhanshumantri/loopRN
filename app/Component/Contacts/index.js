@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
     ActivityIndicator,
     AsyncStorage,
@@ -7,57 +7,68 @@ import {
     Image,
     Text, SafeAreaView,
     ScrollView,
+    Dimensions,
+    StyleSheet,
     Linking,
     TouchableOpacity,
+    FlatList
 } from 'react-native';
-import { ListItem, Icon, Avatar } from 'react-native-elements'
-import { SearchBar } from 'react-native-elements';
-import { FlatList } from 'react-native-gesture-handler';
-const list = [
-    {
-        name: 'Information Sharing',
-        subtitle: 'info-outline'
-    },
-    {
-        name: 'Password & Security ',
-        subtitle: 'security'
-    },
-    {
-        name: 'Display',
-        subtitle: 'grid-view'
-    }, {
-        name: 'Recommend',
-        subtitle: 'recommend'
-    },
-];
-export default class Contacts extends React.Component {
-    constructor() {
-        super()
+import Spinner from 'react-native-loading-spinner-overlay';
+import { SearchBar, Avatar, ListItem } from 'react-native-elements';
+export default class Home extends Component {
+    constructor(props) {
+        super(props);
         this.state = {
-            currentPosition: 0,
-            expanded: false,
-            subscriptionPlanModalVisible: false,
-            searchText: ''
-        }
+            searchText: '',
+            isReresshed: false,
+            matchedContact: []
+        };
     }
+
     componentDidMount() {
         this.props.fetchUserContactList()
     }
-    updateSearch = (search) => {
-        this.setState({ search });
-    };
-    refreshContacts = () => {
-        console.log('coming here');
-        this.props.fetchUserContactList()
+
+    onRefresh() {
+        // this.setState({ isReresshed: true })
+        this.props.fetchUserContactList();
+    }
+    // updateSearch = (search) => {
+    //     let contactListObj = this.props.contactList;
+    //     console.log(contactListObj);
+    //     let results=[];
+    //     this.setState({ search });
+    //     for (var i = 0; i < contactListObj.length; i++) {
+    //         for (var key in contactListObj[i].contactId) {
+    //             console.log(contactListObj[i].contactId[key].indexOf(search));
+    //             // if (contactListObj[i].contactId.key.indexOf(search) != -1) {
+    //             //     results.push(objects[i]);
+    //             // }
+    //         }
+
+    //     }
+    //     console.log(results);
+    // };
+    renderHeader = () => {
+        let { search } = this.state;
+        return (
+            <SearchBar
+                placeholder="Search contacts"
+                onChangeText={this.updateSearch}
+                value={search}
+            />
+        )
     }
     renderContacts = ({ item }) => {
         //   console.log(item.contactId);
         return (
-            <ListItem key={item.id} onPress={() => {
+            <ListItem key={item.id} bottomDivider onPress={() => {
                 this.props.navigation.navigate('contact-details', { user: item.contactId })
             }}>
 
-                <Avatar rounded icon={{ name: 'user', color: 'grey', type: 'font-awesome-5' }} />
+                <Avatar size="medium" rounded icon={{ name: 'user', color: 'grey', type: 'font-awesome-5' }}
+                    overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
+                />
                 <ListItem.Content onPress={() => {
                     this.setState({
                         expanded: !this.state.expanded
@@ -72,21 +83,23 @@ export default class Contacts extends React.Component {
 
             </ListItem>)
     }
-    renderHeader = () => {
-        let { search } = this.state;
-        return (
-            <SearchBar
-                placeholder="Search contacts"
-                onChangeText={this.updateSearch}
-                value={search}
-            />
-        )
+    renderEmpty = () => {
+        let { isLoading, contactList, error } = this.props;
+        if (!isLoading) {
+            return (
+                <View style={{ justifyContent: 'center' }}>
+                    <Text>No Contacts </Text>
+                </View>
+            )
+        } else {
+            return (
+                <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+                    <Text>Fetching Contacts </Text>
+                </View>
+            )
+        }
     }
-    keyExtractor = (item, id) => id.toString()
-
-    // Render any loading content that you like here
     render() {
-
         let { isLoading, contactList, error } = this.props;
         if (error) {
             return (
@@ -97,45 +110,34 @@ export default class Contacts extends React.Component {
                 </View>
 
             )
-        } else if (isLoading) {
-            return (
-                <View
-                    style={{
-                        flex: 1,
-                        // padding: 20,
-                        justifyContent: 'center',
-                        backgroundColor: 'black',
-
-                    }}>
-                    <ActivityIndicator color='white' />
-                </View >
-            )
         } else {
             return (
-                <SafeAreaView style={{
-                    flex: 1,
-                    // padding: 20,
-                    justifyContent: 'flex-start',
-                    backgroundColor: 'black',
-                }}>
-
-                    {/* {this.renderContacts()} */}
+                <View style={styles.container}>
+                    {/* <Spinner color='grey'
+                        visible={isLoading}
+                    /> */}
                     <FlatList
-                        ListHeaderComponent={this.renderHeader}
-                        keyExtractor={this.keyExtractor}
+                        // data={this.state.data}
+                        ListEmptyComponent={this.renderEmpty()}
                         data={this.props.contactList}
-                        //.initialNumToRender={4}
+                        onRefresh={() => this.onRefresh()}
+                        refreshing={isLoading}
+                        keyExtractor={(item, index) => index.toString()}
+                        ListHeaderComponent={this.renderHeader}
                         renderItem={this.renderContacts}
-                        //extraData={this.state}
-                        //   ListEmptyComponent
-                        //ListFooterComponent={this.props.renderFooter}
-                        showsVerticalScrollIndicator={false}
-                        refreshing={true}
-                        onRefresh={() => this.props.fetchUserContactList()}
                     />
-                </SafeAreaView>
-
+                </View>
             );
         }
     }
 }
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        marginTop: 22,
+    },
+});

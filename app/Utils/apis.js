@@ -18,13 +18,15 @@ const axios = require("axios");
 const endpointLocation = 'remote';
 const urls = {
     remote: {
-        'validate-phone':'api/auth/validatePhone',
+        'validate-phone': 'api/auth/validatePhone',
         'login': 'api/auth/sign_in',
         'register': 'api/auth/register',
         'profile': 'api/user/',
+        'profile-pic': 'api/user/uploadProfilePciture',
         'sharing-info': 'api/user/sharingInfo',
         'scan-qrcode': 'api/user/scanQRCode',
         'contacts': 'api/user/conatcts',
+
     }
 }
 
@@ -107,6 +109,16 @@ export function callUpdateUserSharingInfo(data) {
         removeAuthorizationHeader: false
     });
 }
+export function callUpdateUserProfilePic(data) {
+    //  console.log(data);
+    return callApi(getEndpoint('profile-pic'), {
+        method: 'post',
+        data,
+        //    headers: { 'Authorization': "bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIwIiwibmJmIjoxNTc5MDgwOTcyLCJleHAiOjE2MTA2MTY5NzIsImlhdCI6MTU3OTA4MDk3Mn0.21uvDxfuo_dBd9T0Rs4y4nXVjp3DRyVJsnzPP89umYo' },
+        removeAuthorizationHeader: false
+    });
+}
+
 export function callValidateQRCode(data) {
     //  console.log(data);
     return callApi(getEndpoint('scan-qrcode'), {

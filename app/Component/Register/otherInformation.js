@@ -60,7 +60,7 @@ export default class OtherInfo extends React.Component {
 
                 <Image
                     style={{ width: 200, height: 200, }}
-                    source={require('../../../assets/loopLogoWhite.png')}
+                    source={require('../../../assets/loopLogoBlack.png')}
                 />
             </View>
         );
@@ -70,7 +70,7 @@ export default class OtherInfo extends React.Component {
         let { isLoading } = this.props;
         let { currentLocation, homeLocation, languages, aboutMe } = this.state;
         return (
-            <SafeAreaView style={{ backgroundColor: '#404040', flex: 1 }}>
+            <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
                 <KeyboardAwareScrollView
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
@@ -80,7 +80,7 @@ export default class OtherInfo extends React.Component {
                     >
                         <View style={{
                             flex: 1,
-                            backgroundColor: '#404040',
+                            backgroundColor: 'white',
 
                             // width: Dimensions.get('window').width,
                             // height: Dimensions.get('window').height,
@@ -93,14 +93,14 @@ export default class OtherInfo extends React.Component {
                                 visible={isLoading}
                             />
                             <View style={{
-                                backgroundColor: '#404040',
+                                backgroundColor: 'white',
                                 width: Dimensions.get('window').width * 0.85,
                                 alignItems: 'center',
                                 justifyContent: 'center',
 
                             }}>
                                 <View style={{ alignItems: 'center', }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, }}>Other Information </Text>
+                                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20, }}>Other Information </Text>
                                     {/* <Text style={{ color: 'red', fontSize: 14, }}>{authError} </Text> */}
 
                                 </View>
@@ -108,12 +108,12 @@ export default class OtherInfo extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Enter current location'
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='location-arrow'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='font-awesome'
                                         />
                                     }
@@ -123,14 +123,14 @@ export default class OtherInfo extends React.Component {
                                 />
                                 <Input
                                     containerStyle={{ height: 60, marginTop: 10 }}
-                                    placeholder=' Enter home location'
+                                    placeholder=' Enter Home location'
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='location-arrow'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='font-awesome'
                                         />
                                     }
@@ -142,12 +142,12 @@ export default class OtherInfo extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Enter languages you speak'
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='language'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='font-awesome'
                                         />
                                     }
@@ -161,12 +161,12 @@ export default class OtherInfo extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Tell about yourself'
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='user'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='font-awesome'
                                         />
                                     }
@@ -176,16 +176,16 @@ export default class OtherInfo extends React.Component {
                                 />
                                 <Button color='white'
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
-                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'white' }}
+                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'black' }}
                                     title='Next'
-                                    titleStyle={{ fontWeight: 'bold', color: '#404040' }}
+                                    titleStyle={{ fontWeight: 'bold', color: 'white' }}
                                     onPress={this.handleSubmit} />
 
                                 <Button color='white'
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.50, }}
-                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: '#404040' }}
+                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'white' }}
                                     title='Skip'
-                                    titleStyle={{ fontWeight: 'bold', color: 'white' }}
+                                    titleStyle={{ fontWeight: 'bold', color: 'black' }}
                                     onPress={this.handleSkip} />
 
                             </View>

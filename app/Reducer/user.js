@@ -4,6 +4,7 @@ import {
     FETCH_USER_PROFILE_DETAILS_REQUESTED,
     FETCH_USER_PROFILE_DETAILS_SUCCESS,
     FETCH_USER_PROFILE_DETAILS_FAILED,
+    UPDATE_PROFILE_PIC_SUCCESS,
     SAVE_USER_PROFILE_DETAILS_REQUESTED,
     SAVE_USER_PROFILE_DETAILS_SUCCESS,
     SAVE_USER_PROFILE_DETAILS_FAILED,
@@ -28,7 +29,7 @@ const INITIAL_STATE = fromJS({
 });
 
 export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
-    //let userInfoObject = state.toJS()['userInfo'];
+    let userInfoObject = state.toJS()['userPersonalDetails'];
     switch (action.type) {
         case FETCH_USER_PROFILE_DETAILS_REQUESTED:
             return state.set('isInfoLoading', true)
@@ -66,7 +67,11 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
 
         case UPDATE_USER_SHARING_DETAILS_REQUESTED:
             return state
-
+        case UPDATE_PROFILE_PIC_SUCCESS:
+            userInfoObject.profilePicture = action.data;
+            return state.set('isInfoLoading', false)
+                .set('userPersonalDetails', userInfoObject)
+                .set('error', null);
         case UPDATE_USER_SHARING_DETAILS_SUCCESS:
             var userSharingObj = {
                 phone: action.data.phone,

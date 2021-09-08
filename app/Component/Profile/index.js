@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Dimensions, Picker, SafeAreaView, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { Card, Input, Avatar, Button, CheckBox, Icon, Divider } from 'react-native-elements';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import moment from 'moment';
 import style from './style';
@@ -25,8 +26,10 @@ export default class Profile extends React.Component {
         }
     }
     componentDidMount() {
-        let data = this.props.userInfo;
+
+        let data = this.props.userInfo ? this.props.userInfo : {};
         data.isDateTimePickerVisible = false;
+        data.isImageChanged = false;
         this.setState(data)
 
     }
@@ -195,27 +198,57 @@ export default class Profile extends React.Component {
 
         })
     }
+    handleImageChange = () => {
+        const options = {
+            mediaType: 'photo',
+            includeBase64: true
+        }
+        launchImageLibrary(options, response => {
+            //console.log('launchImageLibrary', response.assets[0].base64)
+            if (response.assets[0].uri) {
+                //   console.log(response);
+                this.setState({
+                    isImageChanged: true,
+                    //  profImg_image: response.data,
+                    profImg_imageUrl: response.assets[0].uri
 
+                })
+                // console.log(response.assets[0].uri)
+                //  console.log({ profilePicture: response.assets[0].base64 })
+                //  console.log(data);
+                this.props.updateUserProfilePic({ profilePicture: response.assets[0].base64 })
+            }
+        })
+    }
     renderProfileImage = () => {
+        let { isImageChanged, profImg_imageUrl } = this.state;
         let { userInfo, } = this.props;
+        console.log(userInfo);
         return (
             <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', marginTop: 20 }}>
                 <Avatar
                     containerStyle={{ marginTop: -10 }}
                     rounded
                     icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
-                    // source={{
-                    //     uri:
-                    //         // 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg'
-                    //         userInfo.userbasicinfo ? imageBaseurl + userInfo.userbasicinfo.profile_photo_path : '',
-                    // }}
+                    source={{
+                        uri:
+                            userInfo.profilePicture ? userInfo.profilePicture : isImageChanged ? profImg_imageUrl : 'no-img',
+                    }}
                     overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
-                    showEditButton
-                    //  onEditPress={this.handleImageChange}
-                    // onPress={this.handleImageChange}
+                    showAccessory={true}
+                    onEditPress={this.handleImageChange}
+                    onPress={this.handleImageChange}
                     size={100}
                 // onEditPress={this.showEditProfileModal}
-                />
+                >
+                    <Avatar.Accessory name="edit" onPress={this.handleImageChange}
+                        type="font-awesome5"
+                        size={20}
+                        color={'black'}
+                        style={{ backgroundColor: 'white' }}
+                        containerStyle={{ backgroundColor: 'transparent' }}
+                    />
+                </Avatar>
                 <Text style={{ color: 'black', fontSize: 22, fontWeight: "bold" }}>{userInfo.name}</Text>
             </View>
         )
@@ -474,7 +507,7 @@ export default class Profile extends React.Component {
                         onChangeText={(text) => this.handleCurrentLocationChange(text)}
                     />
                 </View>
-                <Text style={style.labelStyle}>home location</Text>
+                <Text style={style.labelStyle}>Home location</Text>
                 <View>
 
                     <TextInput
@@ -516,15 +549,29 @@ export default class Profile extends React.Component {
     }
     render() {
         let { error, isLoading, userInfo, } = this.props;
-        console.log(this.state.name);
+        //   console.log(this.state.name);
         if (error) {
             return (
-                <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#2DB38D', }}>
-                    <Icon type='material-community' name='refresh' size={40} color='white' onPress={() => {
+                <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', }}>
+                    <Icon type='material-community' name='refresh' size={40} color='black' onPress={() => {
                         this.props.fetchUserInfo()
                     }} />
                 </View>
 
+            )
+        } else if (isLoading || !this.props.userInfo) {
+            return (
+                <View
+                    style={{
+                        flex: 1,
+                        // padding: 20,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'white',
+
+                    }}>
+                    <ActivityIndicator color='black' />
+                </View >
             )
         }
         else {

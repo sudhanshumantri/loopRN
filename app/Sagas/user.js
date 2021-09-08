@@ -1,6 +1,6 @@
 import { call, all, put, select, takeLatest } from 'redux-saga/effects';
 import {
-    callUpdateUserInfo, callFetchUserInfo, callUpdateUserSharingInfo, callValidateQRCode
+    callUpdateUserInfo, callFetchUserInfo, callUpdateUserSharingInfo, callValidateQRCode, callUpdateUserProfilePic
 } from '../Utils/apis';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import {
@@ -12,6 +12,8 @@ import {
     updateUserSharingInfoFailedAction,
     validateQRCodeFailedAction,
     validateQRCodeSucceededAction,
+    updateUserProfilePicSucceededAction,
+    updateUserProfilePicFailedAction,
 } from '../Actions/user';
 import { fetchUserContactListAction } from '../Actions/contacts';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -89,6 +91,37 @@ export function* updateUserSharingInfo({ data }) {
         });
     }
 }
+export function* updateUserProfilePic({ data }) {
+    const responseData = yield call(callUpdateUserProfilePic, data);
+  //  console.log('updateUserProfilePic', responseData.data)
+    if (responseData.status == 201 || responseData.status == 200) {
+        yield put(
+            updateUserProfilePicSucceededAction(
+                responseData.data
+            ),
+        );
+        yield call(showMessage, {
+            message: "Profile photo uploaded successfully",
+            type: "success",
+        });
+        // yield put(
+        //     fetchUserProfileAction(
+        //         responseData
+        //     ),
+        // );
+    } else {
+
+        yield call(showMessage, {
+            message: "Something Went Wrong",
+            type: "danger",
+        });
+        yield put(
+            updateUserProfilePicFailedAction(
+                'Something went wrong'
+            ),
+        );
+    }
+}
 
 export function* validateQRCode({ data }) {
     let responseData = '';
@@ -142,6 +175,7 @@ export function* userSagas() {
     takeLatest('UPDATE_USER_PERSOANAL_DETAILS_REQUESTED', updateUserInfo),
     takeLatest('UPDATE_USER_SHARING_DETAILS_REQUESTED', updateUserSharingInfo),
     takeLatest('VALIDATE_QR_CODE_REQUESTED', validateQRCode),
+    takeLatest('UPDATE_PROFILE_PIC_REQUESTED', updateUserProfilePic),
 
 
 

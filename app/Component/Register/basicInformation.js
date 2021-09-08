@@ -22,7 +22,6 @@ export default class BasicInfo extends React.Component {
         }
     }
     componentDidMount() {
-        console.log(this.props.route.params.phone)
         this.setState({
             phone: this.props.route.params.phone
         })
@@ -123,7 +122,7 @@ export default class BasicInfo extends React.Component {
 
                 <Image
                     style={{ width: 200, height: 200, }}
-                    source={require('../../../assets/loopLogoWhite.png')}
+                    source={require('../../../assets/loopLogoBlack.png')}
                 />
             </View>
         );
@@ -133,7 +132,7 @@ export default class BasicInfo extends React.Component {
         // let { isLoading, authError } = this.props;
         let { name, nameError, dob, dobError, email, emailError, gender } = this.state;
         return (
-            <SafeAreaView style={{ backgroundColor: '#404040', flex: 1 }}>
+            <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
                 <KeyboardAwareScrollView
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
@@ -143,7 +142,7 @@ export default class BasicInfo extends React.Component {
                     >
                         <View style={{
                             flex: 1,
-                            backgroundColor: '#404040',
+                            backgroundColor: 'white',
 
                             // width: Dimensions.get('window').width,
                             height: Dimensions.get('window').height,
@@ -159,14 +158,14 @@ export default class BasicInfo extends React.Component {
                                 maximumDate={new Date()}
                             />
                             <View style={{
-                                backgroundColor: '#404040',
+                                backgroundColor: 'white',
                                 width: Dimensions.get('window').width * 0.85,
                                 // alignItems: 'center',
                                 justifyContent: 'center',
 
                             }}>
                                 <View style={{ alignItems: 'center', }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, }}>Basic Information </Text>
+                                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20, }}>Basic Information </Text>
                                     {/* <Text style={{ color: 'red', fontSize: 14, }}>{authError} </Text> */}
 
                                 </View>
@@ -175,12 +174,12 @@ export default class BasicInfo extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Your name '
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='account'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='material-community'
                                         />
                                     }
@@ -193,12 +192,12 @@ export default class BasicInfo extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Your email '
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='email'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='material-community'
                                         />
                                     }
@@ -217,7 +216,7 @@ export default class BasicInfo extends React.Component {
                                         }}
                                         // disabled={true}
                                         editable={false}
-                                        inputStyle={{ color: 'white' }}
+                                        inputStyle={{ color: 'black' }}
                                         inputContainerStyle={{ borderBottomWidth: 0.5 }}
                                         placeholder='Select DOB '
                                         placeholder=' Your DOB '
@@ -226,7 +225,7 @@ export default class BasicInfo extends React.Component {
                                             <Icon
                                                 name='birthday-cake'
                                                 size={24}
-                                                color='white'
+                                                color='black'
                                                 type='font-awesome'
                                             />
                                         }
@@ -234,7 +233,7 @@ export default class BasicInfo extends React.Component {
                                         rightIcon={<Icon
                                             name='menu-down'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='material-community'
                                         />}
 
@@ -255,26 +254,26 @@ export default class BasicInfo extends React.Component {
                                         <CheckBox
                                             title='Male'
                                             checked={gender == 'male' ? true : false}
-                                            textStyle={{ marginLeft: -1, color: 'white' }}
-                                            containerStyle={{ backgroundColor: '#404040', borderWidth: 0, marginLeft: -1 }}
+                                            textStyle={{ marginLeft: -1, color: 'black' }}
+                                            containerStyle={{ backgroundColor: 'white', borderWidth: 0, marginLeft: -1 }}
                                             onPress={() => this.handleGenderChange('male')}
-                                            checkedColor='white'
+                                            checkedColor='black'
                                         />
                                         <CheckBox
                                             title='Female'
                                             checked={gender === 'female' ? true : false}
-                                            textStyle={{ marginLeft: -1, color: 'white' }}
-                                            containerStyle={{ backgroundColor: '#404040', borderWidth: 0, marginLeft: -1 }}
+                                            textStyle={{ marginLeft: -1, color: 'black' }}
+                                            containerStyle={{ backgroundColor: 'white', borderWidth: 0, marginLeft: -1 }}
                                             onPress={() => this.handleGenderChange('female')}
-                                            checkedColor='white'
+                                            checkedColor='black'
                                         />
                                         <CheckBox
                                             title='Other'
                                             checked={gender === 'other' ? true : false}
-                                            textStyle={{ marginLeft: -1, color: 'white' }}
-                                            containerStyle={{ backgroundColor: '#404040', borderWidth: 0, marginLeft: -1 }}
+                                            textStyle={{ marginLeft: -1, color: 'black' }}
+                                            containerStyle={{ backgroundColor: 'white', borderWidth: 0, marginLeft: -1 }}
                                             onPress={() => this.handleGenderChange('other')}
-                                            checkedColor='white'
+                                            checkedColor='black'
                                         />
 
                                     </View>
@@ -283,11 +282,11 @@ export default class BasicInfo extends React.Component {
                                 </View>
 
 
-                                <Button color='white'
+                                <Button
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
-                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'white' }}
+                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'black' }}
                                     title='Next'
-                                    titleStyle={{ fontWeight: 'bold', color: '#404040' }}
+                                    titleStyle={{ fontWeight: 'bold', color: 'white' }}
                                     onPress={this.handleSubmit} />
 
                             </View>

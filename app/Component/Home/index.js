@@ -25,6 +25,7 @@ export default class Home extends React.Component {
         this.props.navigation.navigate(route)
     }
     renderQRCode = () => {
+        console.log(this.props.userInfo.qrCode);
         return (
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Your QR Code</Text>
@@ -58,8 +59,8 @@ export default class Home extends React.Component {
         let { error, isLoading, userInfo, } = this.props;
         if (error) {
             return (
-                <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', }}>
-                    <Icon type='material-community' name='refresh' size={40} color='white' onPress={() => {
+                <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', }}>
+                    <Icon type='material-community' name='refresh' size={40} color='black' onPress={() => {
                         this.props.fetchUserInfo()
                     }} />
                 </View>
@@ -72,10 +73,10 @@ export default class Home extends React.Component {
                         flex: 1,
                         // padding: 20,
                         justifyContent: 'center',
-                        backgroundColor: 'black',
+                        backgroundColor: 'white',
 
                     }}>
-                    <ActivityIndicator color='white' />
+                    <ActivityIndicator color='black' />
                 </View >
             )
         } else {

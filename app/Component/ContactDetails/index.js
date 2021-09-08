@@ -474,7 +474,7 @@ export default class ContactsDetails extends React.Component {
                         onChangeText={(text) => this.handleCurrentLocationChange(text)}
                     />
                 </View>
-                <Text style={style.labelStyle}>home location</Text>
+                <Text style={style.labelStyle}>Home location</Text>
                 <View>
 
                     <TextInput

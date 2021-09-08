@@ -4,12 +4,13 @@ import ValidatePhone from '../../Component/Register/validatePhone';
 import { registerUserAction, registerMobileAction } from '../../Actions/register';
 
 import {
-    selectRegisterMobileRequested, selectError
+    selectRegisterMobileRequested, selectError, selectOTP
 } from '../../Selectors/register';
 
 const mapStateToProps = createStructuredSelector({
     error: selectError(),
-    phoneValidationRequested:selectRegisterMobileRequested()
+    phoneValidationRequested: selectRegisterMobileRequested(),
+    otp: selectOTP()
     //   isAuthed: selectisAuthed()
 })
 

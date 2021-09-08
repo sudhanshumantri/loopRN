@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Dimensions, ActivityIndicator, SafeAreaView, Alert } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator, SafeAreaView, Alert } from 'react-native';
 import { Card, Input, Button, CheckBox, Icon } from 'react-native-elements';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
@@ -9,6 +9,7 @@ export default class ValidateOTP extends React.Component {
         this.state = {
             mobile: '',
             otp: Array(6).fill(''),
+            otpAct: null,
             otpValidationError: null,
             password: '',
             passwordCheck: '',
@@ -24,20 +25,16 @@ export default class ValidateOTP extends React.Component {
         //this.otpTextInput[] = React.createRef();
     }
     componentDidMount() {
-        let mobile = this.props.navigation.getParam('mobile');
-        let isResetPassword = this.props.navigation.getParam('resetPassword');
-
-        this.setState({
-            mobile,
-            isResetPassword
-        })
-        //    this.props.generateOTP(mobile);
+        console.log(this.props.route.params)
         this.focusOTP();
-        //now call the otp and integrate the things babes : 
+        this.setState({
+            phone: this.props.route.params.phone,
+            otpAct: this.props.route.params.otp
+        })
     }
 
     focusOTP = () => {
-     //   console.log('coming here', this.otpTextInput);
+        //   console.log('coming here', this.otpTextInput);
         this.otpTextInput[0].focus();
     };
     handleOTPChange = (otp) => {
@@ -45,16 +42,7 @@ export default class ValidateOTP extends React.Component {
             otp
         })
     }
-    handlePasswordChange = (password) => {
-        this.setState({
-            password
-        })
-    }
-    handleRePasswordChange = (passwordCheck) => {
-        this.setState({
-            passwordCheck
-        })
-    }
+
     hanleResendOTP = () => {
         let { mobile, isResetPassword } = this.state;
         // forgetPassword:true 
@@ -66,7 +54,7 @@ export default class ValidateOTP extends React.Component {
         })
     }
     validateOTPFields = () => {
-       let  isValidated = true;
+        let isValidated = true;
         let { otp } = this.state;
         otp.forEach(element => {
             if (element == '') {
@@ -80,41 +68,22 @@ export default class ValidateOTP extends React.Component {
         return isValidated;
     }
     handleSubmit = () => {
-        let { otp, mobile } = this.state;
+        let { otp, mobile, otpAct } = this.state;
         //  console.log(otp);
-        if (this.validateOTPFields()) {
-
-            this.props.validateOTP({
-                mobile,
-                otp: otp.join('')
-            })
-            this.setState({ OTPResent: false })
-        }
-    }
-    handleUserRegistration = () => {
-
-        let { password, passwordCheck, mobile } = this.state;
-        let { otpToken } = this.props;
-        if (password == passwordCheck) {
-            if (password.match(/[a-z]/g) && password.match(
-                /[A-Z]/g) && password.match(
-                    /[0-9]/g) && password.match(
-                        /[^a-zA-Z\d]/g) && password.length >= 6) {
-                //call the registration api with the token received from OTP : 
-                let isResetPassword = this.props.navigation.getParam('resetPassword');
-                this.props.registerUser({ userData: { mobile, password }, otpToken, isResetPassword })
-
-            } else {
-                this.setState({
-                    passwordError: 'Password is not valid'
-                })
-            }
+        let otpCombined = otp.join('');
+        if (otpCombined === otpAct) {
+            this.props.navigation.navigate('BasicInfo', { phone: mobile })
         } else {
             this.setState({
-                passwordError: 'Password is not matching'
+                otpValidationError: true
             })
         }
 
+        // this.props.validateOTP({
+        //     mobile,
+        //     otp: otp.join('')
+        // })
+        // this.setState({ OTPResent: false })
 
     }
     focusNext = (index, text) => {
@@ -132,13 +101,27 @@ export default class ValidateOTP extends React.Component {
             // }
         }
     }
+    renderLogo = () => {
+        return (
+            <View>
+
+                <Image
+                    style={{ width: 200, height: 200, }}
+                    source={require('../../../assets/loopLogoBlack.png')}
+                />
+            </View>
+        );
+    }
     renderInputs = () => {
         const inputs = Array(6).fill(0);
         let { otp } = this.state;
         return inputs.map((i, j) => {
             return (
-                <View style={{ flex: 1 / 6, }}>
+                <View style={{ flex: 1 / 6 }} key={j}>
                     <Input
+
+                        //  inputContainerStyle={{ borderBottomWidth: 0.5, }}
+                        inputStyle={{ color: 'black' }}
                         keyboardType="number-pad"
                         onChangeText={v => this.focusNext(j, v)}
                         autoFocus={j == 0 ? true : false}
@@ -157,105 +140,37 @@ export default class ValidateOTP extends React.Component {
         let { otpValidationError, password, passwordCheck, passwordError, OTPResent } = this.state;
         let { mobile } = this.state;
         return (
-            <SafeAreaView>
+            <SafeAreaView style={{
+
+            }}>
                 <KeyboardAwareScrollView
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
                 >
-                    <Spinner color='grey'
-                        visible={isLoading || isValidationRequested || isUserRegistrationRequested}
-                    />
                     <View style={{
-                        backgroundColor: '#2DB38D',
-                        width: Dimensions.get('window').width,
-                        height: Dimensions.get('window').height, justifyContent: 'center',
+                        backgroundColor: 'white',
+                        flex: 1,
+                        // width: Dimensions.get('window').width,
+                        height: Dimensions.get('window').height,
+                        // justifyContent: 'center',
                         alignItems: 'center'
                     }}>
-                        <View style={{
-                            backgroundColor: 'white',
-                            height: Dimensions.get('window').height * 0.50,
-                            width: Dimensions.get('window').width * 0.85,
-                            alignItems: 'center',
-                            borderRadius: 5
-                        }}>
-                            <Card containerStyle={{
-                                borderRadius: 5,
-                                height: Dimensions.get('window').height * 0.50,
-                                width: Dimensions.get('window').width * 0.75,
-                                marginTop: -35,
-                                justifyContent: 'center'
-                            }}>
-                                {!isOTPValidated && (
-                                    <View>
-                                        <View style={{ alignItems: 'center', justifyContent: 'center', }}>
-                                            <Text style={{ color: '#D00D0E', fontWeight: 'bold', fontSize: 20, }}>Verification</Text>
+                        {this.renderLogo()}
+                        <Text style={{ color: 'black' }}>OTP has been sent </Text>
+                        {otpValidationError && (
+                            <Text style={{ color: 'red' }}>Invalid OTP</Text>
 
-                                            <Text style={{ color: 'red', fontSize: 12, }}>{error || otpValidationError ? 'Invalid OTP' : ''} </Text>
-
-                                            <Text style={{ fontSize: 12, color: 'grey', }}>{'\n'} Enter 6 digit OTP that was sent to {mobile} </Text>
-                                            {OTPResent && !isLoading && (
-                                                <Text style={{ fontSize: 12, color: 'green', }}>{'\n'}
-                                                    New OTP sent successfully </Text>)}
-
-                                        </View>
-                                        <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                                            {this.renderInputs()}
-                                        </View>
-
-                                        <Button color='white'
-                                            containerStyle={{ marginTop: 20 }}
-                                            buttonStyle={{ borderRadius: 20, marginTop: 20, backgroundColor: '#2DB38D' }}
-                                            title='Continue'
-                                            titleStyle={{ fontWeight: 'bold' }}
-                                            onPress={this.handleSubmit} />
-                                        <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-around', alignItems: 'center' }}>
-
-
-                                            <TouchableOpacity onPress={() => { this.state.isResetPassword ? this.props.navigation.navigate('ForgetPassword') : this.props.navigation.navigate('Register') }}>
-                                                <Text style={{ color: '#2DB38D' }}>Edit Number</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={this.hanleResendOTP}>
-                                                <Text style={{ color: '#2DB38D' }}>Resend OTP?</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                )}
-
-                                {isOTPValidated && (
-                                    <View>
-                                        <View style={{ alignItems: 'center', justifyContent: 'center', }}>
-                                            <Text style={{ color: '#D00D0E', fontWeight: 'bold', fontSize: 20, }}>Set Password</Text>
-                                            <Text style={{ fontSize: 12, color: 'grey', }}>{'\n'} Password should be atleast six characters long</Text>
-                                            <Text style={{ fontSize: 12, color: 'grey', }}>one uppercase & alphanumeric characters  </Text>
-                                            <Text style={{ color: 'red', fontSize: 12, }}>{passwordError ? passwordError : ''} </Text>
-
-                                        </View>
-                                        <TextInput style={{ height: 40, borderColor: '#2DB38D', borderWidth: 1, marginTop: 5, borderRadius: 3, paddingLeft: 2 }}
-                                            placeholder='Enter Password'
-                                            value={password}
-                                            placeholderTextColor='grey'
-                                            secureTextEntry={true}
-                                            onChangeText={text => this.handlePasswordChange(text)} />
-                                        <TextInput style={{ height: 40, borderColor: '#2DB38D', borderWidth: 1, marginTop: 5, borderRadius: 3, paddingLeft: 2 }}
-                                            placeholder='Re-Enter Password'
-                                            placeholderTextColor='grey'
-                                            value={passwordCheck}
-                                            secureTextEntry={true}
-                                            onChangeText={text => this.handleRePasswordChange(text)}
-                                        />
-                                        <Button color='white'
-                                            containerStyle={{ marginTop: 20 }}
-                                            buttonStyle={{ borderRadius: 20, marginTop: 20, backgroundColor: '#2DB38D' }}
-                                            title='Continue'
-                                            titleStyle={{ fontWeight: 'bold' }}
-                                            onPress={this.handleUserRegistration} />
-
-                                    </View>
-                                )}
-                            </Card>
+                        )}
+                        <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                            {this.renderInputs()}
                         </View>
-
-                    </View >
+                        <Button color='black'
+                            containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
+                            buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'black' }}
+                            title='Next'
+                            titleStyle={{ fontWeight: 'bold', color: 'white' }}
+                            onPress={this.handleSubmit} />
+                    </View>
                 </KeyboardAwareScrollView>
             </SafeAreaView>
 

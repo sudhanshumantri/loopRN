@@ -47,7 +47,7 @@ export default class CreatePassword extends React.Component {
                 passwordError: 'Password is not valid'
             })
         }
-        if (password == passwordCheck) {
+        else if (password == passwordCheck) {
             let { user } = this.props.route.params;
             user.password = password
             this.props.registerUser(user);
@@ -65,7 +65,7 @@ export default class CreatePassword extends React.Component {
 
                 <Image
                     style={{ width: 200, height: 200, }}
-                    source={require('../../../assets/loopLogoWhite.png')}
+                    source={require('../../../assets/loopLogoBlack.png')}
                 />
             </View>
         );
@@ -76,7 +76,7 @@ export default class CreatePassword extends React.Component {
         console.log(isUserRegistrationRequested)
         let { password, passwordError, passwordCheck } = this.state;
         return (
-            <SafeAreaView style={{ backgroundColor: '#404040', flex: 1 }}>
+            <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
                 <KeyboardAwareScrollView
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
@@ -86,7 +86,7 @@ export default class CreatePassword extends React.Component {
                     >
                         <View style={{
                             flex: 1,
-                            backgroundColor: '#404040',
+                            backgroundColor: 'white',
 
                             // width: Dimensions.get('window').width,
                             height: Dimensions.get('window').height,
@@ -99,7 +99,7 @@ export default class CreatePassword extends React.Component {
                                 visible={isUserRegistrationRequested}
                             />
                             <View style={{
-                                backgroundColor: '#404040',
+                                backgroundColor: 'white',
                                 width: Dimensions.get('window').width * 0.85,
                                 // alignItems: 'center',
                                 justifyContent: 'center',
@@ -114,7 +114,7 @@ export default class CreatePassword extends React.Component {
                                 <Input
                                     containerStyle={{ height: 60, marginTop: 20 }}
                                     inputContainerStyle={{ borderBottomWidth: 0.5, }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     placeholder='Enter Password'
                                     value={password} onChangeText={text => this.handlePasswordChange(text)}
 
@@ -123,7 +123,7 @@ export default class CreatePassword extends React.Component {
                                         <Icon
                                             name='account-key'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='material-community'
                                         />
                                     }
@@ -131,7 +131,7 @@ export default class CreatePassword extends React.Component {
                                         <Icon
                                             name={this.state.showPassword ? 'eye' : 'eye-off'}
                                             size={20}
-                                            color={this.state.showPassword ? '#2DB38D' : 'grey'}
+                                            color={this.state.showPassword ? 'black' : 'grey'}
                                             type='material-community'
                                             onPress={this.toggleShowPassword}
                                         />
@@ -141,7 +141,7 @@ export default class CreatePassword extends React.Component {
                                 <Input
                                     containerStyle={{ height: 60, marginTop: 20 }}
                                     inputContainerStyle={{ borderBottomWidth: 0.5, }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     placeholder='Re Enter Password'
                                     value={passwordCheck}
                                     onChangeText={text => this.handleRePasswordChange(text)}
@@ -151,7 +151,7 @@ export default class CreatePassword extends React.Component {
                                         <Icon
                                             name='account-key'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='material-community'
                                         />
                                     }
@@ -160,11 +160,11 @@ export default class CreatePassword extends React.Component {
                                 />
 
 
-                                <Button color='white'
+                                <Button
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
-                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'white' }}
+                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'black' }}
                                     title='Next'
-                                    titleStyle={{ fontWeight: 'bold', color: '#404040' }}
+                                    titleStyle={{ fontWeight: 'bold', color: 'white' }}
                                     onPress={this.handleSubmit} />
 
                             </View>

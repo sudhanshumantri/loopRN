@@ -19,8 +19,9 @@ export default class ValidatePhone extends React.Component {
     }
     componentDidUpdate(prevProps, prevState) {
         let { mobile } = this.state;
-        if (this.state.isValidationRequested && !prevProps.error && !this.props.error && !this.props.phoneValidationRequested) {
-            this.props.navigation.navigate('BasicInfo', { phone: mobile })
+        if (this.state.isValidationRequested && this.props.otp && !prevProps.error && !this.props.error && !this.props.phoneValidationRequested) {
+            this.props.navigation.navigate('ValidateOTP', { phone: mobile,otp: this.props.otp})
+            //  this.props.navigation.navigate('BasicInfo', { phone: mobile,otp: this.props.otp})
         }
         // console.log(prevProps,prevState)
         // if (prevState.pokemons !== this.state.pokemons) {
@@ -39,7 +40,6 @@ export default class ValidatePhone extends React.Component {
     }
     handleSubmit = () => {
         //     alert('login submit');
-
         const { mobile } = this.state;
         if (mobile == '' || mobile.length != 10) {
             this.setState({
@@ -61,7 +61,7 @@ export default class ValidatePhone extends React.Component {
 
                 <Image
                     style={{ width: 200, height: 200, }}
-                    source={require('../../../assets/loopLogoWhite.png')}
+                    source={require('../../../assets/loopLogoBlack.png')}
                 />
             </View>
         );
@@ -71,7 +71,7 @@ export default class ValidatePhone extends React.Component {
         let { phoneValidationRequested, error } = this.props;
         let { mobile, mobileErrorMessage } = this.state;
         return (
-            <SafeAreaView style={{ backgroundColor: '#404040', flex: 1 }}>
+            <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
                 <KeyboardAwareScrollView
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
@@ -81,7 +81,7 @@ export default class ValidatePhone extends React.Component {
                     >
                         <View style={{
                             flex: 1,
-                            backgroundColor: '#404040',
+                            backgroundColor: 'white',
 
                             // width: Dimensions.get('window').width,
                             height: Dimensions.get('window').height,
@@ -94,7 +94,7 @@ export default class ValidatePhone extends React.Component {
 
                             {this.renderLogo()}
                             <View style={{
-                                backgroundColor: '#404040',
+                                backgroundColor: 'white',
                                 width: Dimensions.get('window').width * 0.85,
                                 // alignItems: 'center',
                                 justifyContent: 'center',
@@ -105,12 +105,12 @@ export default class ValidatePhone extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Mobile Number '
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{ color: 'white' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='cellphone-android'
                                             size={24}
-                                            color='white'
+                                            color='black'
                                             type='material-community'
                                         />
                                     }
@@ -122,11 +122,11 @@ export default class ValidatePhone extends React.Component {
                                 />
 
 
-                                <Button color='white'
+                                <Button color='black'
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
-                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'white' }}
+                                    buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'black' }}
                                     title='Next'
-                                    titleStyle={{ fontWeight: 'bold', color: '#404040' }}
+                                    titleStyle={{ fontWeight: 'bold', color: 'white' }}
                                     onPress={this.handleSubmit} />
 
                             </View>

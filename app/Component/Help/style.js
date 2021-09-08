@@ -9,7 +9,8 @@ const styles = {
         paddingLeft: 5,
         paddingRight: 5,
         backgroundColor: 'white',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignItems:'center'
     },
     inputStyle: {
         height: 40,
@@ -24,7 +25,7 @@ const styles = {
         fontSize: 18, color: 'black',
     },
     buttonStyle:{
-        width: 300, marginTop: 20,backgroundColor:'black',borderRadius:5
+        width: 300, marginTop: 20,backgroundColor:'black',borderRadius:5, marginTop:30
     }
 }
 export default styles;

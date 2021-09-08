@@ -10,7 +10,10 @@ import {
     UPDATE_USER_SHARING_DETAILS_FAILED,
     VALIDATE_QR_CODE_REQUESTED,
     VALIDATE_QR_CODE_SUCCESS,
-    VALIDATE_QR_CODE_FAILED
+    VALIDATE_QR_CODE_FAILED,
+    UPDATE_PROFILE_PIC_SUCCESS,
+    UPDATE_PROFILE_PIC_REQUESTED,
+    UPDATE_PROFILE_PIC_FAILED
 } from '../Actions/actionTypes';
 export function fetchUserProfileAction() {
     return {
@@ -85,5 +88,22 @@ export function validateQRCodeFailedAction(error) {
         error
     };
 }
-//V
+//profile picture upload
+export function updateUserProfilePicAction(data) {
+    return {
+        type: UPDATE_PROFILE_PIC_REQUESTED,
+        data
+    };
+}
+export function updateUserProfilePicSucceededAction(data) {
+    return {
+        type: UPDATE_PROFILE_PIC_SUCCESS,
+        data
+    };
+}
+export function updateUserProfilePicFailedAction(error) {
+    return {
+        type: UPDATE_PROFILE_PIC_FAILED,
+    };
+}
 
