@@ -157,7 +157,7 @@ export default class OtherInfo extends React.Component {
 
 
                                 />
-                                <Input
+                                {/* <Input
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Tell about yourself'
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
@@ -173,7 +173,7 @@ export default class OtherInfo extends React.Component {
                                     leftIconContainerStyle={{ marginLeft: -1 }}
                                     value={aboutMe}
                                     onChangeText={text => this.handleAboutMeChange(text)}
-                                />
+                                /> */}
                                 <Button color='white'
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
                                     buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'black' }}

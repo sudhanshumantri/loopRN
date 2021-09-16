@@ -44,19 +44,9 @@ export default class Help extends React.Component {
         })
     }
     validateData = () => {
-        let { email, mobile, feedback } = this.state;
+        let {feedback } = this.state;
         let isValid = true;
-        if (mobile == '' || mobile.length != 10) {
-            isValid = false
-            this.setState({
-                mobileErrorMessage: 'Please enter valid mobile number'
-            })
-        } if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-            isValid = false
-            this.setState({
-                emailError: 'Please enter email'
-            })
-        } if (feedback.trim().length == 0) {
+        if (feedback.trim().length == 0) {
             isValid = false
             this.setState({
                 feedbackError: 'Please enter your feedback'
@@ -69,12 +59,13 @@ export default class Help extends React.Component {
     handleSubmit() {
         // console.log(data);
         if (this.validateData()) {
-
-            this.props.navigation.goBack()
-            showMessage({
-                message: "Your feedback sent sucessfully",
-                type: "success",
-            });
+            let { feedback } = this.state;
+            this.props.postFeedback({ feedback })
+            this.props.navigation.goBack();
+            // showMessage({
+            //     message: "Your feedback sent sucessfully",
+            //     type: "success",
+            // });
         }
 
     }
@@ -90,7 +81,7 @@ export default class Help extends React.Component {
             >
                 <View
                     style={style.conatiner}>
-                    <Input
+                    {/* <Input
                         containerStyle={{ height: 60, marginTop: 10 }}
                         placeholder=' Mobile Number '
                         inputContainerStyle={{ borderBottomWidth: 0.5 }}
@@ -127,14 +118,14 @@ export default class Help extends React.Component {
                         onChangeText={text => this.handleEmailChange(text)}
                         errorMessage={emailError}
                         keyboardType='email-address'
-                    />
+                    /> */}
                     <Input
-                        containerStyle={{ height: 100, marginTop: 10 }}
-                        placeholder=' Feedback '
+                        containerStyle={{ height: 150, marginTop: 10 }}
+                        placeholder=' Share your feedback '
                         inputContainerStyle={{ borderWidth: 0.5 }}
                         inputStyle={{ color: 'black' }}
                         multiline={true}
-                        numberOfLines={4}
+                        numberOfLines={10}
                         value={feedback}
                         onChangeText={text => this.handleFeedbackChange(text)}
                         errorMessage={feedbackError}

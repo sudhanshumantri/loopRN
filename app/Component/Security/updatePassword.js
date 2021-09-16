@@ -17,6 +17,11 @@ export default class UpdatePassword extends React.Component {
 
         }
     }
+    componentDidUpdate(prevProps, prevState) {
+        if (!prevProps.error && !this.props.error && !this.props.isLoading && prevProps.isLoading) {
+            this.props.navigation.goBack()
+        }
+    }
     toggleShowPassword = () => {
         this.setState({
             showPassword: !this.state.showPassword
@@ -43,31 +48,18 @@ export default class UpdatePassword extends React.Component {
             })
         }
         else if (password == passwordCheck) {
-            let { user } = this.props.route.params;
-            user.password = password
-            // this.props.registerUser(user);
+            this.props.updateUserInfo({ password, isPasswordUpdate: true })
             //go ahead
         } else {
             this.setState({
                 passwordError: 'Password is not matching'
             })
+
+
         }
     }
-
-    renderLogo = () => {
-        return (
-            <View>
-
-                <Image
-                    style={{ width: 200, height: 200, }}
-                    source={require('../../../assets/loopLogoBlack.png')}
-                />
-            </View>
-        );
-    }
-
     render() {
-        let { isUserRegistrationRequested } = this.props;
+        let { isLoading } = this.props;
 
         let { password, passwordError, passwordCheck } = this.state;
         return (
@@ -89,9 +81,8 @@ export default class UpdatePassword extends React.Component {
                             alignItems: 'center'
                         }}>
 
-                            {this.renderLogo()}
                             <Spinner color='grey'
-                                visible={isUserRegistrationRequested}
+                                visible={isLoading}
                             />
                             <View style={{
                                 backgroundColor: 'white',
@@ -110,7 +101,7 @@ export default class UpdatePassword extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 20 }}
                                     inputContainerStyle={{ borderBottomWidth: 0.5, }}
                                     inputStyle={{ color: 'black' }}
-                                    placeholder='Enter Password'
+                                    placeholder='Enter new password'
                                     value={password} onChangeText={text => this.handlePasswordChange(text)}
 
                                     secureTextEntry={!this.state.showPassword}
@@ -137,7 +128,7 @@ export default class UpdatePassword extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 20 }}
                                     inputContainerStyle={{ borderBottomWidth: 0.5, }}
                                     inputStyle={{ color: 'black' }}
-                                    placeholder='Re Enter Password'
+                                    placeholder='Re-enter new password'
                                     value={passwordCheck}
                                     onChangeText={text => this.handleRePasswordChange(text)}
 
@@ -158,7 +149,7 @@ export default class UpdatePassword extends React.Component {
                                 <Button
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
                                     buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'black' }}
-                                    title='Next'
+                                    title='Update Password'
                                     titleStyle={{ fontWeight: 'bold', color: 'white' }}
                                     onPress={this.handleSubmit} />
 

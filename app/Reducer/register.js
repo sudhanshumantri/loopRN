@@ -16,6 +16,7 @@ import {
 
 const INITIAL_STATE = fromJS({
     isRegisterMobileRequested: false,
+    phone: '',
     isOTPRequested: false,
     isOTPValidationRequested: false,
     isUserRegistrationRequested: false,
@@ -29,6 +30,7 @@ export default function registerReducer(state = INITIAL_STATE, action = {}) {
 
         case REGISTER_MOBILE_REQUEST:
             return state.set('isRegisterMobileRequested', true)
+                .set('phone', action.data.phone)
                 .set('error', null);
 
         case REGISTER_MOBILE_SUCCESS:

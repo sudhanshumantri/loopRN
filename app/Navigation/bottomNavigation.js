@@ -16,8 +16,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Home from '../Container/Home';
-import Help from '../Component/Help';
+import Help from '../Container/Help';
 import Security from '../Component/Security';
+import UpdatePassword from '../Container/Security/updatePassword';
 
 import Settings from '../Container/Settings/index'
 import Contacts from '../Container/Contacts/index'
@@ -75,7 +76,7 @@ export default function MyStack() {
       <Stack.Screen name="Tabs" component={MyTabs} options={({ route, navigation }) => ({
         headerTitle: () => <Image
           style={{ width: 120, height: 60, }}
-          source={require('../../assets/loopHorizontalWhite1.png')}
+          source={require('../../assets/loopHorizontalWhite.png')}
         />,
         // headerBackground:()=>
         // headerTitleStyle: { color: 'white' },
@@ -135,6 +136,15 @@ export default function MyStack() {
       <Stack.Screen name="security" component={Security}
         options={{
           title: "Password & Security",
+          headerTitleStyle: { color: 'white' },
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white'
+        }}
+
+      />
+       <Stack.Screen name="update-password" component={UpdatePassword}
+        options={{
+          title: "Update Password",
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white'

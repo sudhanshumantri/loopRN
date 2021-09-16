@@ -8,6 +8,9 @@ export const selectLoginRequested = () =>
 export const selectLoginError = () =>
     createSelector(selectLogin, login => login.toJS()['error']);
 
-    export const selectLoginUserName = () =>
-    createSelector(selectLogin, login => login.toJS()['userName']);
+export const selectLoginOTP= () =>
+    createSelector(selectLogin, login => login.toJS()['otp']);
+    export const selectPhone= () =>
+    createSelector(selectLogin, login => login.toJS()['phone']);
+
 

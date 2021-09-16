@@ -176,6 +176,11 @@ export default class Login extends React.Component {
                                         <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 14, lineHeight: 20 }}> SIGN UP</Text>
                                     </TouchableOpacity>
                                 </View>
+                                <View style={{ justifyContent: "center", alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
+                                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('Login-ValidatePhone') }}>
+                                        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 14, lineHeight: 20 }}>Login with OTP</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
 
                         </View >

@@ -13,19 +13,19 @@ import {
 import { ListItem, Icon } from 'react-native-elements'
 import { showAlert } from '../../Utils/utilFunctions'
 const list = [
-    // {
-    //     title: 'Privacy Statement',
-    //     icon: 'info-outline',
-    //     isNavigation: true,
-    //     function: 'handleNavigation',
-    //     route: 'information-sharing',
-    // },
     {
-        title: 'Change Password',
+        title: 'Privacy Statement',
+        icon: 'info-outline',
+        isNavigation: true,
+        function: 'handleNavigation',
+        route: 'information-sharing',
+    },
+    {
+        title: 'ChangePassword',
         icon: 'security',
         isNavigation: true,
         function: 'handleNavigation',
-        route: 'update-password',
+        route: 'information-sharing',
     },
     
 ];

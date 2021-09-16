@@ -167,19 +167,7 @@ export default class PersonalInfo extends React.Component {
                                     paddingRight: 5,
                                     borderBottomColor: 'black',
                                     borderBottomWidth: 0.5
-                                    /**
-                                     * width: 300,
-                                    marginTop: 15,
-                                    marginLeft:20,
-                                    marginRight:20,
-                                    borderColor: 'black',
-                                    borderBottomWidth:1,
-                                    borderRadius: 10,
-                                    alignSelf: 'center'
-                                     * 
-                                     * 
-                                     */
-                                    // alignItems:'center'
+                                    
                                 }}>
 
                                     {/* <Text style={{ marginTop: 30, }}> Relation</Text> */}

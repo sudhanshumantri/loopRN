@@ -73,7 +73,7 @@ export default class CreatePassword extends React.Component {
 
     render() {
         let { isUserRegistrationRequested } = this.props;
-        console.log(isUserRegistrationRequested)
+      
         let { password, passwordError, passwordCheck } = this.state;
         return (
             <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>

@@ -9,7 +9,8 @@ export const selectIsOTPRequestedRequested = () =>
     createSelector(selectRegister, login => login.toJS()['isOTPRequested']);
 export const selectOTP = () =>
     createSelector(selectRegister, login => login.toJS()['otp']);
-
+    export const selectPhone = () =>
+    createSelector(selectRegister, login => login.toJS()['phone']);
 export const selectIsOTPValidationRequested = () =>
     createSelector(selectRegister, login => login.toJS()['isOTPValidationRequested']);
 export const selectIsOTPValidated = () =>

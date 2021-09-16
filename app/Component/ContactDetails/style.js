@@ -14,10 +14,10 @@ const styles = {
     inputStyle: {
         height: 40,
         marginTop: 3,
-        borderRadius: 3,
+        borderRadius: 2,
         borderColor: 'black',
         color: 'black',
-        borderWidth: 0.5,
+        borderWidth: 0.1,
         paddingLeft: 5
     },
     labelStyle:{

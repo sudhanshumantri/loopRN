@@ -25,7 +25,8 @@ export default class ValidateOTP extends React.Component {
         //this.otpTextInput[] = React.createRef();
     }
     componentDidMount() {
-        console.log(this.props.phone, this.props.otp)
+        //   console.log(this.props)
+        this.focusOTP();
         this.setState({
             phone: this.props.phone,
             otpAct: this.props.otp
@@ -33,7 +34,7 @@ export default class ValidateOTP extends React.Component {
     }
     componentDidUpdate(prevProps, prevState) {
         let { mobile } = this.state;
-        if (this.props.otp && this.props.otp != prevProps.otp && !prevProps.error && !this.props.error && !this.props.phoneValidationRequested) {
+        if (this.props.otp && this.props.otp != prevProps.otp && !prevProps.authError && !this.props.authError && !this.props.isLoading) {
             this.setState({
                 phone: this.props.phone,
                 otpAct: this.props.otp
@@ -56,8 +57,7 @@ export default class ValidateOTP extends React.Component {
     hanleResendOTP = () => {
         let { phone, isResetPassword } = this.state;
         // forgetPassword:true 
-        this.props.resendOTP({ phone })
-        //   this.props.generateOTP({ mobile: mobile, forgetPassword: isResetPassword });
+        this.props.resendOTP({ phone });
         this.focusOTP();
         this.setState({
             OTPResent: true,
@@ -83,20 +83,34 @@ export default class ValidateOTP extends React.Component {
         //  console.log(otp);
         let otpCombined = otp.join('');
         if (otpCombined === otpAct) {
-            this.props.navigation.navigate('BasicInfo', { phone })
+            this.props.authUser({ phone, isOTPLogin: true })
         } else {
             this.setState({
                 otpValidationError: true
             })
         }
+
+        // this.props.validateOTP({
+        //     mobile,
+        //     otp: otp.join('')
+        // })
+        // this.setState({ OTPResent: false })
+
     }
     focusNext = (index, text) => {
+
         const otp = this.state.otp;
+        // if (/^[\d]+$/.test(text)) {
         otp[index] = text.charAt(text.length - 1);
         this.setState({ otp });
+
         if (index < this.otpTextInput.length - 1 && text) {
             this.otpTextInput[index + 1].focus();
         }
+        // if (index === this.otpTextInput.length - 1) {
+        //     this.otpTextInput[0].focus();
+        // }
+        //  }
     }
     renderLogo = () => {
         return (
@@ -133,9 +147,8 @@ export default class ValidateOTP extends React.Component {
         );
     }
     render() {
-        let { phoneValidationRequested } = this.props;
-        let { otpValidationError, password, passwordCheck, passwordError, OTPResent } = this.state;
-        let { mobile } = this.state;
+        let { isLoading, error, generatedOTP, isValidationRequested, isOTPValidated, isUserRegistrationRequested } = this.props;
+        let { otpValidationError, mobile, otpAct } = this.state;
         return (
             <SafeAreaView style={{
 
@@ -153,18 +166,13 @@ export default class ValidateOTP extends React.Component {
                         alignItems: 'center'
                     }}>
                         {this.renderLogo()}
-                        <Spinner color='grey'
-                            visible={phoneValidationRequested}
-                        />
                         <Text style={{ color: 'black' }}>OTP has been sent </Text>
                         {otpValidationError && (
                             <Text style={{ color: 'red' }}>Invalid OTP</Text>
 
                         )}
-
                         <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
                             {this.renderInputs()}
-
                         </View>
                         <Button color='black'
                             containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}

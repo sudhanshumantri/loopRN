@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Dimensions, Picker, SafeAreaView, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Dimensions, SafeAreaView, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { Card, Input, Avatar, Button, CheckBox, Icon, Divider } from 'react-native-elements';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { Picker } from '@react-native-picker/picker';
 import { showMessage, hideMessage } from "react-native-flash-message";
+import Spinner from 'react-native-loading-spinner-overlay';
 import moment from 'moment';
 import style from './style';
 export default class Profile extends React.Component {
@@ -204,26 +206,37 @@ export default class Profile extends React.Component {
             includeBase64: true
         }
         launchImageLibrary(options, response => {
-            //console.log('launchImageLibrary', response.assets[0].base64)
-            if (response.assets[0].uri) {
-                //   console.log(response);
+            if (response.assets && response.assets[0].uri) {
                 this.setState({
                     isImageChanged: true,
-                    //  profImg_image: response.data,
                     profImg_imageUrl: response.assets[0].uri
-
                 })
-                // console.log(response.assets[0].uri)
-                //  console.log({ profilePicture: response.assets[0].base64 })
-                //  console.log(data);
                 this.props.updateUserProfilePic({ profilePicture: response.assets[0].base64 })
             }
         })
     }
+    renderUserInfo = () => {
+        return (
+            <View>
+                {this.renderProfileImage()}
+                {this.renderBasicInfo()}
+                {this.renderPersonalInfo()}
+                {this.renderProfessionalInfo()}
+                {this.renderOtherInfo()}
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <Button
+                        onPress={() => this.handleSubmit()}
+                        title="Save"
+                        TouchableOpacity={1}
+                        buttonStyle={style.buttonStyle}
+                    />
+                </View>
+            </View>
+        )
+    }
     renderProfileImage = () => {
         let { isImageChanged, profImg_imageUrl } = this.state;
         let { userInfo, } = this.props;
-        console.log(userInfo);
         return (
             <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', marginTop: 20 }}>
                 <Avatar
@@ -231,8 +244,7 @@ export default class Profile extends React.Component {
                     rounded
                     icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
                     source={{
-                        uri:
-                            userInfo.profilePicture ? userInfo.profilePicture : isImageChanged ? profImg_imageUrl : 'no-img',
+                        uri: isImageChanged ? profImg_imageUrl : userInfo.profilePicture ? userInfo.profilePicture : 'no-img',
                     }}
                     overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
                     showAccessory={true}
@@ -382,8 +394,32 @@ export default class Profile extends React.Component {
                 </View>
 
                 <Text style={style.labelStyle}>Relationship Status</Text>
-
                 <View style={{
+                    //  width: Dimensions.get('window').width * 0.80,
+                    // paddingLeft: 5,
+                    paddingRight: 5,
+                    height: 40,
+                    borderRadius: 2,
+                    borderWidth: 0.1
+                }}>
+                    <Picker
+                        selectedValue={relationshipStatus}
+                        itemStyle={{ color: 'black' }}
+                        style={{ marginTop: -8, marginLeft: -10 }}
+                        onValueChange={(itemValue, itemIndex) =>
+                            this.handleRelationshipStatusChange(itemValue)
+                        }>
+                        <Picker.Item label="Single" value="Single" />
+                        <Picker.Item label="Committed" value="Committed" />
+                        <Picker.Item label="Complicated" value="Complicated" />
+                        <Picker.Item label="Open Relationship" value="Open Relationship" />
+                        <Picker.Item label="Not Interested" value="Not Interested" />
+                        <Picker.Item label="Married" value="Married" />
+                        <Picker.Item label="Other" value="Other" />
+                    </Picker>
+                </View>
+
+                {/* <View style={{
                     flexDirection: 'row',
                     marginTop: -10
                 }}>
@@ -410,7 +446,7 @@ export default class Profile extends React.Component {
                         onPress={() => this.handleRelationshipStatusChange('other')}
                         checkedColor='black'
                     />
-                </View>
+                </View> */}
             </View>)
     }
     renderProfessionalInfo = () => {
@@ -532,7 +568,7 @@ export default class Profile extends React.Component {
 
                     />
                 </View>
-                <Text style={style.labelStyle}>About yourself</Text>
+                {/* <Text style={style.labelStyle}>About yourself</Text>
                 <View>
 
                     <TextInput
@@ -543,7 +579,7 @@ export default class Profile extends React.Component {
                         onChangeText={(text) => this.handleAboutMeChange(text)}
 
                     />
-                </View>
+                </View> */}
 
             </View>)
     }
@@ -559,21 +595,22 @@ export default class Profile extends React.Component {
                 </View>
 
             )
-        } else if (isLoading || !this.props.userInfo) {
-            return (
-                <View
-                    style={{
-                        flex: 1,
-                        // padding: 20,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'white',
+        } 
+        // else if (isLoading || !this.props.userInfo) {
+        //     return (
+        //         <View
+        //             style={{
+        //                 flex: 1,
+        //                 // padding: 20,
+        //                 justifyContent: 'center',
+        //                 alignItems: 'center',
+        //                 backgroundColor: 'white',
 
-                    }}>
-                    <ActivityIndicator color='black' />
-                </View >
-            )
-        }
+        //             }}>
+        //             <ActivityIndicator color='black' />
+        //         </View >
+        //     )
+        // }
         else {
             return (
                 <View
@@ -588,20 +625,20 @@ export default class Profile extends React.Component {
                             onCancel={this.hideDateTimePicker}
                             maximumDate={new Date()}
                         />
-                        {this.renderProfileImage()}
+                        <Spinner color='grey'
+                                visible={isLoading}
+                            />
+                        {userInfo &&
+                            this.renderUserInfo()
+                        }
+
+                        {/* {this.renderProfileImage()}
                         {this.renderBasicInfo()}
                         {this.renderPersonalInfo()}
                         {this.renderProfessionalInfo()}
-                        {this.renderOtherInfo()}
+                        {this.renderOtherInfo()} */}
 
-                        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <Button
-                                onPress={() => this.handleSubmit()}
-                                title="Save"
-                                TouchableOpacity={1}
-                                buttonStyle={style.buttonStyle}
-                            />
-                        </View>
+
                     </ScrollView>
                 </View >
             )

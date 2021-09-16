@@ -21,34 +21,44 @@ export default class Home extends Component {
         this.state = {
             searchText: '',
             isReresshed: false,
-            matchedContact: []
+            matchedContact: null
         };
     }
 
     componentDidMount() {
-        this.props.fetchUserContactList()
+        if (this.props.contactList.length == 0) {
+            this.props.fetchUserContactList()
+        }
     }
 
     onRefresh() {
-        // this.setState({ isReresshed: true })
+        this.setState({ matchedContact: null })
         this.props.fetchUserContactList();
     }
-    // updateSearch = (search) => {
-    //     let contactListObj = this.props.contactList;
-    //     console.log(contactListObj);
-    //     let results=[];
-    //     this.setState({ search });
-    //     for (var i = 0; i < contactListObj.length; i++) {
-    //         for (var key in contactListObj[i].contactId) {
-    //             console.log(contactListObj[i].contactId[key].indexOf(search));
-    //             // if (contactListObj[i].contactId.key.indexOf(search) != -1) {
-    //             //     results.push(objects[i]);
-    //             // }
-    //         }
+    updateSearch = (search) => {
+        let contactListObj = this.props.contactList;
+        let results = [];
+        this.setState({ search });
+        for (var i = 0; i < contactListObj.length; i++) {
+            for (var key in contactListObj[i].contactId) {
+                //  console.log(key);
+                let valToSearch = String(contactListObj[i].contactId[key]);
+                valToSearch = valToSearch.toLocaleLowerCase();
+                search = search.toLocaleLowerCase();
+                //  console.log(valToSearch.indexOf(search));
+                if (valToSearch.indexOf(search) != -1) {
+                    if (results.indexOf(contactListObj[i]) == -1) {
+                        results.push(contactListObj[i]);
+                    }
+                }
+            }
 
-    //     }
-    //     console.log(results);
-    // };
+        }
+        this.setState({
+            matchedContact: results
+        })
+        //   console.log(results.length);
+    };
     renderHeader = () => {
         let { search } = this.state;
         return (
@@ -66,8 +76,13 @@ export default class Home extends Component {
                 this.props.navigation.navigate('contact-details', { user: item.contactId })
             }}>
 
-                <Avatar size="medium" rounded icon={{ name: 'user', color: 'grey', type: 'font-awesome-5' }}
+                <Avatar size="medium" rounded
+                    icon={{ name: 'user', color: 'grey', type: 'font-awesome-5' }}
                     overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
+                    source={{
+                        uri:
+                            item.contactId.profilePicture ? item.contactId.profilePicture : 'no-img',
+                    }}
                 />
                 <ListItem.Content onPress={() => {
                     this.setState({
@@ -87,7 +102,7 @@ export default class Home extends Component {
         let { isLoading, contactList, error } = this.props;
         if (!isLoading) {
             return (
-                <View style={{ justifyContent: 'center' }}>
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <Text>No Contacts </Text>
                 </View>
             )
@@ -101,6 +116,7 @@ export default class Home extends Component {
     }
     render() {
         let { isLoading, contactList, error } = this.props;
+        let { matchedContact } = this.state;
         if (error) {
             return (
                 <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', }}>
@@ -119,7 +135,7 @@ export default class Home extends Component {
                     <FlatList
                         // data={this.state.data}
                         ListEmptyComponent={this.renderEmpty()}
-                        data={this.props.contactList}
+                        data={matchedContact ? matchedContact : this.props.contactList}
                         onRefresh={() => this.onRefresh()}
                         refreshing={isLoading}
                         keyExtractor={(item, index) => index.toString()}

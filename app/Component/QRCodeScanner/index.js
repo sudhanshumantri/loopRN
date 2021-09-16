@@ -102,11 +102,11 @@ export default class QRCodeScan extends Component {
                     containerStyle={{ marginTop: -10 }}
                     rounded
                     icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
-                    // source={{
-                    //     uri:
-                    //         // 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg'
-                    //         userInfo.userbasicinfo ? imageBaseurl + userInfo.userbasicinfo.profile_photo_path : '',
-                    // }}
+                    icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
+                    source={{
+                        uri:
+                            userInfo.profilePicture ? userInfo.profilePicture : 'no-img',
+                    }}
                     overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
                     showEditButton
                     //  onEditPress={this.handleImageChange}
@@ -114,7 +114,7 @@ export default class QRCodeScan extends Component {
                     size={100}
                 // onEditPress={this.showEditProfileModal}
                 />
-                <Text style={{ color: 'white', fontSize: 22, fontWeight: "bold" }}>{userInfo.name}</Text>
+                <Text style={{ color: 'black', fontSize: 22, fontWeight: "bold" }}>{userInfo.name}</Text>
             </View>
         )
 

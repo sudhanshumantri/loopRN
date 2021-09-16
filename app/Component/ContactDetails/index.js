@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Dimensions, Picker, SafeAreaView, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Linking, PermissionsAndroid, SafeAreaView, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { Card, Input, Avatar, Button, CheckBox, Icon, Divider } from 'react-native-elements';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import moment from 'moment';
 import style from './style';
+import Contacts from 'react-native-contacts';
 export default class ContactsDetails extends React.Component {
 
     constructor(props) {
@@ -13,6 +14,7 @@ export default class ContactsDetails extends React.Component {
             isChanged: false,
             name: undefined,
             dob: undefined,
+            profilePicture: '',
             email: undefined,
             fbLink: undefined,
             phone: undefined,
@@ -195,20 +197,60 @@ export default class ContactsDetails extends React.Component {
 
         })
     }
+    openContactPicker = async () => {
+        let { name, phone, email, dob, gender } = this.state;
+        var newPerson = {
+            emailAddresses: [{
+                label: "personal",
+                email: email,
+            },
+            ], phoneNumbers: [{
+                label: "mobile",
+                number: String(phone),
+            }],
+            displayName: name
+        }
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+                {
+                    title: "Loop App Contacts Permission",
+                    message:
+                        "Loop App needs access to your contacts ",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK"
+                }
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                Contacts.openContactForm(newPerson).then(contact => {
+                    this.props.navigation.navigate('Home');
+                    showMessage({
+                        message: "Contact saved successfully",
+                        type: "success",
+                    });
+                }).catch(error => {
+                    console.log(error)
+                })
+            } else {
+                console.log("contacts permission denied");
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    };
 
     renderProfileImage = () => {
-        let { name } = this.state;
+        let { profilePicture, name } = this.state;
         return (
             <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', marginTop: 20 }}>
                 <Avatar
                     containerStyle={{ marginTop: -10 }}
                     rounded
                     icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
-                    // source={{
-                    //     uri:
-                    //         // 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg'
-                    //         userInfo.userbasicinfo ? imageBaseurl + userInfo.userbasicinfo.profile_photo_path : '',
-                    // }}
+                    source={{
+                        uri:
+                            profilePicture ? profilePicture : 'no-img',
+                    }}
                     overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
                     showEditButton
                     //  onEditPress={this.handleImageChange}
@@ -235,7 +277,7 @@ export default class ContactsDetails extends React.Component {
                     />
                 </View>
                 <Text style={style.labelStyle}>Phone</Text>
-                <View>
+                <TouchableOpacity onPress={() => { Linking.openURL('tel:' + String(phone)) }}>
 
                     <TextInput
                         style={style.inputStyle}
@@ -246,10 +288,9 @@ export default class ContactsDetails extends React.Component {
                     />
 
 
-                </View>
+                </TouchableOpacity>
                 <Text style={style.labelStyle}>Email</Text>
-                <View>
-
+                <TouchableOpacity onPress={() => Linking.openURL('mailto:' + email)}>
                     <TextInput
                         style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
@@ -258,9 +299,7 @@ export default class ContactsDetails extends React.Component {
                         onChangeText={(text) => this.handleProfileChange('email', text)}
                         keyboardType='email-address'
                     />
-
-
-                </View>
+                </TouchableOpacity>
                 <Text style={style.labelStyle}>Birthday</Text>
                 <View>
                     <TouchableOpacity onPress={this.showDateTimePicker}>
@@ -281,26 +320,29 @@ export default class ContactsDetails extends React.Component {
                 }}>
                     <CheckBox
                         title='Male'
+                        disabled={true}
                         checked={gender == 'male' ? true : false}
                         textStyle={{ marginLeft: -1, color: 'black' }}
                         containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
-                        onPress={() => this.handleProfileChange('gender', 'male')}
+                        //  onPress={() => this.handleProfileChange('gender', 'male')}
                         checkedColor='black'
                     />
                     <CheckBox
                         title='Female'
+                        disabled={true}
                         checked={gender == 'female' ? true : false}
                         textStyle={{ marginLeft: -1, color: 'black' }}
                         containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
-                        onPress={() => this.handleProfileChange('gender', 'female')}
+                        //  onPress={() => this.handleProfileChange('gender', 'female')}
                         checkedColor='black'
                     />
                     <CheckBox
                         title='Other'
+                        disabled={true}
                         checked={gender == 'other' ? true : false}
                         textStyle={{ marginLeft: -1, color: 'black' }}
                         containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
-                        onPress={() => this.handleProfileChange('gender', 'other')}
+                        //   onPress={() => this.handleProfileChange('gender', 'other')}
                         checkedColor='black'
                     />
                 </View>
@@ -347,37 +389,16 @@ export default class ContactsDetails extends React.Component {
 
 
                 </View>
-
                 <Text style={style.labelStyle}>Relationship Status</Text>
-
-                <View style={{
-                    flexDirection: 'row',
-                    marginTop: -10
-                }}>
-                    <CheckBox
-                        title='Single'
-                        checked={relationshipStatus == 'single' ? true : false}
-                        textStyle={{ marginLeft: -1, color: 'black' }}
-                        containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
-                        onPress={() => this.handleRelationshipStatusChange('single')}
-                        checkedColor='black'
-                    />
-                    <CheckBox
-                        title='Married'
-                        checked={relationshipStatus == 'married' ? true : false}
-                        textStyle={{ marginLeft: -1, color: 'black' }}
-                        containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
-                        onPress={() => this.handleRelationshipStatusChange('married')}
-                        checkedColor='black'
-                    />
-                    <CheckBox
-                        title='Other'
-                        checked={relationshipStatus == 'other' ? true : false} textStyle={{ marginLeft: -1, color: 'black' }}
-                        containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
-                        onPress={() => this.handleRelationshipStatusChange('other')}
-                        checkedColor='black'
+                <View>
+                    <TextInput
+                        style={style.inputStyle}
+                        //  value={this.props.diagnostic_Tests_Ref}
+                        editable={false}
+                        value={relationshipStatus}
                     />
                 </View>
+
             </View>)
     }
     renderProfessionalInfo = () => {
@@ -499,7 +520,7 @@ export default class ContactsDetails extends React.Component {
 
                     />
                 </View>
-                <Text style={style.labelStyle}>About yourself</Text>
+                {/* <Text style={style.labelStyle}>About yourself</Text>
                 <View>
 
                     <TextInput
@@ -510,7 +531,7 @@ export default class ContactsDetails extends React.Component {
                         onChangeText={(text) => this.handleAboutMeChange(text)}
 
                     />
-                </View>
+                </View> */}
 
             </View>)
     }
@@ -534,6 +555,14 @@ export default class ContactsDetails extends React.Component {
                     {this.renderPersonalInfo()}
                     {this.renderProfessionalInfo()}
                     {this.renderOtherInfo()}
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Button
+                            onPress={() => this.openContactPicker()}
+                            title="Add to Contacts"
+                            TouchableOpacity={1}
+                            buttonStyle={style.buttonStyle}
+                        />
+                    </View>
                 </ScrollView>
             </View >
         )

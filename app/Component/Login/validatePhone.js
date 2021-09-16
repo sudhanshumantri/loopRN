@@ -19,14 +19,11 @@ export default class ValidatePhone extends React.Component {
     }
     componentDidUpdate(prevProps, prevState) {
         let { mobile } = this.state;
-        if (this.state.isValidationRequested && this.props.otp && !prevProps.error && !this.props.error && !this.props.phoneValidationRequested) {
-            this.props.navigation.navigate('ValidateOTP')
+        if (this.state.isValidationRequested && this.props.otp && !prevProps.authError && !this.props.authError && !this.props.isLoading) {
+            this.props.navigation.navigate('Login-ValidateOTP')
             //  this.props.navigation.navigate('BasicInfo', { phone: mobile,otp: this.props.otp})
         }
-        // console.log(prevProps,prevState)
-        // if (prevState.pokemons !== this.state.pokemons) {
-        //   console.log('pokemons state has changed.')
-        // }
+        
     }
 
     handlemobileChange = (mobile) => {
@@ -68,7 +65,7 @@ export default class ValidatePhone extends React.Component {
     }
 
     render() {
-        let { phoneValidationRequested, error } = this.props;
+        let { isLoading, error, otp } = this.props;
         let { mobile, mobileErrorMessage } = this.state;
         return (
             <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
@@ -89,7 +86,7 @@ export default class ValidatePhone extends React.Component {
                             alignItems: 'center'
                         }}>
                             <Spinner color='grey'
-                                visible={phoneValidationRequested}
+                                visible={isLoading}
                             />
 
                             {this.renderLogo()}

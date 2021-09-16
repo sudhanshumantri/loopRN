@@ -20,12 +20,17 @@ const urls = {
     remote: {
         'validate-phone': 'api/auth/validatePhone',
         'login': 'api/auth/sign_in',
+        'OTP-login':'api/auth/OTP_sign_in',
+        'login-otp':'api/auth/validateLoginPhone',
         'register': 'api/auth/register',
         'profile': 'api/user/',
+        'update-password':'api/user/updatePassword',
         'profile-pic': 'api/user/uploadProfilePciture',
         'sharing-info': 'api/user/sharingInfo',
         'scan-qrcode': 'api/user/scanQRCode',
         'contacts': 'api/user/conatcts',
+        'feedback':'api/user/shareFeedback'
+
 
     }
 }
@@ -57,10 +62,38 @@ function generateDefaultGetHeaders() {
 //  * API triggered for fetching user subscribed/Profile
 //  * @return {obejct} of packages
 //  */
+//app specific api calls
 
+export function callPostUserFeedback(data) {
+    // api / login
+    return callApi(getEndpoint('feedback'), {
+        method: 'post',
+        data,
+        removeAuthorizationHeader: false
+    });
+}
+
+//user auth
+
+export function callUserOTPAuthentication(data) {
+    // api / login
+    return callApi(getEndpoint('OTP-login'), {
+        method: 'post',
+        data,
+        removeAuthorizationHeader: true
+    });
+}
 export function callUserAuthentication(data) {
     // api / login
     return callApi(getEndpoint('login'), {
+        method: 'post',
+        data,
+        removeAuthorizationHeader: true
+    });
+}
+export function callUserPhoneValidation(data) {
+    // api / login
+    return callApi(getEndpoint('login-otp'), {
         method: 'post',
         data,
         removeAuthorizationHeader: true
@@ -94,6 +127,15 @@ export function callFetchUserInfo() {
 export function callUpdateUserInfo(data) {
     //  console.log(data);
     return callApi(getEndpoint('profile'), {
+        method: 'put',
+        data,
+        //    headers: { 'Authorization': "bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIwIiwibmJmIjoxNTc5MDgwOTcyLCJleHAiOjE2MTA2MTY5NzIsImlhdCI6MTU3OTA4MDk3Mn0.21uvDxfuo_dBd9T0Rs4y4nXVjp3DRyVJsnzPP89umYo' },
+        removeAuthorizationHeader: false
+    });
+}
+export function callUpdateUserPassword(data) {
+    //  console.log(data);
+    return callApi(getEndpoint('update-password'), {
         method: 'put',
         data,
         //    headers: { 'Authorization': "bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIwIiwibmJmIjoxNTc5MDgwOTcyLCJleHAiOjE2MTA2MTY5NzIsImlhdCI6MTU3OTA4MDk3Mn0.21uvDxfuo_dBd9T0Rs4y4nXVjp3DRyVJsnzPP89umYo' },

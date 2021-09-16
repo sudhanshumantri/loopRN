@@ -1,6 +1,6 @@
 import { call, all, put, select, takeLatest } from 'redux-saga/effects';
 import {
-    callUpdateUserInfo, callFetchUserInfo, callUpdateUserSharingInfo, callValidateQRCode, callUpdateUserProfilePic
+    callUpdateUserInfo, callFetchUserInfo, callUpdateUserSharingInfo, callValidateQRCode, callUpdateUserProfilePic, callUpdateUserPassword
 } from '../Utils/apis';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import {
@@ -38,19 +38,35 @@ export function* fetchUserInfo() {
 }
 export function* updateUserInfo({ data }) {
     let responseData = '';
+    if (data.isPasswordUpdate) {
+        responseData = yield call(callUpdateUserPassword, data);
 
-    responseData = yield call(callUpdateUserInfo, data);
+    } else {
+        responseData = yield call(callUpdateUserInfo, data);
+    }
     if (responseData.status == 200) {
 
-        yield put(
-            updateUserPersonalInfoSucceededAction(
-                responseData.data
-            ),
-        );
-        yield call(showMessage, {
-            message: 'Profile updates sucessfully',
-            type: "success",
-        });
+        if (data.isPasswordUpdate) {
+            yield put(
+                updateUserPersonalInfoSucceededAction(),
+            );
+
+            yield call(showMessage, {
+                message: 'Password updated sucessfully',
+                type: "success",
+            });
+        } else {
+            yield put(
+                updateUserPersonalInfoSucceededAction(
+                    responseData.data
+                ),
+            );
+
+            yield call(showMessage, {
+                message: 'Profile updated sucessfully',
+                type: "success",
+            });
+        }
     } else {
         yield put(
             updateUserPersonalInfoFailedAction(
@@ -93,7 +109,7 @@ export function* updateUserSharingInfo({ data }) {
 }
 export function* updateUserProfilePic({ data }) {
     const responseData = yield call(callUpdateUserProfilePic, data);
-  //  console.log('updateUserProfilePic', responseData.data)
+    //  console.log('updateUserProfilePic', responseData.data)
     if (responseData.status == 201 || responseData.status == 200) {
         yield put(
             updateUserProfilePicSucceededAction(

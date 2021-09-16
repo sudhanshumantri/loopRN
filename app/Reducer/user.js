@@ -57,9 +57,14 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
             return state.set('isInfoLoading', true)
 
         case UPDATE_USER_PERSOANAL_DETAILS_SUCCESS:
-            return state.set('isInfoLoading', false)
-                .set('userPersonalDetails', action.data)
-                .set('error', null);
+            if (action.data) {
+                return state.set('isInfoLoading', false)
+                    .set('userPersonalDetails', action.data)
+                    .set('error', null);
+            } else {
+                return state.set('isInfoLoading', false)
+                    .set('error', null);
+            }
         case UPDATE_USER_PERSOANAL_DETAILS_FAILED:
 
             return state.set('isInfoLoading', false)
