@@ -149,6 +149,7 @@ export default class ValidateOTP extends React.Component {
     render() {
         let { isLoading, error, generatedOTP, isValidationRequested, isOTPValidated, isUserRegistrationRequested } = this.props;
         let { otpValidationError, mobile, otpAct } = this.state;
+      //  console.log(otpAct);
         return (
             <SafeAreaView style={{
 

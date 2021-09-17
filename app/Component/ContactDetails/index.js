@@ -27,178 +27,12 @@ export default class ContactsDetails extends React.Component {
         }
     }
     componentDidMount() {
-        console.log(this.props.route.params.user)
         this.setState(
             this.props.route.params.user
         )
     }
-    validatePersonalInfo = () => {
-        let isValidated = true;
-        let { name, email,
-            nameError,
-            emailError,
-        } = this.state;
-        if (name == '') {
-            isValidated = false;
-            showMessage({
-                message: "Name can't be empty",
-                type: "danger",
-            });
-        }
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-            console.log()
-            isValidated = false;
-            showMessage({
-                message: "Email is not valid",
-                type: "danger",
-            });
-        }
-        return isValidated;
-    }
-    handleSubmit() {
-        // console.log(data);
-        if (this.validatePersonalInfo()) {
-            this.props.updateUserInfo(this.state)
-        }
-
-    }
-    handleProfileChange = (type, value) => {
-        if (type == 'name') {
-            this.setState({
-                name: value
-            })
-        } else if (type == 'email') {
-            this.setState({
-                email: value
-            })
-        } else if (type == 'phone') {
-            this.setState({
-                phone: value
-            })
-        } else if (type == 'fbLink') {
-            this.setState({
-                fbLink: value
-            })
-        } else if (type == 'instaLink') {
-            this.setState({
-                instaLink: value
-            })
-        } else if (type == 'linkedinLink') {
-            this.setState({
-                linkedinLink: value
-            })
-        } else if (type == 'gender') {
-            this.setState({
-                gender: value
-            })
-        }
-    }
-    showDateTimePicker = () => {
-        this.setState({ isDateTimePickerVisible: true });
-    };
-
-    hideDateTimePicker = () => {
-        this.setState({ isDateTimePickerVisible: false });
-    };
-    handleDatePicked = date => {
-
-        let dob = moment(date).format('DD-MM-YYYY');
-        this.setState({
-            dob,
-        })
-
-        this.hideDateTimePicker();
-        // this.secondTextInput.focus();
-    };
-
-    //personal information change
-    handleFBLinkChange = (fbLink) => {
-        this.setState({
-            fbLink,
-
-        })
-    }
-    handleInstaIDChange = (instaLink) => {
-        this.setState({
-            instaLink,
-
-        })
-    }
-    handleRelationshipStatusChange = (relationshipStatus) => {
-        this.setState({
-            relationshipStatus
-
-        })
-    }
-    handleHobbiesChange = (hobbies) => {
-        this.setState({
-            hobbies
-
-        })
-    }
-    //professional information
-    handleLinkedinChange = (linkedinLink) => {
-        this.setState({
-            linkedinLink,
-
-        })
-    }
-    handlelProfessionalEmailChange = (professionalEmail) => {
-        this.setState({
-            professionalEmail,
-
-        })
-    }
-    handleCurrentOrganizationChange = (currentOrganization) => {
-        this.setState({
-            currentOrganization,
-
-        })
-    }
-    handlePreviousOrganizationChange = (previousOrganization) => {
-        this.setState({
-            previousOrganization,
-
-        })
-    }
-    handleProfessionalInterestsChange = (professionalInterests) => {
-        this.setState({
-            professionalInterests,
-
-        })
-    }
-    handleSkillsChange = (skills) => {
-        this.setState({
-            skills,
-
-        })
-    }
-    handleCurrentLocationChange = (currentLocation) => {
-        this.setState({
-            currentLocation,
-
-        })
-    }
-    handlelHomeLocationChange = (homeLocation) => {
-        this.setState({
-            homeLocation,
-
-        })
-    }
-    handleLanguagesChange = (languages) => {
-        this.setState({
-            languages,
-
-        })
-    }
-    handleAboutMeChange = (aboutMe) => {
-        this.setState({
-            aboutMe,
-
-        })
-    }
     openContactPicker = async () => {
-        let { name, phone, email, dob, gender } = this.state;
+        let { profilePicture, name, email, phone } = this.state;
         var newPerson = {
             emailAddresses: [{
                 label: "personal",
@@ -238,6 +72,19 @@ export default class ContactsDetails extends React.Component {
             console.warn(err);
         }
     };
+    handLinking = (url, extraurl) => {
+        if (extraurl) {
+            if (extraurl == 'no-url-provided') {
+
+            } else {
+                url = url + extraurl;
+                Linking.openURL(url);
+            }
+        }
+        else if (url && url.trim().length > 0) {
+            Linking.openURL(url)
+        }
+    }
 
     renderProfileImage = () => {
         let { profilePicture, name } = this.state;
@@ -273,21 +120,15 @@ export default class ContactsDetails extends React.Component {
                         style={style.inputStyle}
                         editable={false}
                         value={name}
-                        onChangeText={(text) => this.handleProfileChange('name', text)}
                     />
                 </View>
                 <Text style={style.labelStyle}>Phone</Text>
                 <TouchableOpacity onPress={() => { Linking.openURL('tel:' + String(phone)) }}>
-
                     <TextInput
                         style={style.inputStyle}
                         editable={false}
                         value={String(phone)}
-                        onChangeText={(text) => this.handleProfileChange('phone', text)}
-                        keyboardType='phone-pad'
                     />
-
-
                 </TouchableOpacity>
                 <Text style={style.labelStyle}>Email</Text>
                 <TouchableOpacity onPress={() => Linking.openURL('mailto:' + email)}>
@@ -296,8 +137,6 @@ export default class ContactsDetails extends React.Component {
                         //  value={this.props.diagnostic_Tests_Ref}
                         editable={false}
                         value={email}
-                        onChangeText={(text) => this.handleProfileChange('email', text)}
-                        keyboardType='email-address'
                     />
                 </TouchableOpacity>
                 <Text style={style.labelStyle}>Birthday</Text>
@@ -354,27 +193,22 @@ export default class ContactsDetails extends React.Component {
         return (
             <View style={{ marginTop: 10 }}>
                 <Text style={style.labelStyle}>Intagram username</Text>
-                <View>
+                <TouchableOpacity onPress={() => this.handLinking('https://www.instagram.com/', instaLink ? instaLink : 'no-url-provided')}>
                     <TextInput
                         style={style.inputStyle}
                         editable={false}
                         value={instaLink}
-                        onChangeText={(text) => this.handleInstaIDChange(text)}
-                    />
-                </View>
-                <Text style={style.labelStyle}>Facebook profile link</Text>
-                <View>
 
+                    />
+                </TouchableOpacity>
+                <Text style={style.labelStyle}>Facebook profile link</Text>
+                <TouchableOpacity onPress={() => this.handLinking(fbLink)}>
                     <TextInput
                         style={style.inputStyle}
                         editable={false}
                         value={fbLink}
-                        onChangeText={(text) => this.handleFBLinkChange(text)}
-
                     />
-
-
-                </View>
+                </TouchableOpacity>
                 <Text style={style.labelStyle}>Hobbies/ Personal interest</Text>
                 <View>
 
@@ -383,8 +217,6 @@ export default class ContactsDetails extends React.Component {
                         //  value={this.props.diagnostic_Tests_Ref}
                         editable={false}
                         value={hobbies}
-                        onChangeText={(text) => this.handleHobbiesChange(text)}
-
                     />
 
 
@@ -407,14 +239,14 @@ export default class ContactsDetails extends React.Component {
         return (
             <View style={{ marginTop: 10 }}>
                 <Text style={style.labelStyle}>Linkedin profile link</Text>
-                <View>
+                <TouchableOpacity onPress={() => this.handLinking(linkedinLink)}>
                     <TextInput
                         style={style.inputStyle}
                         editable={false}
                         value={linkedinLink}
-                        onChangeText={(text) => this.handleLinkedinChange(text)}
+
                     />
-                </View>
+                </TouchableOpacity>
                 <Text style={style.labelStyle}>Professional email</Text>
                 <View>
 
@@ -422,8 +254,7 @@ export default class ContactsDetails extends React.Component {
                         style={style.inputStyle}
                         editable={false}
                         value={professionalEmail}
-                        onChangeText={(text) => this.handlelProfessionalEmailChange(text)}
-                        keyboardType='email-address'
+
                     />
 
 
@@ -450,7 +281,6 @@ export default class ContactsDetails extends React.Component {
                         //  value={this.props.diagnostic_Tests_Ref}
                         editable={false}
                         value={previousOrganization}
-                        onChangeText={(text) => this.handlePreviousOrganizationChange(text)}
 
                     />
                 </View>
@@ -462,7 +292,7 @@ export default class ContactsDetails extends React.Component {
                         //  value={this.props.diagnostic_Tests_Ref}
                         editable={false}
                         value={professionalInterests}
-                        onChangeText={(text) => this.handleProfessionalInterestsChange(text)}
+
 
                     />
                 </View>
@@ -473,7 +303,7 @@ export default class ContactsDetails extends React.Component {
                         //  value={this.props.diagnostic_Tests_Ref}
                         editable={false}
                         value={skills}
-                        onChangeText={(text) => this.handleSkillsChange(text)}
+
 
                     />
                 </View>
@@ -492,7 +322,7 @@ export default class ContactsDetails extends React.Component {
                         style={style.inputStyle}
                         editable={false}
                         value={currentLocation}
-                        onChangeText={(text) => this.handleCurrentLocationChange(text)}
+
                     />
                 </View>
                 <Text style={style.labelStyle}>Home location</Text>
@@ -502,7 +332,7 @@ export default class ContactsDetails extends React.Component {
                         style={style.inputStyle}
                         editable={false}
                         value={homeLocation}
-                        onChangeText={(text) => this.handlelHomeLocationChange(text)}
+
 
                     />
 
@@ -516,7 +346,7 @@ export default class ContactsDetails extends React.Component {
                         //  value={this.props.diagnostic_Tests_Ref}
                         editable={false}
                         value={languages}
-                        onChangeText={(text) => this.handleLanguagesChange(text)}
+
 
                     />
                 </View>
@@ -544,12 +374,6 @@ export default class ContactsDetails extends React.Component {
                     showsVerticalScrollIndicator={false}
                     style={{ marginBottom: 10, paddingLeft: 10, paddingRight: 10 }}
                 >
-                    <DateTimePickerModal
-                        isVisible={this.state.isDateTimePickerVisible}
-                        onConfirm={this.handleDatePicked}
-                        onCancel={this.hideDateTimePicker}
-                        maximumDate={new Date()}
-                    />
                     {this.renderProfileImage()}
                     {this.renderBasicInfo()}
                     {this.renderPersonalInfo()}

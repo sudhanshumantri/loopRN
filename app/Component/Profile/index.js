@@ -40,26 +40,64 @@ export default class Profile extends React.Component {
         let { name, email,
             nameError,
             emailError,
+            linkedinLink,
+            instaLink,
+            fbLink
         } = this.state;
-        if (name == '') {
+        if (name.trim().length == 0) {
             isValidated = false;
             showMessage({
                 message: "Name can't be empty",
                 type: "danger",
             });
+            return isValidated;
         }
         if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-            console.log()
             isValidated = false;
             showMessage({
                 message: "Email is not valid",
                 type: "danger",
             });
+            return isValidated;
+        } if (fbLink && fbLink.trim().length > 0) {
+            if (!/(ftp|http|https):\/\/?(?:www\.)?facebook.com(\w+:{0,1}\w*@)?(\S+)(:([0-9])+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(fbLink)) {
+                isValidated = false;
+                showMessage({
+                    message: "Facebook profile is not valid",
+                    type: "danger",
+                });
+                return isValidated;
+            }
+        }
+        if (linkedinLink && linkedinLink.trim().length > 0) {
+            if (!/(ftp|http|https):\/\/?(?:www\.)?linkedin.com(\w+:{0,1}\w*@)?(\S+)(:([0-9])+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(linkedinLink)) {
+                isValidated = false;
+                showMessage({
+                    message: "Linkedin profile is not valid",
+                    type: "danger",
+                });
+                return isValidated;
+            }
+        }
+        if (instaLink && instaLink.trim().length > 0) {
+            console.log(instaLink);
+            var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
+
+            if (urlregex.test(instaLink)) {
+                isValidated = false;
+                showMessage({
+                    message: "Instgram username is not valid",
+                    type: "danger",
+                });
+                return isValidated;
+            }
         }
         return isValidated;
+
     }
     handleSubmit() {
         // console.log(data);
+        //  console.log(this.validatePersonalInfo());
         if (this.validatePersonalInfo()) {
             this.props.updateUserInfo(this.state)
         }
@@ -370,7 +408,7 @@ export default class Profile extends React.Component {
 
                     <TextInput
                         style={style.inputStyle}
-                        editable={false}
+                        editable={true}
                         value={fbLink}
                         onChangeText={(text) => this.handleFBLinkChange(text)}
 
@@ -468,7 +506,7 @@ export default class Profile extends React.Component {
 
                     <TextInput
                         style={style.inputStyle}
-                        editable={false}
+
                         value={professionalEmail}
                         onChangeText={(text) => this.handlelProfessionalEmailChange(text)}
                         keyboardType='email-address'
@@ -548,7 +586,7 @@ export default class Profile extends React.Component {
 
                     <TextInput
                         style={style.inputStyle}
-                        editable={false}
+
                         value={homeLocation}
                         onChangeText={(text) => this.handlelHomeLocationChange(text)}
 
@@ -595,7 +633,7 @@ export default class Profile extends React.Component {
                 </View>
 
             )
-        } 
+        }
         // else if (isLoading || !this.props.userInfo) {
         //     return (
         //         <View
@@ -626,8 +664,8 @@ export default class Profile extends React.Component {
                             maximumDate={new Date()}
                         />
                         <Spinner color='grey'
-                                visible={isLoading}
-                            />
+                            visible={isLoading}
+                        />
                         {userInfo &&
                             this.renderUserInfo()
                         }

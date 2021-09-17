@@ -10,7 +10,9 @@ export default class PersonalInfo extends React.Component {
         super()
         this.state = {
             instaLink: '',
+            instaLinkError: '',
             fbLink: '',
+            fbLinkError: '',
             relationshipStatus: 'Single',
             hobbies: ''
 
@@ -26,12 +28,14 @@ export default class PersonalInfo extends React.Component {
     handleFBLinkChange = (fbLink) => {
         this.setState({
             fbLink,
+            fbLinkError: ''
 
         })
     }
     handleInstaIDChange = (instaLink) => {
         this.setState({
             instaLink,
+            instaLinkError: ''
 
         })
     }
@@ -47,8 +51,40 @@ export default class PersonalInfo extends React.Component {
 
         })
     }
+    validateInfo = () => {
+        let {
+            instaLink,
+            fbLink
+        } = this.state;
+        let isValidated = true;
+        if (fbLink && fbLink.trim().length > 0) {
+            if (!/(ftp|http|https):\/\/?(?:www\.)?facebook.com(\w+:{0,1}\w*@)?(\S+)(:([0-9])+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(fbLink)) {
+                isValidated = false;
+                this.setState({
+                    fbLinkError: 'Facebook profile is not valid'
+                })
+                return isValidated;
+            }
+        }
+        if (instaLink && instaLink.trim().length > 0) {
+            console.log(instaLink);
+            var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
+
+            if (urlregex.test(instaLink)) {
+                isValidated = false;
+                this.setState({
+                    instaLinkError: 'Instgram username is not valid'
+                })
+                return isValidated;
+            }
+        }
+        return isValidated;
+    }
     handleSubmit = () => {
-        this.props.updateUserInformation(this.state);
+
+        if (this.validateInfo()) {
+            this.props.updateUserInformation(this.state);
+        }
     }
     handleSkip = () => {
         this.props.navigation.navigate('ProfessionalInfo')
@@ -68,7 +104,7 @@ export default class PersonalInfo extends React.Component {
 
     render() {
         let { isLoading } = this.props;
-        let { instaLink, fbLink, linkedinLink, relationshipStatus, hobbies } = this.state;
+        let { instaLink, fbLink, fbLinkError, instaLinkError, relationshipStatus, hobbies } = this.state;
         return (
             <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
                 <KeyboardAwareScrollView
@@ -120,6 +156,7 @@ export default class PersonalInfo extends React.Component {
                                     leftIconContainerStyle={{ marginLeft: -1 }}
                                     value={instaLink}
                                     onChangeText={text => this.handleInstaIDChange(text)}
+                                    errorMessage={instaLinkError}
 
 
                                 />
@@ -139,7 +176,7 @@ export default class PersonalInfo extends React.Component {
                                     leftIconContainerStyle={{ marginLeft: -1 }}
                                     value={fbLink}
                                     onChangeText={text => this.handleFBLinkChange(text)}
-
+                                    errorMessage={fbLinkError}
 
                                 />
                                 <Input
@@ -167,11 +204,11 @@ export default class PersonalInfo extends React.Component {
                                     paddingRight: 5,
                                     borderBottomColor: 'black',
                                     borderBottomWidth: 0.5
-                                    
+
                                 }}>
 
                                     {/* <Text style={{ marginTop: 30, }}> Relation</Text> */}
-                                    
+
                                     <Picker
                                         selectedValue={relationshipStatus}
                                         itemStyle={{ color: 'black' }}

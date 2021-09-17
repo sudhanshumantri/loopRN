@@ -9,6 +9,7 @@ export default class ProfessionalInfo extends React.Component {
         super()
         this.state = {
             linkedinLink: '',
+            linkedinLinkError: '',
             professionalEmail: '',
             currentOrganization: '',
             previousOrganization: '',
@@ -25,6 +26,7 @@ export default class ProfessionalInfo extends React.Component {
     handleLinkedinChange = (linkedinLink) => {
         this.setState({
             linkedinLink,
+            linkedinLinkError:''
 
         })
     }
@@ -58,9 +60,28 @@ export default class ProfessionalInfo extends React.Component {
 
         })
     }
+    validateInfo = () => {
+        let {
+            linkedinLink,
+            linkedinLinkError
+        } = this.state;
+        let isValidated = true;
+        if (linkedinLink && linkedinLink.trim().length > 0) {
+            if (!/(ftp|http|https):\/\/?(?:www\.)?linkedin.com(\w+:{0,1}\w*@)?(\S+)(:([0-9])+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(linkedinLink)) {
+                isValidated = false;
+                this.setState({
+                    linkedinLinkError: 'Linkedin profile is not valid'
+                })
+                return isValidated;
+            }
+        }
+        return isValidated;
+    }
 
     handleSubmit = () => {
-        this.props.updateUserInformation(this.state);
+        if (this.validateInfo()) {
+            this.props.updateUserInformation(this.state);
+        }
         // if (this.validatePersonalInfo()) {
         //     let { phone, name, email, dob, gender } = this.state;
         //     let user = {
@@ -88,7 +109,7 @@ export default class ProfessionalInfo extends React.Component {
 
     render() {
         let { isLoading } = this.props;
-        let { linkedinLink, currentOrganization, previousOrganization, professionalEmail, professionalInterests, skills } = this.state;
+        let { linkedinLink,linkedinLinkError, currentOrganization, previousOrganization, professionalEmail, professionalInterests, skills } = this.state;
         return (
             <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
                 <KeyboardAwareScrollView
@@ -140,6 +161,7 @@ export default class ProfessionalInfo extends React.Component {
                                     leftIconContainerStyle={{ marginLeft: -1 }}
                                     value={linkedinLink}
                                     onChangeText={text => this.handleLinkedinChange(text)}
+                                    errorMessage={linkedinLinkError}
                                 />
                                 <Input
                                     containerStyle={{ height: 60, marginTop: 10 }}

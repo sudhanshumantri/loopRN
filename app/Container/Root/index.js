@@ -16,8 +16,8 @@ import contactReducer from '../../Reducer/contacts';
 import contactSagas from '../../Sagas/contacts'
 import loginReducer from '../../Reducer/login';
 import loginSagas from '../../Sagas/login';
-import utilsSagas from '../../Sagas/util';
-// import searchReducer from '../../Reducer/search';
+import utilSagas from '../../Sagas/util';
+import utilReducer from '../../Reducer/util';
 // import searchSagas from '../../Sagas/search';
 // import servicesReducer from '../../Reducer/services';
 // import servicesSagas from '../../Sagas/services';
@@ -46,7 +46,8 @@ injectReducer('userInfo', userReducer)
 injectSagas(userSagas);
 injectReducer('contacts', contactReducer)
 injectSagas(contactSagas);
-injectSagas(utilsSagas);
+injectReducer('util', utilReducer)
+injectSagas(utilSagas);
 
 export default class Root extends Component {
 

@@ -20,16 +20,17 @@ const urls = {
     remote: {
         'validate-phone': 'api/auth/validatePhone',
         'login': 'api/auth/sign_in',
-        'OTP-login':'api/auth/OTP_sign_in',
-        'login-otp':'api/auth/validateLoginPhone',
+        'OTP-login': 'api/auth/OTP_sign_in',
+        'login-otp': 'api/auth/validateLoginPhone',
         'register': 'api/auth/register',
         'profile': 'api/user/',
-        'update-password':'api/user/updatePassword',
+        'update-password': 'api/user/updatePassword',
         'profile-pic': 'api/user/uploadProfilePciture',
         'sharing-info': 'api/user/sharingInfo',
         'scan-qrcode': 'api/user/scanQRCode',
         'contacts': 'api/user/conatcts',
-        'feedback':'api/user/shareFeedback'
+        'feedback': 'api/user/shareFeedback',
+        'app-version': 'api/appVersion'
 
 
     }
@@ -70,6 +71,14 @@ export function callPostUserFeedback(data) {
         method: 'post',
         data,
         removeAuthorizationHeader: false
+    });
+}
+export function callFetchAppVersion(data) {
+    // api / login
+    return callApi(getEndpoint('app-version'), {
+        method: 'get',
+        data,
+        removeAuthorizationHeader: true
     });
 }
 

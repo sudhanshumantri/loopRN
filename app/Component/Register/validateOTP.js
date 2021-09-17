@@ -135,7 +135,8 @@ export default class ValidateOTP extends React.Component {
     render() {
         let { phoneValidationRequested } = this.props;
         let { otpValidationError, password, passwordCheck, passwordError, OTPResent } = this.state;
-        let { mobile } = this.state;
+        let { mobile,otpAct } = this.state;
+        console.log(otpAct)
         return (
             <SafeAreaView style={{
 

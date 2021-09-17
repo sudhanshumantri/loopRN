@@ -9,7 +9,7 @@ import OtherInfo from '../Container/Register/otherInfo';
 import BasicInfo from '../Component/Register/basicInformation'
 import ValidateOTP from '../Container/Register/validateOTP'
 import SubmitSingupData from '../Container/Register/submitData'
-import AuthLoadingScreen from '../Component/Auth'
+import AuthLoadingScreen from '../Container/Auth'
 //import DrawerNavigator from './drawerNavigator';
 import AppStackNavigator from './bottomNavigation';
 import ValidateLoginOTP from '../Container/Login/validateOTP';
