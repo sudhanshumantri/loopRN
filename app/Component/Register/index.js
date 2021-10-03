@@ -445,11 +445,12 @@ export default class ProfileRegistrationPersonalInfo extends React.Component {
         return (
             <SafeAreaView style={{ backgroundColor: '#404040', flex: 1, }}>
                 <KeyboardAwareScrollView
+                      keyboardShouldPersistTaps={'handled'}
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
                 >
                     <ScrollView showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps='always'
+                        keyboardShouldPersistTaps='handled'
                     >
                         <Spinner color='grey'
                             visible={isLoading}

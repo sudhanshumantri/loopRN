@@ -109,7 +109,6 @@ export function* updateUserSharingInfo({ data }) {
 }
 export function* updateUserProfilePic({ data }) {
     const responseData = yield call(callUpdateUserProfilePic, data);
-    //  console.log('updateUserProfilePic', responseData.data)
     if (responseData.status == 201 || responseData.status == 200) {
         yield put(
             updateUserProfilePicSucceededAction(

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     ActivityIndicator,
-    StatusBar,
+    Linking,
     Text,
     Platform,
     View,
@@ -64,7 +64,12 @@ export default class AuthLoadingScreen extends React.Component {
         );
     }
     handleUpdate=()=>{
-        console.log('handle Update')
+        if(Platform.OS=='ios'){
+            Linking.openURL('https://apps.apple.com/us/app/loop-quick-connect/id1587661726')
+        }else{
+            Linking.openURL('https://play.google.com/store/apps/details?id=com.loop.connect');
+        }
+        
     }
     renderAppUpgrade = () => {
         return (
@@ -83,7 +88,7 @@ export default class AuthLoadingScreen extends React.Component {
     // Render any loading content that you like here
     render() {
         let { isLoading, appVersion, error } = this.props;
-        console.log(this.state.isOldApp);
+      //  console.log(this.state.isOldApp);
         return (
             <SafeAreaView style={{ flex: 1, padding: 20, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
                 {this.renderLogo()}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Linking, PermissionsAndroid, SafeAreaView, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Linking, PermissionsAndroid, Platform, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { Card, Input, Avatar, Button, CheckBox, Icon, Divider } from 'react-native-elements';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { showMessage, hideMessage } from "react-native-flash-message";
@@ -16,6 +16,7 @@ export default class ContactsDetails extends React.Component {
             dob: undefined,
             profilePicture: '',
             email: undefined,
+            professionalEmail:undefined,
             fbLink: undefined,
             phone: undefined,
             instaLink: undefined,
@@ -33,6 +34,7 @@ export default class ContactsDetails extends React.Component {
     }
     openContactPicker = async () => {
         let { profilePicture, name, email, phone } = this.state;
+
         var newPerson = {
             emailAddresses: [{
                 label: "personal",
@@ -42,31 +44,48 @@ export default class ContactsDetails extends React.Component {
                 label: "mobile",
                 number: String(phone),
             }],
-            displayName: name
+            displayName: name,
+            givenName: name
         }
         try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-                {
-                    title: "Loop App Contacts Permission",
-                    message:
-                        "Loop App needs access to your contacts ",
-                    buttonNegative: "Cancel",
-                    buttonPositive: "OK"
+            if (Platform.OS === 'android') {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+                    {
+                        title: "Loop App Contacts Permission",
+                        message:
+                            "Loop App needs access to your contacts ",
+                        buttonNegative: "Cancel",
+                        buttonPositive: "OK"
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    Contacts.openContactForm(newPerson).then(contact => {
+                        if (contact) {
+                            this.props.navigation.goBack();
+                            showMessage({
+                                message: "Contact saved successfully",
+                                type: "success",
+                            });
+                        }
+                    }).catch(error => {
+                        console.log(error)
+                    })
+                } else {
+                    console.log("contacts permission denied");
                 }
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            } else {
                 Contacts.openContactForm(newPerson).then(contact => {
-                    this.props.navigation.navigate('Home');
-                    showMessage({
-                        message: "Contact saved successfully",
-                        type: "success",
-                    });
+                    if (contact) {
+                        this.props.navigation.goBack();
+                        showMessage({
+                            message: "Contact saved successfully",
+                            type: "success",
+                        });
+                    }
                 }).catch(error => {
                     console.log(error)
                 })
-            } else {
-                console.log("contacts permission denied");
             }
         } catch (err) {
             console.warn(err);
@@ -124,20 +143,24 @@ export default class ContactsDetails extends React.Component {
                 </View>
                 <Text style={style.labelStyle}>Phone</Text>
                 <TouchableOpacity onPress={() => { Linking.openURL('tel:' + String(phone)) }}>
-                    <TextInput
-                        style={style.inputStyle}
-                        editable={false}
-                        value={String(phone)}
-                    />
+                    <View pointerEvents='none'>
+                        <TextInput
+                            style={style.inputStyle}
+                            editable={false}
+                            value={String(phone)}
+                        />
+                    </View>
                 </TouchableOpacity>
                 <Text style={style.labelStyle}>Email</Text>
                 <TouchableOpacity onPress={() => Linking.openURL('mailto:' + email)}>
-                    <TextInput
-                        style={style.inputStyle}
-                        //  value={this.props.diagnostic_Tests_Ref}
-                        editable={false}
-                        value={email}
-                    />
+                    <View pointerEvents='none'>
+                        <TextInput
+                            style={style.inputStyle}
+                            //  value={this.props.diagnostic_Tests_Ref}
+                            editable={false}
+                            value={email}
+                        />
+                    </View>
                 </TouchableOpacity>
                 <Text style={style.labelStyle}>Birthday</Text>
                 <View>
@@ -194,20 +217,24 @@ export default class ContactsDetails extends React.Component {
             <View style={{ marginTop: 10 }}>
                 <Text style={style.labelStyle}>Intagram username</Text>
                 <TouchableOpacity onPress={() => this.handLinking('https://www.instagram.com/', instaLink ? instaLink : 'no-url-provided')}>
-                    <TextInput
-                        style={style.inputStyle}
-                        editable={false}
-                        value={instaLink}
+                    <View pointerEvents='none'>
+                        <TextInput
+                            style={style.inputStyle}
+                            editable={false}
+                            value={instaLink}
 
-                    />
+                        />
+                    </View>
                 </TouchableOpacity>
                 <Text style={style.labelStyle}>Facebook profile link</Text>
                 <TouchableOpacity onPress={() => this.handLinking(fbLink)}>
-                    <TextInput
-                        style={style.inputStyle}
-                        editable={false}
-                        value={fbLink}
-                    />
+                    <View pointerEvents='none'>
+                        <TextInput
+                            style={style.inputStyle}
+                            editable={false}
+                            value={fbLink}
+                        />
+                    </View>
                 </TouchableOpacity>
                 <Text style={style.labelStyle}>Hobbies/ Personal interest</Text>
                 <View>
@@ -236,29 +263,31 @@ export default class ContactsDetails extends React.Component {
     renderProfessionalInfo = () => {
         let { userInfo, } = this.props;
         let { linkedinLink, currentOrganization, previousOrganization, professionalEmail, professionalInterests, skills } = this.state;
+       console.log(professionalEmail );
         return (
             <View style={{ marginTop: 10 }}>
                 <Text style={style.labelStyle}>Linkedin profile link</Text>
                 <TouchableOpacity onPress={() => this.handLinking(linkedinLink)}>
-                    <TextInput
-                        style={style.inputStyle}
-                        editable={false}
-                        value={linkedinLink}
+                    <View pointerEvents='none'>
+                        <TextInput
+                            style={style.inputStyle}
+                            editable={false}
+                            value={linkedinLink}
 
-                    />
+                        />
+                    </View>
                 </TouchableOpacity>
                 <Text style={style.labelStyle}>Professional email</Text>
-                <View>
+                <TouchableOpacity onPress={() => (professionalEmail && professionalEmail.trim().length) > 0 ? Linking.openURL('mailto:' + professionalEmail) : ''}>
+                    <View pointerEvents='none'>
+                        <TextInput
+                            style={style.inputStyle}
+                            editable={false}
+                            value={professionalEmail}
+                        />
+                    </View>
 
-                    <TextInput
-                        style={style.inputStyle}
-                        editable={false}
-                        value={professionalEmail}
-
-                    />
-
-
-                </View>
+                </TouchableOpacity>
                 <Text style={style.labelStyle}>Current college/company</Text>
                 <View>
 

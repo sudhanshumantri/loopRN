@@ -72,11 +72,12 @@ export default class OtherInfo extends React.Component {
         return (
             <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
                 <KeyboardAwareScrollView
+                    keyboardShouldPersistTaps={'handled'}
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
                 >
                     <ScrollView showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps={"always"}
+                        keyboardShouldPersistTaps={"handled"}
                     >
                         <View style={{
                             flex: 1,

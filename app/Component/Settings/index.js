@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Share,
-    AsyncStorage,
+    Platform,
     StatusBar,
     View,
     Image,
@@ -74,8 +74,10 @@ export default class Settings extends React.Component {
     handleShare = async () => {
         try {
             const result = await Share.share({
-                message:
-                    'React Native | A framework for building native apps using React',
+                message: Platform.OS == 'android' ? 'https://play.google.com/store/apps/details?id=com.loop.connect' : 'https://apps.apple.com/us/app/loop-quick-connect/id1587661726',
+                title: 'https://play.google.com/store/apps/details?id=com.loop.connect',
+                url: 'https://apps.apple.com/us/app/loop-quick-connect/id1587661726'
+                // url: Platform.OS == 'android' ? 'https://play.google.com/store/apps/details?id=com.loop.connect' : 'https://apps.apple.com/us/app/loop-quick-connect/id1587661726'
             });
 
             if (result.action === Share.sharedAction) {

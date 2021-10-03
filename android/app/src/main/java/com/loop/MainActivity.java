@@ -1,4 +1,4 @@
-package com.loop;
+package com.loop.connect;
 
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;

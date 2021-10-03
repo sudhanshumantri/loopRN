@@ -11,6 +11,7 @@ export default class ProfessionalInfo extends React.Component {
             linkedinLink: '',
             linkedinLinkError: '',
             professionalEmail: '',
+            professionalEmailError: '',
             currentOrganization: '',
             previousOrganization: '',
             professionalInterests: '',
@@ -26,13 +27,14 @@ export default class ProfessionalInfo extends React.Component {
     handleLinkedinChange = (linkedinLink) => {
         this.setState({
             linkedinLink,
-            linkedinLinkError:''
+            linkedinLinkError: ''
 
         })
     }
     handlelProfessionalEmailChange = (professionalEmail) => {
         this.setState({
             professionalEmail,
+            professionalEmailError: ''
 
         })
     }
@@ -63,7 +65,8 @@ export default class ProfessionalInfo extends React.Component {
     validateInfo = () => {
         let {
             linkedinLink,
-            linkedinLinkError
+            linkedinLinkError,
+            professionalEmail, professionalEmailError
         } = this.state;
         let isValidated = true;
         if (linkedinLink && linkedinLink.trim().length > 0) {
@@ -71,6 +74,14 @@ export default class ProfessionalInfo extends React.Component {
                 isValidated = false;
                 this.setState({
                     linkedinLinkError: 'Linkedin profile is not valid'
+                })
+                return isValidated;
+            }
+        } if (professionalEmail && professionalEmail.trim().length > 0) {
+            if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(professionalEmail)) {
+                isValidated = false;
+                this.setState({
+                    professionalEmailError: 'Enter valid professional email'
                 })
                 return isValidated;
             }
@@ -109,15 +120,16 @@ export default class ProfessionalInfo extends React.Component {
 
     render() {
         let { isLoading } = this.props;
-        let { linkedinLink,linkedinLinkError, currentOrganization, previousOrganization, professionalEmail, professionalInterests, skills } = this.state;
+        let { linkedinLink, linkedinLinkError, currentOrganization, previousOrganization, professionalEmail,professionalEmailError, professionalInterests, skills } = this.state;
         return (
             <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
                 <KeyboardAwareScrollView
+                    keyboardShouldPersistTaps={'handled'}
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
                 >
                     <ScrollView showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps={"always"}
+                        keyboardShouldPersistTaps={"handled"}
                     >
                         <View style={{
                             flex: 1,
@@ -179,6 +191,7 @@ export default class ProfessionalInfo extends React.Component {
                                     leftIconContainerStyle={{ marginLeft: -1 }}
                                     value={professionalEmail}
                                     onChangeText={text => this.handlelProfessionalEmailChange(text)}
+                                    errorMessage={professionalEmailError}
                                 />
                                 <Input
                                     containerStyle={{ height: 60, marginTop: 10 }}

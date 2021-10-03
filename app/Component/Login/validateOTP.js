@@ -149,12 +149,13 @@ export default class ValidateOTP extends React.Component {
     render() {
         let { isLoading, error, generatedOTP, isValidationRequested, isOTPValidated, isUserRegistrationRequested } = this.props;
         let { otpValidationError, mobile, otpAct } = this.state;
-      //  console.log(otpAct);
+        //  console.log(otpAct);
         return (
             <SafeAreaView style={{
 
             }}>
                 <KeyboardAwareScrollView
+                    keyboardShouldPersistTaps={'handled'}
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
                 >

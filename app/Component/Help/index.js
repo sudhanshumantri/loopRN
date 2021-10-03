@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Dimensions, Picker, SafeAreaView, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
+import { View, Text, Platform, StyleSheet, Alert, TouchableOpacity, Dimensions, Picker, SafeAreaView, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { Card, Input, Avatar, Button, CheckBox, Icon, Divider } from 'react-native-elements';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
@@ -44,7 +44,7 @@ export default class Help extends React.Component {
         })
     }
     validateData = () => {
-        let {feedback } = this.state;
+        let { feedback } = this.state;
         let isValid = true;
         if (feedback.trim().length == 0) {
             isValid = false
@@ -125,7 +125,8 @@ export default class Help extends React.Component {
                         inputContainerStyle={{ borderWidth: 0.5 }}
                         inputStyle={{ color: 'black' }}
                         multiline={true}
-                        numberOfLines={10}
+                        numberOfLines={Platform.OS === 'ios' ? null : 10}
+                        minHeight={(Platform.OS === 'ios' ) ? (15 * 10) : null}
                         value={feedback}
                         onChangeText={text => this.handleFeedbackChange(text)}
                         errorMessage={feedbackError}

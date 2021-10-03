@@ -17,20 +17,24 @@ export default class ValidatePhone extends React.Component {
 
         }
     }
+    componentDidMount() {
+        console.log('coming here');
+    }
     componentDidUpdate(prevProps, prevState) {
         let { mobile } = this.state;
         if (this.state.isValidationRequested && this.props.otp && !prevProps.authError && !this.props.authError && !this.props.isLoading) {
             this.props.navigation.navigate('Login-ValidateOTP')
             //  this.props.navigation.navigate('BasicInfo', { phone: mobile,otp: this.props.otp})
         }
-        
+
     }
 
     handlemobileChange = (mobile) => {
         if (/^[\d.]+$/.test(mobile) || mobile === '') {
             this.setState({
                 mobile,
-                mobileErrorMessage: ''
+                mobileErrorMessage: '',
+                isValidationRequested: false
             })
         }
         //   this.props.authUser({ mobile:'PUNEBA', password:'123456' });
@@ -70,11 +74,12 @@ export default class ValidatePhone extends React.Component {
         return (
             <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
                 <KeyboardAwareScrollView
+                    keyboardShouldPersistTaps={'handled'}
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
                 >
                     <ScrollView showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps={"always"}
+                        keyboardShouldPersistTaps={"handled"}
                     >
                         <View style={{
                             flex: 1,

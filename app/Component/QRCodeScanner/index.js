@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { Card, Input, Avatar, Button, CheckBox, Icon, Divider } from 'react-native-elements';
+import { Card, Input, Avatar, Button, CheckBox, Icon, Platform } from 'react-native-elements';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Contacts from 'react-native-contacts';
 import style from './scanStyle'
@@ -64,33 +64,51 @@ export default class QRCodeScan extends Component {
                 label: "mobile",
                 number: String(userInfo.phone),
             }],
-            displayName: userInfo.name
+            displayName: userInfo.name,
+            givenName: userInfo.name
         }
         try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-                {
-                    title: "Loop App Contacts Permission",
-                    message:
-                        "Loop App needs access to your contacts ",
-                    buttonNegative: "Cancel",
-                    buttonPositive: "OK"
+            if (Platform.OS === 'android') {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+                    {
+                        title: "Loop App Contacts Permission",
+                        message:
+                            "Loop App needs access to your contacts ",
+                        buttonNegative: "Cancel",
+                        buttonPositive: "OK"
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    Contacts.openContactForm(newPerson).then(contact => {
+                        if (contact) {
+                            this.props.navigation.navigate('Home');
+                            showMessage({
+                                message: "Contact saved successfully",
+                                type: "success",
+                            });
+                        }
+                    }).catch(error => {
+                        console.log(error)
+                    })
+                } else {
+                    console.log("contacts permission denied");
                 }
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            } else {
                 Contacts.openContactForm(newPerson).then(contact => {
-                    this.props.navigation.navigate('Home');
-                    showMessage({
-                        message: "Contact saved successfully",
-                        type: "success",
-                    });
+                    if (contact) {
+                        this.props.navigation.navigate('Home');
+                        showMessage({
+                            message: "Contact saved successfully",
+                            type: "success",
+                        });
+                    }
                 }).catch(error => {
                     console.log(error)
                 })
-            } else {
-                console.log("contacts permission denied");
             }
-        } catch (err) {
+        }
+        catch (err) {
             console.warn(err);
         }
     };
@@ -127,7 +145,7 @@ export default class QRCodeScan extends Component {
                 <View>
 
                     <TextInput
-                         style={style.inputStyle}
+                        style={style.inputStyle}
                         editable={false}
                         value={String(userInfo.phone)}
                     />
@@ -136,7 +154,7 @@ export default class QRCodeScan extends Component {
                 <View>
 
                     <TextInput
-                         style={style.inputStyle}
+                        style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
                         editable={false}
                         value={userInfo.email}
@@ -146,7 +164,7 @@ export default class QRCodeScan extends Component {
                 <Text style={style.labelStyle}>Birthday*</Text>
                 <View>
                     <TextInput
-                         style={style.inputStyle}
+                        style={style.inputStyle}
 
                         editable={false}
                         value={userInfo.dob}
@@ -186,14 +204,11 @@ export default class QRCodeScan extends Component {
                 </View>
                 <Text style={style.labelStyle}>LinkedIn Profile</Text>
                 <View>
-
                     <TextInput
                         style={style.inputStyle}
                         value={userInfo.linkedinLink}
 
                     />
-
-
                 </View>
                 <Text style={style.labelStyle}>Insta Username</Text>
                 <View>
@@ -211,7 +226,7 @@ export default class QRCodeScan extends Component {
                 <View>
 
                     <TextInput
-                         style={style.inputStyle}
+                        style={style.inputStyle}
                         //  value={this.props.diagnostic_Tests_Ref}
                         editable={false}
                         value={userInfo.fbLink}
@@ -243,7 +258,7 @@ export default class QRCodeScan extends Component {
         let { qrCodeData, isLoading, error } = this.props;
         return (<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
             <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>{error}</Text>
-            <Button onPress={this.activeQR} title="Click to Scan again!"  buttonStyle={{ width: 200,backgroundColor:'black',borderRadius:5  }} />
+            <Button onPress={this.activeQR} title="Click to Scan again!" buttonStyle={{ width: 200, backgroundColor: 'black', borderRadius: 5 }} />
             {/* <TouchableOpacity onPress={this.activeQR} style={styles.buttonTouchable}>
                 <Text style={styles.buttonTextStyle}>Click to Scan !</Text>
             </TouchableOpacity> */}
@@ -253,7 +268,6 @@ export default class QRCodeScan extends Component {
     render() {
         const { scan, ScanResult, result } = this.state;
         let { qrCodeData, isLoading, error } = this.props;
-        console.log(qrCodeData,isLoading,error);
         return (
 
             <SafeAreaView style={{
@@ -281,6 +295,7 @@ export default class QRCodeScan extends Component {
                 {scan &&
                     <QRCodeScanner
                         reactivate={true}
+                        cameraProps={{ captureAudio: false }}
                         showMarker={true}
                         ref={(node) => { this.scanner = node }}
                         onRead={this.onSuccess}

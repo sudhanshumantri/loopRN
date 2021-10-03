@@ -142,6 +142,7 @@ export default class ValidateOTP extends React.Component {
 
             }}>
                 <KeyboardAwareScrollView
+                    keyboardShouldPersistTaps={'handled'}
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
                 >

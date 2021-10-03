@@ -4,6 +4,18 @@ import { Card, Input, Button, CheckBox, Icon } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import ModalSelector from 'react-native-modal-selector'
+let index = 0;
+const relationshipStatusArray = [
+    { key: index++,section: true, label: 'Relationship Status' },
+    { key: index++, label: 'Single' },
+    { key: index++, label: 'Committed' },
+    { key: index++, label: 'Complicated' },
+    { key: index++, label: 'Open Relationship', },
+    { key: index++, label: 'Not Interested', },
+    { key: index++, label: 'Married', },
+    { key: index++, label: 'Other', },
+];
 export default class PersonalInfo extends React.Component {
 
     constructor() {
@@ -67,7 +79,6 @@ export default class PersonalInfo extends React.Component {
             }
         }
         if (instaLink && instaLink.trim().length > 0) {
-            console.log(instaLink);
             var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
 
             if (urlregex.test(instaLink)) {
@@ -107,12 +118,13 @@ export default class PersonalInfo extends React.Component {
         let { instaLink, fbLink, fbLinkError, instaLinkError, relationshipStatus, hobbies } = this.state;
         return (
             <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
-                <KeyboardAwareScrollView
+                <KeyboardAwareScrollView 
+                    keyboardShouldPersistTaps={'handled'}
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
                 >
                     <ScrollView showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps={"always"}
+                        keyboardShouldPersistTaps={"handled"}
                     >
                         <View style={{
                             flex: 1,
@@ -199,31 +211,47 @@ export default class PersonalInfo extends React.Component {
 
                                 />
                                 <View style={{
-                                    width: Dimensions.get('window').width * 0.80,
-                                    paddingLeft: 5,
-                                    paddingRight: 5,
-                                    borderBottomColor: 'black',
-                                    borderBottomWidth: 0.5
+                                // width: Dimensions.get('window').width * 0.80,
+                                    // paddingLeft: 5,
+                                    // paddingRight: 5,
+                                    // borderBottomColor: 'black',
+                                    // borderBottomWidth: 0.5
 
                                 }}>
 
                                     {/* <Text style={{ marginTop: 30, }}> Relation</Text> */}
 
-                                    <Picker
-                                        selectedValue={relationshipStatus}
-                                        itemStyle={{ color: 'black' }}
-                                        style={{ height: 60, borderBottomWidth: 1, border: 1, borderBottomColor: 'black', color: 'black' }}
-                                        onValueChange={(itemValue, itemIndex) =>
-                                            this.handleRelationshipStatusChange(itemValue)
-                                        }>
-                                        <Picker.Item label="Single" value="Single" />
-                                        <Picker.Item label="Committed" value="Committed" />
-                                        <Picker.Item label="Complicated" value="Complicated" />
-                                        <Picker.Item label="Open Relationship" value="Open Relationship" />
-                                        <Picker.Item label="Not Interested" value="Not Interested" />
-                                        <Picker.Item label="Married" value="Married" />
-                                        <Picker.Item label="Other" value="Other" />
-                                    </Picker>
+                                    <ModalSelector
+                                        data={relationshipStatusArray}
+                                        style={{  width: Dimensions.get('window').width * 0.85,}}
+                                        initValue="Select relationship status"
+                                        //   supportedOrientations={['landscape']}
+                                        accessible={true}
+                                        scrollViewAccessibilityLabel={''}
+                                        cancelButtonAccessibilityLabel={'Cancel Button'}
+                                        onChange={(option) => { this.handleRelationshipStatusChange(option.label) }}>
+                                        <Input
+                                            containerStyle={{ height: 60, marginTop: 10 }}
+                                            placeholder=' Select relationship status '
+                                            inputContainerStyle={{ borderBottomWidth: 0.5 }}
+                                            inputStyle={{ color: 'black' }}
+                                            editable={false}
+                                            leftIcon={
+                                                <Icon
+                                                    name='clover'
+                                                    size={24}
+                                                    color='black'
+                                                    type='material-community'
+                                                />
+                                            }
+                                            leftIconContainerStyle={{ marginLeft: -1 }}
+                                            value={relationshipStatus}
+                                            onChangeText={text => this.handleHobbiesChange(text)}
+
+
+                                        />
+
+                                    </ModalSelector>
                                 </View>
                                 <Button color='white'
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}

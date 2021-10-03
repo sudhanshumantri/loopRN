@@ -88,14 +88,17 @@ export default function MyStack() {
         headerRight: (props) => (
           <Icon name='help' type='material' color='white' onPress={() => { navigation.navigate('need-help') }} />
         ),
-        headerRightContainerStyle: { paddingRight: 10 }
+        headerRightContainerStyle: { paddingRight: 10 },
+        gestureDirection:'horizontal'
+       
       })} />
       <Stack.Screen name="your-contacts" component={Contacts}
         options={{
           title: "Contacts",
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
-          headerTintColor: 'white'
+          headerTintColor: 'white',
+          headerBackTitleVisible: false
         }}
 
       />
@@ -104,7 +107,8 @@ export default function MyStack() {
           title: "Contact Details",
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
-          headerTintColor: 'white'
+          headerTintColor: 'white',
+          headerBackTitleVisible: false
         }}
 
       />
@@ -113,14 +117,18 @@ export default function MyStack() {
           title: "Information Sharing",
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
-          headerTintColor: 'white'
+          headerTintColor: 'white',
+          headerBackTitleVisible: false
         }}
 
       />
       <Stack.Screen name="scan-qrcode" component={QRCodeScan}
         options={{
-          title: "QR code scanner",
-          headerShown: false
+          title: "Scan QR Code",
+          headerTitleStyle: { color: 'white' },
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white',
+          headerBackTitleVisible: false
         }}
 
       />
@@ -129,7 +137,9 @@ export default function MyStack() {
           title: "Feedback",
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
-          headerTintColor: 'white'
+          headerTintColor: 'white',
+          headerBackTitleVisible: false,
+      //    gestureDirection:'horizontal'
         }}
 
       />
@@ -138,7 +148,8 @@ export default function MyStack() {
           title: "Password & Security",
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
-          headerTintColor: 'white'
+          headerTintColor: 'white',
+          headerBackTitleVisible: false
         }}
 
       />
@@ -147,7 +158,8 @@ export default function MyStack() {
           title: "Update Password",
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
-          headerTintColor: 'white'
+          headerTintColor: 'white',
+          headerBackTitleVisible: false
         }}
 
       />

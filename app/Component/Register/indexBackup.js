@@ -76,11 +76,12 @@ export default class Register extends React.Component {
                     backgroundColor: '#2DB38D',
                 }}>
                 <KeyboardAwareScrollView
+                    keyboardShouldPersistTaps={'handled'}
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
                 >
                     <ScrollView showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps={true}
+                        keyboardShouldPersistTaps={"handled"}
                     >
                         <Spinner color='grey'
                             visible={isLoading}

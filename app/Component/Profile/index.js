@@ -3,11 +3,23 @@ import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Dimensions,
 import { Card, Input, Avatar, Button, CheckBox, Icon, Divider } from 'react-native-elements';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Picker } from '@react-native-picker/picker';
+import ModalSelector from 'react-native-modal-selector'
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Spinner from 'react-native-loading-spinner-overlay';
 import moment from 'moment';
 import style from './style';
+let index = 0;
+const relationshipStatusArray = [
+    { key: index++, label: 'Single' },
+    { key: index++, label: 'Committed' },
+    { key: index++, label: 'Complicated' },
+    { key: index++, label: 'Open Relationship', },
+    { key: index++, label: 'Not Interested', },
+    { key: index++, label: 'Married', },
+    { key: index++, label: 'Other', },
+];
 export default class Profile extends React.Component {
 
     constructor(props) {
@@ -38,12 +50,13 @@ export default class Profile extends React.Component {
     validatePersonalInfo = () => {
         let isValidated = true;
         let { name, email,
-            nameError,
+            professionalEmail,
             emailError,
             linkedinLink,
             instaLink,
             fbLink
         } = this.state;
+
         if (name.trim().length == 0) {
             isValidated = false;
             showMessage({
@@ -78,9 +91,17 @@ export default class Profile extends React.Component {
                 });
                 return isValidated;
             }
+        } if (professionalEmail && professionalEmail.trim().length > 0) {
+            if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(professionalEmail)) {
+                isValidated = false;
+                showMessage({
+                    message: "Professional Email is not valid",
+                    type: "danger",
+                });
+                return isValidated;
+            }
         }
         if (instaLink && instaLink.trim().length > 0) {
-            console.log(instaLink);
             var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
 
             if (urlregex.test(instaLink)) {
@@ -347,12 +368,14 @@ export default class Profile extends React.Component {
                 <Text style={style.labelStyle}>Birthday*</Text>
                 <View>
                     <TouchableOpacity onPress={this.showDateTimePicker}>
-                        <TextInput
-                            style={style.inputStyle}
-                            onPress={this.showDateTimePicker}
-                            editable={false}
-                            value={dob}
-                        />
+                        <View pointerEvents='none'>
+                            <TextInput
+                                style={style.inputStyle}
+                                onPress={this.showDateTimePicker}
+                                editable={false}
+                                value={dob}
+                            />
+                        </View>
                     </TouchableOpacity>
                 </View>
 
@@ -392,6 +415,7 @@ export default class Profile extends React.Component {
     renderPersonalInfo = () => {
         let { userInfo, } = this.props;
         let { instaLink, fbLink, linkedinLink, relationshipStatus, hobbies } = this.state;
+
         return (
             <View style={{ marginTop: 10 }}>
                 <Text style={style.labelStyle}>Intagram username</Text>
@@ -436,55 +460,27 @@ export default class Profile extends React.Component {
                     //  width: Dimensions.get('window').width * 0.80,
                     // paddingLeft: 5,
                     paddingRight: 5,
-                    height: 40,
-                    borderRadius: 2,
-                    borderWidth: 0.1
+                    // height: 40,
+                    borderRadius: Platform.OS == 'ios' ? 2 : 0,
+                    borderWidth: Platform.OS == 'ios' ? 0.1 : 0
                 }}>
-                    <Picker
-                        selectedValue={relationshipStatus}
-                        itemStyle={{ color: 'black' }}
-                        style={{ marginTop: -8, marginLeft: -10 }}
-                        onValueChange={(itemValue, itemIndex) =>
-                            this.handleRelationshipStatusChange(itemValue)
-                        }>
-                        <Picker.Item label="Single" value="Single" />
-                        <Picker.Item label="Committed" value="Committed" />
-                        <Picker.Item label="Complicated" value="Complicated" />
-                        <Picker.Item label="Open Relationship" value="Open Relationship" />
-                        <Picker.Item label="Not Interested" value="Not Interested" />
-                        <Picker.Item label="Married" value="Married" />
-                        <Picker.Item label="Other" value="Other" />
-                    </Picker>
-                </View>
+                    <ModalSelector
+                        data={relationshipStatusArray}
+                        initValue="Select relationship status"
+                        //   supportedOrientations={['landscape']}
+                        accessible={true}
+                        scrollViewAccessibilityLabel={'Scrollable options'}
+                        cancelButtonAccessibilityLabel={'Cancel Button'}
+                        onChange={(option) => { this.handleRelationshipStatusChange(option.label) }}>
 
-                {/* <View style={{
-                    flexDirection: 'row',
-                    marginTop: -10
-                }}>
-                    <CheckBox
-                        title='Single'
-                        checked={relationshipStatus == 'single' ? true : false}
-                        textStyle={{ marginLeft: -1, color: 'black' }}
-                        containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
-                        onPress={() => this.handleRelationshipStatusChange('single')}
-                        checkedColor='black'
-                    />
-                    <CheckBox
-                        title='Married'
-                        checked={relationshipStatus == 'married' ? true : false}
-                        textStyle={{ marginLeft: -1, color: 'black' }}
-                        containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
-                        onPress={() => this.handleRelationshipStatusChange('married')}
-                        checkedColor='black'
-                    />
-                    <CheckBox
-                        title='Other'
-                        checked={relationshipStatus == 'other' ? true : false} textStyle={{ marginLeft: -1, color: 'black' }}
-                        containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
-                        onPress={() => this.handleRelationshipStatusChange('other')}
-                        checkedColor='black'
-                    />
-                </View> */}
+                        <TextInput
+                            style={style.inputStyle}
+                            editable={false}
+                            placeholder="Select relationship status"
+                            value={relationshipStatus} />
+
+                    </ModalSelector>
+                </View>
             </View>)
     }
     renderProfessionalInfo = () => {
@@ -655,27 +651,29 @@ export default class Profile extends React.Component {
                     style={style.conatiner}>
                     <ScrollView
                         showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps={'handled'}
                         style={{ marginBottom: 10, paddingLeft: 10, paddingRight: 10 }}
                     >
-                        <DateTimePickerModal
-                            isVisible={this.state.isDateTimePickerVisible}
-                            onConfirm={this.handleDatePicked}
-                            onCancel={this.hideDateTimePicker}
-                            maximumDate={new Date()}
-                        />
-                        <Spinner color='grey'
-                            visible={isLoading}
-                        />
-                        {userInfo &&
-                            this.renderUserInfo()
-                        }
+                        <KeyboardAwareScrollView
+                            keyboardShouldPersistTaps={'handled'}
+                            enableOnAndroid={true}
+                            keyboardShouldPersistTaps={'handled'}
+                            enableAutomaticScroll={(Platform.OS === 'ios')}
+                        >
+                            <DateTimePickerModal
+                                isVisible={this.state.isDateTimePickerVisible}
+                                onConfirm={this.handleDatePicked}
+                                onCancel={this.hideDateTimePicker}
+                                maximumDate={new Date()}
+                            />
+                            <Spinner color='grey'
+                                visible={isLoading}
+                            />
+                            {userInfo &&
+                                this.renderUserInfo()
+                            }
 
-                        {/* {this.renderProfileImage()}
-                        {this.renderBasicInfo()}
-                        {this.renderPersonalInfo()}
-                        {this.renderProfessionalInfo()}
-                        {this.renderOtherInfo()} */}
-
+                        </KeyboardAwareScrollView>
 
                     </ScrollView>
                 </View >

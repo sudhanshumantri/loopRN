@@ -33,7 +33,8 @@ export default class ValidatePhone extends React.Component {
         if (/^[\d.]+$/.test(mobile) || mobile === '') {
             this.setState({
                 mobile,
-                mobileErrorMessage: ''
+                mobileErrorMessage: '',
+                isValidationRequested:false
             })
         }
         //   this.props.authUser({ mobile:'PUNEBA', password:'123456' });
@@ -73,11 +74,12 @@ export default class ValidatePhone extends React.Component {
         return (
             <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
                 <KeyboardAwareScrollView
+                    keyboardShouldPersistTaps={'handled'}
                     enableOnAndroid={true}
                     enableAutomaticScroll={(Platform.OS === 'ios')}
                 >
                     <ScrollView showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps={"always"}
+                        keyboardShouldPersistTaps={"handled"}
                     >
                         <View style={{
                             flex: 1,

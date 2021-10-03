@@ -48,7 +48,7 @@ function handleError(error, otherConfig) {
  * otherConfig used to pass configs like errorHandling etc
  */
 function makeAPICall(originalConfig, otherConfig) {
-  console.log(originalConfig);
+ // console.log(originalConfig);
   return axios(originalConfig)
     .then(nextResponse => {
       //console.log(nextResponse)

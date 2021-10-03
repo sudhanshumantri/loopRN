@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dimensions } from 'react-native';
+import { Dimensions,Platform } from 'react-native';
 const deviceWidth = Dimensions.get('screen').width;
 const deviceHeight = Dimensions.get('screen').height;
 const styles = {
@@ -14,10 +14,10 @@ const styles = {
     inputStyle: {
         height: 40,
         marginTop: 3,
-        borderRadius: 2,
+        borderRadius: Platform.OS === 'ios' ? 5 : 2,
         borderColor: 'black',
         color: 'black',
-        borderWidth: 0.1,
+        borderWidth: Platform.OS === 'ios'?0.5:0.1,
         paddingLeft: 5
     },
     labelStyle:{

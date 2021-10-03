@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>loop.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>armv7</string>
+				<string>arm64</string>
+			</array>
+			<key>buildNumber</key>
+			<string>1</string>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>0BFD039B465AAD749E3CED93F0B293F3BDF1E7FE</string>
+				<key>dateExpires</key>
+				<string>25/09/22</string>
+				<key>type</key>
+				<string>Apple Development</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>armv7</string>
+						<string>arm64</string>
+					</array>
+					<key>buildNumber</key>
+					<string>1</string>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>0BFD039B465AAD749E3CED93F0B293F3BDF1E7FE</string>
+						<key>dateExpires</key>
+						<string>25/09/22</string>
+						<key>type</key>
+						<string>Apple Development</string>
+					</dict>
+					<key>name</key>
+					<string>OpenSSL.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>4HSNSYZDX5</string>
+						<key>name</key>
+						<string>Aishwarya Manjunath</string>
+					</dict>
+					<key>versionNumber</key>
+					<string>1.1.180</string>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>4HSNSYZDX5.com.loop.connect</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>4HSNSYZDX5</string>
+				<key>get-task-allow</key>
+				<true/>
+				<key>keychain-access-groups</key>
+				<array>
+					<string>4HSNSYZDX5.com.loop.connect</string>
+				</array>
+			</dict>
+			<key>name</key>
+			<string>loop.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>37aa7d21-0066-4a3b-a35b-a04a0f38ee16</string>
+				<key>dateExpires</key>
+				<string>25/09/22</string>
+				<key>name</key>
+				<string>iOS Team Provisioning Profile: *</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>4HSNSYZDX5</string>
+				<key>name</key>
+				<string>Aishwarya Manjunath</string>
+			</dict>
+			<key>versionNumber</key>
+			<string>1.0</string>
+		</dict>
+	</array>
+</dict>
+</plist>

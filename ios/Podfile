@@ -1,6 +1,10 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
-
+pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
+permissions_path = '../node_modules/react-native-permissions/ios'
+pod 'Permission-Contacts', :path => "#{permissions_path}/Contacts.podspec"
+pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
 platform :ios, '10.0'
 
 target 'loop' do
@@ -21,9 +25,20 @@ target 'loop' do
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable the next line.
-  use_flipper!()
-
+  use_flipper!
   post_install do |installer|
-    react_native_post_install(installer)
+    flipper_post_install(installer)
+
+  # post_install do |installer|
+  #   react_native_post_install(installer)
+
+    installer.pods_project.targets.each do |target|
+      if target.name == "React-Core.common-AccessibilityResources"
+        target.remove_from_project
+      end
+    end
+  # use_flipper!
+  # post_install do |installer|
+  #   flipper_post_install(installer)
   end
 end
