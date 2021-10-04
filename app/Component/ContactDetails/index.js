@@ -263,7 +263,6 @@ export default class ContactsDetails extends React.Component {
     renderProfessionalInfo = () => {
         let { userInfo, } = this.props;
         let { linkedinLink, currentOrganization, previousOrganization, professionalEmail, professionalInterests, skills } = this.state;
-       console.log(professionalEmail );
         return (
             <View style={{ marginTop: 10 }}>
                 <Text style={style.labelStyle}>Linkedin profile link</Text>

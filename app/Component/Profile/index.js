@@ -296,6 +296,7 @@ export default class Profile extends React.Component {
     renderProfileImage = () => {
         let { isImageChanged, profImg_imageUrl } = this.state;
         let { userInfo, } = this.props;
+      //  console.log(isImageChanged, profImg_imageUrl,userInfo.profilePicture);
         return (
             <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', marginTop: 20 }}>
                 <Avatar
@@ -619,6 +620,7 @@ export default class Profile extends React.Component {
     }
     render() {
         let { error, isLoading, userInfo, } = this.props;
+     //   console.log(userInfo.profilePicture)
         //   console.log(this.state.name);
         if (error) {
             return (
