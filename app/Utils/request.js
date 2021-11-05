@@ -4,6 +4,7 @@ import { extend, isEmpty, isUndefined, startsWith, toNumber } from 'lodash';
 import moment from 'moment';
 import config from '../Config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as NavigationService from './../Navigation/navigationService';
 
 async function bootstrapAsyncUserToken() {
   return {
@@ -48,7 +49,7 @@ function handleError(error, otherConfig) {
  * otherConfig used to pass configs like errorHandling etc
  */
 function makeAPICall(originalConfig, otherConfig) {
- // console.log(originalConfig);
+  // console.log(originalConfig);
   return axios(originalConfig)
     .then(nextResponse => {
       //console.log(nextResponse)
@@ -58,9 +59,17 @@ function makeAPICall(originalConfig, otherConfig) {
     .catch(error => {
       // console.log(error)
       if (error.response) {
-        return error.response;
+        //  console.log(error);
+        console.log(error.response.status);
+        if (error.response.status == 401) {
+          AsyncStorage.clear();
+          NavigationService.navigate('AuthLoading');
+        } else {
+          return error.response;
+        }
+
         // console.log(error.response.data);
-        // console.log(error.response.status);
+
         // console.log(error.response.headers);
       } else {
         return error
