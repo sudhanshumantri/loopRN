@@ -261,8 +261,11 @@ export default class Profile extends React.Component {
     }
     handleImageChange = () => {
         const options = {
-            mediaType: 'photo',
-            includeBase64: true
+            mediaType: 'photo', 
+            includeBase64: true,
+            maxWidth: 150,
+            maxHeight: 150,
+            quality: 0.5,
         }
         launchImageLibrary(options, response => {
             if (response.assets && response.assets[0].uri) {
@@ -296,7 +299,7 @@ export default class Profile extends React.Component {
     renderProfileImage = () => {
         let { isImageChanged, profImg_imageUrl } = this.state;
         let { userInfo, } = this.props;
-      //  console.log(isImageChanged, profImg_imageUrl,userInfo.profilePicture);
+        //  console.log(isImageChanged, profImg_imageUrl,userInfo.profilePicture);
         return (
             <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', marginTop: 20 }}>
                 <Avatar
@@ -304,6 +307,7 @@ export default class Profile extends React.Component {
                     rounded
                     icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
                     source={{
+                        
                         uri: isImageChanged ? profImg_imageUrl : userInfo.profilePicture ? userInfo.profilePicture : 'no-img',
                     }}
                     overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
@@ -311,7 +315,6 @@ export default class Profile extends React.Component {
                     onEditPress={this.handleImageChange}
                     onPress={this.handleImageChange}
                     size={100}
-                // onEditPress={this.showEditProfileModal}
                 >
                     <Avatar.Accessory name="edit" onPress={this.handleImageChange}
                         type="font-awesome5"
@@ -620,7 +623,7 @@ export default class Profile extends React.Component {
     }
     render() {
         let { error, isLoading, userInfo, } = this.props;
-     //   console.log(userInfo.profilePicture)
+        //   console.log(userInfo.profilePicture)
         //   console.log(this.state.name);
         if (error) {
             return (

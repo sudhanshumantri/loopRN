@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { Card, Input, Avatar, Button, CheckBox, Icon, Platform } from 'react-native-elements';
+import { Card, Input, Avatar, Button, CheckBox, Icon,  } from 'react-native-elements';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Contacts from 'react-native-contacts';
 import style from './scanStyle'
@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
     Text,
     SafeAreaView,
-    Linking,
+    Platform,
     View,
     TextInput,
     ScrollView,
