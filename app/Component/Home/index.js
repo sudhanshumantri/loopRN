@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     ActivityIndicator,
-    StatusBar,
+    Dimensions,
     View,
     Image,
     Text, SafeAreaView,
@@ -10,16 +10,22 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { Card, Avatar, Divider, Icon, Badge, Button } from 'react-native-elements';
+import style from './style';
 export default class Home extends React.Component {
     constructor() {
         super()
         this.state = {
-            currentPosition: 0,
+            currentSharingPosition: 0,
             subscriptionPlanModalVisible: false,
         }
     }
     componentDidMount() {
         this.props.fetchUserInfo();
+    }
+    handleSharingPreferenceChange = (index) => {
+        this.setState({
+            currentSharingPosition: index
+        })
     }
     handleNavigation = (route) => {
         this.props.navigation.navigate(route)
@@ -28,8 +34,8 @@ export default class Home extends React.Component {
         let { userInfo } = this.props;
         //    console.log(this.props.userInfo.qrCode);
         return (
-            <View style={{ borderWidth: 1, borderColor: 'grey', borderRadius: 10, paddingLeft: 10, paddingRight: 10 }}>
-                <View style={{ flexDirection: 'row', left: 15, marginTop: 10 }}>
+            <View style={style.qrCodeContainer}>
+                <View style={style.qrCodeTopSection}>
                     <Avatar
                         containerStyle={{ marginTop: -40, }}
                         rounded
@@ -41,48 +47,51 @@ export default class Home extends React.Component {
                         overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
                         size={70}
                     />
-                    <Text style={{ color: 'black', fontSize: 20, fontWeight: 'bold', marginLeft: 20 }}>{userInfo.name}</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 20 }}>{userInfo.name}</Text>
                 </View>
-                <Text style={{ marginTop: 20 }}>My BIO to rule the word and i will rule it one day. Sooner or later, </Text>
+                <Text style={{ marginTop: 20 }}>My BIO to rule the word and i will rule it one day. Sooner or later,My BIO to rule the word and i will rule it one day. Sooner or later, </Text>
                 <View
-                    style={{
-                        marginTop: 20,
-                        borderBottomColor: 'grey',
-                        borderBottomWidth: 2,
-                    }}
+                    style={style.horizontalDivider}
                 />
-                <Image
-                    style={{ width: 300, height: 300, backgroundColor: 'white' }}
-                    source={{ uri: userInfo.qrCode }}
-                //  source={require('../../../assets/qrCodeImage.png')}
-                />
+                <View style={style.qrCodeBottomSection}>
+                    <View style={style.qrCodeBottomSectionLeft}>
+                        <Image
+                            style={{ width: 250, height: 250, backgroundColor: 'white' }}
+                            source={{ uri: userInfo.qrCode }}
+                        //  source={require('../../../assets/qrCodeImage.png')}
+                        />
+                    </View>
+                    <View style={style.qrCodeBottomSectionRight}>
+                        <View style={style.verticalLine}>
+                            <View style={style.verticalLineTextContainer}>
+                                <TouchableOpacity style={this.state.currentSharingPosition==0?style.activeShared:''} onPress={() => this.handleSharingPreferenceChange(0)}><Text>All</Text></TouchableOpacity>
+                                <TouchableOpacity style={this.state.currentSharingPosition==1?style.activeShared:''} onPress={() => this.handleSharingPreferenceChange(1)}><Text>Personal</Text></TouchableOpacity>
+                                <TouchableOpacity style={this.state.currentSharingPosition==2?style.activeShared:''} onPress={() => this.handleSharingPreferenceChange(2)}><Text>Professional</Text></TouchableOpacity>
+                                <TouchableOpacity style={this.state.currentSharingPosition==3?style.activeShared:''} onPress={() => this.handleSharingPreferenceChange(3)}><Text>Custom</Text></TouchableOpacity>
+                            </View>
+
+                        </View>
+                    </View>
+
+                </View>
             </View>
         );
     }
     renderButtons = () => {
         return (
-            <View style={{ marginTop: 30, flexDirection: 'row', borderWidth: 1, height: 70, borderColor: 'grey', borderRadius: 10 }}>
-                <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 / 3 }}>
+            <View style={style.buttonContainer}>
+                <TouchableOpacity style={style.buttonHolderLeft}
+                    onPress={() => this.handleNavigation('your-contacts')}
+                >
                     <Text style={{ fontWeight: 'bold' }}>70</Text>
                     <Text>Connections</Text>
-                </View>
-                <TouchableOpacity style={{ justifyContent: 'space-around',borderTopLeftRadius:10,borderBottomLeftRadius:10, alignItems: 'center', backgroundColor: '#EFEFEF', flex: 2 / 3, flexDirection: 'row', paddingLeft: 20, paddingRight: 20 }}
+                </TouchableOpacity>
+                <TouchableOpacity style={style.buttonHolderRight}
                     onPress={() => this.handleNavigation('scan-qrcode')}
                 >
                     <Icon type='material-community' name='qrcode-scan' size={40} color='black' />
                     <Text style={{ fontWeight: 'bold', marginLeft: 25 }}>Scan A Loop Connect to Add Connections</Text>
                 </TouchableOpacity>
-                {/* <Button
-                    title="Scan QR Code"
-                    onPress={() => this.handleNavigation('scan-qrcode')}
-                    buttonStyle={{ width: 300, backgroundColor: 'black', borderRadius: 5 }}
-                />
-                <Button
-                    onPress={() => this.handleNavigation('your-contacts')}
-                    title="Your Contacts"
-                    TouchableOpacity={1}
-                    buttonStyle={{ width: 300, marginTop: 20, backgroundColor: 'black', borderRadius: 5 }}
-                /> */}
             </View>
         );
     }
@@ -103,10 +112,8 @@ export default class Home extends React.Component {
                 <View
                     style={{
                         flex: 1,
-                        // padding: 20,
                         justifyContent: 'center',
                         backgroundColor: 'white',
-
                     }}>
                     <ActivityIndicator color='black' />
                 </View >
@@ -114,15 +121,11 @@ export default class Home extends React.Component {
         } else {
             //    console.log(userInfo.user.first_name, infoLoading)
             return (
-                <SafeAreaView style={{
-                    flex: 1,
-                    // padding: 20,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: 'white',
-                }}>
-                    {this.renderQRCode()}
-                    {this.renderButtons()}
+                <SafeAreaView style={style.safeAreaView}>
+                    <View style={style.container}>
+                        {this.renderQRCode()}
+                        {this.renderButtons()}
+                    </View>
                 </SafeAreaView>
 
             );

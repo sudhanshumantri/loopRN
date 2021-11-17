@@ -10,8 +10,9 @@ import {
     Linking,
     TouchableOpacity,
 } from 'react-native';
-import { ListItem, Icon } from 'react-native-elements'
-import { showAlert } from '../../Utils/utilFunctions'
+import { ListItem, Icon, Switch } from 'react-native-elements'
+import { showAlert } from '../../Utils/utilFunctions';
+import style from './style';
 const list = [
     {
         title: 'Information Sharing',
@@ -106,22 +107,84 @@ export default class Settings extends React.Component {
     render() {
         //    console.log(userInfo.user.first_name, infoLoading)
         return (
-            <SafeAreaView style={{
-                flex: 1,
-                // padding: 20,
-                justifyContent: 'flex-start',
-                backgroundColor: 'white',
-            }}>
+            <SafeAreaView style={style.safeAreaView}>
                 {
-                    list.map((item, i) => (
-                        <ListItem key={i} bottomDivider onPress={() => item.isNavigation ? this.handleNavigation(item.route) : this.handleCustomFunction(item.function)} >
-                            <Icon name={item.icon} type='material' />
-                            <ListItem.Content>
-                                <ListItem.Title>{item.title}</ListItem.Title>
-                            </ListItem.Content>
-                            <ListItem.Chevron oonPress={() => item.isNavigation ? this.handleNavigation(item.route) : this.handleCustomFunction(item.function)} />
-                        </ListItem>
-                    ))
+                    <View style={style.container}>
+                        <View>
+                            <View style={style.flexRootContainer}>
+                                <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
+                                    <Icon type='font-awesome' name='exchange' size={30} />
+                                    <Text style={style.titleStyle}>Contact Exchange</Text>
+                                </View>
+
+                                <View style={{ flex: 1 / 3, justifyContent: 'center', alignItems: 'flex-end' }}><Switch value={false} color="orange" /></View>
+                            </View>
+                            <Text>'Exchange' contact details automatically irrespective of whether you scan someone's Loop code or they scan yours</Text>
+                            <View
+                                style={style.horizontalDivider}
+                            />
+                        </View>
+                        <View>
+                            <View style={style.flexRootContainer}>
+                                <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
+                                    <Icon type='antdesign' name='menufold' size={30} />
+                                    <Text style={style.titleStyle}>Customize A Profile</Text>
+                                </View>
+                            </View>
+                            <Text>Our default profiles can't cater to all your networking needs? Create a custom bucket of your own</Text>
+                            <View
+                                style={style.horizontalDivider}
+                            />
+                        </View>
+                        <View>
+                            <View style={style.flexRootContainer}>
+                                <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
+                                    <Icon type='material' name='share' size={30} />
+                                    <Text style={style.titleStyle}>Share</Text>
+                                </View>
+                            </View>
+                            <Text>Liking Loop? Share the convenience with your close ones</Text>
+                            <View
+                                style={style.horizontalDivider}
+                            />
+                        </View>
+                        <View>
+                            <View style={style.flexRootContainer}>
+                                <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
+                                    <Icon type='material' name='logout' size={30} />
+                                    <Text style={style.titleStyle}>Log Out</Text>
+                                </View>
+                            </View>
+                            <Text>You can always login easily via OTP on your registered phone number or by using your password</Text>
+                            <View
+                                style={style.horizontalDivider}
+                            />
+                        </View>
+                        <View>
+                            <View style={style.flexRootContainer}>
+                                <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
+                                    <Icon type='feather' name='info' size={30} />
+                                    <Text style={style.titleStyle}>About Loop</Text>
+                                </View>
+                            </View>
+                            <Text>Curious? Know a bit more about Loop</Text>
+                            <View
+                                style={style.horizontalDivider}
+                            />
+                        </View>
+                        
+
+                    </View>
+
+                    // list.map((item, i) => (
+                    //     <ListItem key={i} bottomDivider onPress={() => item.isNavigation ? this.handleNavigation(item.route) : this.handleCustomFunction(item.function)} >
+                    //         <Icon name={item.icon} type='material' />
+                    //         <ListItem.Content>
+                    //             <ListItem.Title>{item.title}</ListItem.Title>
+                    //         </ListItem.Content>
+                    //         <ListItem.Chevron oonPress={() => item.isNavigation ? this.handleNavigation(item.route) : this.handleCustomFunction(item.function)} />
+                    //     </ListItem>
+                    // ))
                 }
             </SafeAreaView>
 

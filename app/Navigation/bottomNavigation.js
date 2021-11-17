@@ -15,6 +15,7 @@ import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Home from '../Container/Home';
 import Help from '../Container/Help';
 import Security from '../Component/Security';
@@ -50,12 +51,12 @@ function MyTabs() {
             <MaterialCommunityIcons name="home" color={color} size={size} />
           )
         }} />
-      <Tab.Screen name="Settings"
-        component={Settings}
+        <Tab.Screen name="Loops"
+        component={Contacts}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="cog" color={color} size={size} />
+            <FontAwesome name="users" color={color} size={size} />
           )
         }} />
       <Tab.Screen name="Profile"
@@ -66,6 +67,15 @@ function MyTabs() {
             <MaterialCommunityIcons name="account" color={color} size={size} />
           )
         }} />
+      <Tab.Screen name="Settings"
+        component={Settings}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="cog" color={color} size={size} />
+          )
+        }} />
+
     </Tab.Navigator>
   );
 }
@@ -89,8 +99,8 @@ export default function MyStack() {
           <Icon name='help' type='material' color='white' onPress={() => { navigation.navigate('need-help') }} />
         ),
         headerRightContainerStyle: { paddingRight: 10 },
-        gestureDirection:'horizontal'
-       
+        gestureDirection: 'horizontal'
+
       })} />
       <Stack.Screen name="your-contacts" component={Contacts}
         options={{
@@ -139,7 +149,7 @@ export default function MyStack() {
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',
           headerBackTitleVisible: false,
-      //    gestureDirection:'horizontal'
+          //    gestureDirection:'horizontal'
         }}
 
       />
@@ -153,7 +163,7 @@ export default function MyStack() {
         }}
 
       />
-       <Stack.Screen name="update-password" component={UpdatePassword}
+      <Stack.Screen name="update-password" component={UpdatePassword}
         options={{
           title: "Update Password",
           headerTitleStyle: { color: 'white' },

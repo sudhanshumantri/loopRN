@@ -59,9 +59,8 @@ function makeAPICall(originalConfig, otherConfig) {
     .catch(error => {
       // console.log(error)
       if (error.response) {
-        //  console.log(error);
-        console.log(error.response.status);
-        if (error.response.status == 401) {
+        console.log(error);
+        if (error.response.status && error.response.status == 401) {
           AsyncStorage.clear();
           NavigationService.navigate('AuthLoading');
         } else {

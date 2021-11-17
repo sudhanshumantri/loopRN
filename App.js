@@ -25,11 +25,30 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { MenuProvider } from 'react-native-popup-menu';
+import {
+  setCustomView,
+  setCustomTextInput,
+  setCustomText,
+  setCustomImage,
+  setCustomTouchableOpacity
+} from 'react-native-global-props';
+
 import 'react-native-gesture-handler';
+// const customTextProps = {
+//   style: {
+//     // fontSize: 16,
+//     fontFamily: 'Asap-Regular',
+//     color: 'black'
+//   }
+// };
+//setCustomText(customTextProps);
 export default class App extends React.Component {
   render() {
     return (
-      <Root />
+      <MenuProvider>
+        <Root />
+      </MenuProvider>
     )
   }
 }

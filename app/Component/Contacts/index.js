@@ -11,10 +11,19 @@ import {
     StyleSheet,
     Linking,
     TouchableOpacity,
-    FlatList
+    FlatList,
+    Alert
 } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { SearchBar, Avatar, ListItem } from 'react-native-elements';
+import { SearchBar, Avatar, ListItem, Icon } from 'react-native-elements';
+import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+} from 'react-native-popup-menu';
+
+import style from './style';
 export default class Home extends Component {
     constructor(props) {
         super(props);
@@ -63,9 +72,11 @@ export default class Home extends Component {
         let { search } = this.state;
         return (
             <SearchBar
-                placeholder="Search contacts"
+                placeholder="Search for Names, Key Words, Skills, etc"
                 onChangeText={this.updateSearch}
                 value={search}
+                inputContainerStyle={style.searchBarInputContainer}
+                containerStyle={style.searchBarContainer}
             />
         )
     }
@@ -89,12 +100,27 @@ export default class Home extends Component {
                         expanded: !this.state.expanded
                     });
                 }}>
-                    <ListItem.Title>{item.contactId.name}</ListItem.Title>
+                    <ListItem.Title style={{ fontWeight: 'bold' }}>{item.contactId.name}</ListItem.Title>
                     <ListItem.Subtitle>{item.contactId.phone}</ListItem.Subtitle>
                 </ListItem.Content>
-                <ListItem.Chevron onPress={() => {
+                <View>
+                    <Menu>
+                        <MenuTrigger><Icon type='material-community' name='dots-vertical' size={40} color='black' /></MenuTrigger>
+                        <MenuOptions style={{ backgroundColor: '#E8E8E8', padding: 10, borderRadius: 5 }}>
+                            <MenuOption text='Add To Phone Contact' />
+                            <View style={style.horizontalDivider} />
+                            <MenuOption text='Permission Settings' />
+                            <View style={style.horizontalDivider} />
+                            <MenuOption text='Edit/View Note' />
+                            <View style={style.horizontalDivider} />
+                            <MenuOption text='Feelings' />
+
+                        </MenuOptions>
+                    </Menu>
+                </View>
+                {/* <ListItem.Chevron onPress={() => {
                     this.props.navigation.navigate('contact-details', { user: item.contactId })
-                }} />
+                }} /> */}
 
             </ListItem>)
     }
@@ -128,7 +154,8 @@ export default class Home extends Component {
             )
         } else {
             return (
-                <View style={styles.container}>
+
+                <SafeAreaView style={style.container}>
                     {/* <Spinner color='grey'
                         visible={isLoading}
                     /> */}
@@ -140,20 +167,13 @@ export default class Home extends Component {
                         refreshing={isLoading}
                         keyExtractor={(item, index) => index.toString()}
                         ListHeaderComponent={this.renderHeader}
+
                         renderItem={this.renderContacts}
                     />
-                </View>
+                </SafeAreaView>
+
             );
         }
     }
 }
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        // alignItems: 'center',
-        // justifyContent: 'center',
-        marginTop: 22,
-    },
-});
+

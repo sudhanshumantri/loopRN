@@ -15,6 +15,7 @@ export function* authUser({ data }) {
     } else {
         responseData = yield call(callUserAuthentication, data);
     }
+   // console.log(responseData);
     if (responseData.status == 200) {
         var decoded = '';
         //= jwt_decode(responseData.data.token);

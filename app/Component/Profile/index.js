@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Dimensions, SafeAreaView, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, Image, Pressable, TouchableOpacity, Dimensions, SafeAreaView, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { Card, Input, Avatar, Button, CheckBox, Icon, Divider } from 'react-native-elements';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
@@ -35,7 +35,8 @@ export default class Profile extends React.Component {
             linkedinLink: undefined,
             phone: undefined,
             gender: undefined,
-            isDateTimePickerVisible: false
+            isDateTimePickerVisible: false,
+            showFullSizeImage: false
 
         }
     }
@@ -46,6 +47,17 @@ export default class Profile extends React.Component {
         data.isImageChanged = false;
         this.setState(data)
 
+    }
+    showImageFullSize = () => {
+        this.setState({
+            showFullSizeImage: true
+        }, () => {
+            let timer = setTimeout(() => {
+                this.setState({
+                    showFullSizeImage: false
+                });
+            }, 500);
+        })
     }
     validatePersonalInfo = () => {
         let isValidated = true;
@@ -261,7 +273,7 @@ export default class Profile extends React.Component {
     }
     handleImageChange = () => {
         const options = {
-            mediaType: 'photo', 
+            mediaType: 'photo',
             includeBase64: true,
             maxWidth: 150,
             maxHeight: 150,
@@ -281,10 +293,11 @@ export default class Profile extends React.Component {
         return (
             <View>
                 {this.renderProfileImage()}
-                {this.renderBasicInfo()}
+                {this.renderSocialAndContactInfo()}
+                {/* {this.renderBasicInfo()} */}
                 {this.renderPersonalInfo()}
                 {this.renderProfessionalInfo()}
-                {this.renderOtherInfo()}
+                {/* {this.renderOtherInfo()} */}
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <Button
                         onPress={() => this.handleSubmit()}
@@ -301,33 +314,160 @@ export default class Profile extends React.Component {
         let { userInfo, } = this.props;
         //  console.log(isImageChanged, profImg_imageUrl,userInfo.profilePicture);
         return (
-            <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', marginTop: 20 }}>
-                <Avatar
-                    containerStyle={{ marginTop: -10 }}
-                    rounded
-                    icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
-                    source={{
-                        
-                        uri: isImageChanged ? profImg_imageUrl : userInfo.profilePicture ? userInfo.profilePicture : 'no-img',
-                    }}
-                    overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
-                    showAccessory={true}
-                    onEditPress={this.handleImageChange}
-                    onPress={this.handleImageChange}
-                    size={100}
-                >
-                    <Avatar.Accessory name="edit" onPress={this.handleImageChange}
-                        type="font-awesome5"
-                        size={20}
-                        color={'black'}
-                        style={{ backgroundColor: 'white' }}
-                        containerStyle={{ backgroundColor: 'transparent' }}
-                    />
-                </Avatar>
-                <Text style={{ color: 'black', fontSize: 22, fontWeight: "bold" }}>{userInfo.name}</Text>
+            <View>
+                <View style={style.profileTopContainer}>
+                    <View style={{ flex: 1 / 3 }}>
+                        <Avatar
+                            containerStyle={{ marginTop: -10 }}
+                            rounded
+                            icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
+                            source={{
+
+                                uri: isImageChanged ? profImg_imageUrl : userInfo.profilePicture ? userInfo.profilePicture : 'no-img',
+                            }}
+                            overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
+                            showAccessory={true}
+                            onEditPress={this.handleImageChange}
+                            onPress={this.showImageFullSize}
+                            size={100}
+                        >
+                            <Avatar.Accessory name="edit" onPress={this.handleImageChange}
+                                type="font-awesome5"
+                                size={20}
+                                color={'black'}
+                                style={{ backgroundColor: 'white' }}
+                                containerStyle={{ backgroundColor: 'transparent' }}
+                            />
+                        </Avatar>
+                    </View>
+                    <View style={{ flex: 2 / 3 }}>
+                        <TextInput
+                            style={style.inputStyle}
+                            editable={true}
+                            value={userInfo.name}
+                            onChangeText={(text) => this.handleProfileChange('name', text)}
+                        />
+                        <TextInput
+                            style={style.inputStyle}
+                            editable={true}
+                            placeholder="Tell us about yourself "
+                            multiline={true}
+                            numberOfLines={Platform.OS === 'ios' ? null : 3}
+                            minHeight={(Platform.OS === 'ios') ? (5 * 10) : null}
+                        // value={userInfo.name}
+                        // onChangeText={(text) => this.handleProfileChange('name', text)}
+                        />
+                        {/* <Text style={{ color: 'black', fontSize: 22, fontWeight: "bold" }}>{userInfo.name}</Text> */}
+                    </View>
+
+                </View>
+                <View
+                    style={style.horizontalDivider}
+                />
             </View>
         )
 
+    }
+    renderSocialAndContactInfo = () => {
+        return (
+            <View style={{ marginTop: 10 }}>
+                <Text style={style.sectionHeader}>Social and Contact Info</Text>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={style.iconContainer}>
+                        <Avatar
+                            source={
+                                require('../../../assets/icons/Call.png')
+                            }
+                            // onPress={this.handleImageChange}
+                            size={60}
+                        >
+                        </Avatar>
+                        <Text style={style.iconLabel}>Phone</Text>
+                    </View>
+                    <View style={style.iconContainer}>
+                        <Avatar
+                            source={
+                                require('../../../assets/icons/PersonalEmail.png')
+                            }
+                            // onPress={this.handleImageChange}
+                            size={60}
+                        >
+                        </Avatar>
+                        <Text style={style.iconLabel}>Email</Text>
+                    </View>
+                    <View style={style.iconContainer}>
+                        <Avatar
+                            source={
+                                require('../../../assets/icons/WorkEmail.png')
+                            }
+                            // onPress={this.handleImageChange}
+                            size={60}
+                        >
+                        </Avatar>
+                        <Text style={style.iconLabel}>Work Email</Text>
+                    </View>
+                    <View style={style.iconContainer}>
+
+                        <Avatar
+                            source={
+                                require('../../../assets/icons/Instagram.png')
+                            }
+                            // onPress={this.handleImageChange}
+                            size={60}
+                        >
+                        </Avatar>
+                        <Text style={style.iconLabel}>Instagram</Text>
+                    </View>
+                    <View style={style.iconContainer}>
+                        <Avatar
+                            source={
+                                require('../../../assets/icons/Facebook.png')
+                            }
+                            // onPress={this.handleImageChange}
+                            size={60}
+                        >
+                        </Avatar>
+                        <Text style={style.iconLabel}>Facebook</Text>
+                    </View>
+                    <View style={style.iconContainer}>
+                        <Avatar
+                            source={
+                                require('../../../assets/icons/LinkedIn.png')
+                            }
+                            // onPress={this.handleImageChange}
+                            size={60}
+                        >
+                        </Avatar>
+                        <Text style={style.iconLabel}>LinkedIn</Text>
+                    </View>
+                    <View style={style.iconContainer}>
+                        <Avatar
+                            source={
+                                require('../../../assets/icons/Twitter.png')
+                            }
+                            // onPress={this.handleImageChange}
+                            size={60}
+                        >
+                        </Avatar>
+                        <Text style={style.iconLabel}>Twitter</Text>
+                    </View>
+                    <View style={style.iconContainer}>
+                        <Avatar
+                            source={
+                                require('../../../assets/icons/Telegram.png')
+                            }
+                            // onPress={this.handleImageChange}
+                            size={60}
+                        >
+                        </Avatar>
+                        <Text style={style.iconLabel}>Telegram</Text>
+                    </View>
+                </View>
+                <View
+                    style={style.horizontalDivider}
+                />
+            </View>
+        )
     }
     renderBasicInfo = () => {
         let { name, phone, email, dob, gender } = this.state;
@@ -418,211 +558,269 @@ export default class Profile extends React.Component {
     }
     renderPersonalInfo = () => {
         let { userInfo, } = this.props;
-        let { instaLink, fbLink, linkedinLink, relationshipStatus, hobbies } = this.state;
-
+        let { dob, gender, homeLocation, currentLocation, relationshipStatus, hobbies } = this.state;
         return (
             <View style={{ marginTop: 10 }}>
-                <Text style={style.labelStyle}>Intagram username</Text>
-                <View>
-                    <TextInput
-                        style={style.inputStyle}
-                        editable={true}
-                        value={instaLink}
-                        onChangeText={(text) => this.handleInstaIDChange(text)}
-                    />
-                </View>
-                <Text style={style.labelStyle}>Facebook profile link</Text>
-                <View>
+                <Text style={style.sectionHeader}>Personal Info</Text>
+                <View style={{ marginTop: 10 }}>
+                    <Text style={style.labelStyle}>Birthday</Text>
+                    <View>
+                        <TouchableOpacity onPress={this.showDateTimePicker}>
+                            <View pointerEvents='none'>
+                                <TextInput
+                                    style={style.inputStyle}
+                                    onPress={this.showDateTimePicker}
+                                    editable={false}
+                                    value={dob}
+                                />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    <Text style={style.labelStyle}>Gender</Text>
 
-                    <TextInput
-                        style={style.inputStyle}
-                        editable={true}
-                        value={fbLink}
-                        onChangeText={(text) => this.handleFBLinkChange(text)}
+                    <View style={{
+                        flexDirection: 'row',
+                        marginTop: -10,
+                        marginBottom: -10
 
-                    />
+                    }}>
+                        <CheckBox
+                            title='Male'
+                            checked={gender == 'male' ? true : false}
+                            textStyle={{ marginLeft: -1, color: 'black' }}
+                            containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
+                            onPress={() => this.handleProfileChange('gender', 'male')}
+                            checkedColor='black'
+                        />
+                        <CheckBox
+                            title='Female'
+                            checked={gender == 'female' ? true : false}
+                            textStyle={{ marginLeft: -1, color: 'black' }}
+                            containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
+                            onPress={() => this.handleProfileChange('gender', 'female')}
+                            checkedColor='black'
+                        />
+                        <CheckBox
+                            title='Other'
+                            checked={gender == 'other' ? true : false}
+                            textStyle={{ marginLeft: -1, color: 'black' }}
+                            containerStyle={{ backgroundColor: 'transparent', borderWidth: 0, marginLeft: -1 }}
+                            onPress={() => this.handleProfileChange('gender', 'other')}
+                            checkedColor='black'
+                        />
+                    </View>
+                    <Text style={style.labelStyle}>Relationship Status</Text>
+                    <View style={{
+                        //  width: Dimensions.get('window').width * 0.80,
+                        // paddingLeft: 5,
+                        paddingRight: 5,
+                        // height: 40,
+                        borderRadius: Platform.OS == 'ios' ? 2 : 0,
+                        borderWidth: Platform.OS == 'ios' ? 0.1 : 0
+                    }}>
+                        <ModalSelector
+                            data={relationshipStatusArray}
+                            initValue="Select relationship status"
+                            //   supportedOrientations={['landscape']}
+                            accessible={true}
+                            scrollViewAccessibilityLabel={'Scrollable options'}
+                            cancelButtonAccessibilityLabel={'Cancel Button'}
+                            onChange={(option) => { this.handleRelationshipStatusChange(option.label) }}>
 
+                            <TextInput
+                                style={style.inputStyle}
+                                editable={false}
+                                placeholder="Select relationship status"
+                                value={relationshipStatus} />
 
-                </View>
-                <Text style={style.labelStyle}>Hobbies/ Personal interest</Text>
-                <View>
-
-                    <TextInput
-                        style={style.inputStyle}
-                        //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
-                        value={hobbies}
-                        onChangeText={(text) => this.handleHobbiesChange(text)}
-
-                    />
-
-
-                </View>
-
-                <Text style={style.labelStyle}>Relationship Status</Text>
-                <View style={{
-                    //  width: Dimensions.get('window').width * 0.80,
-                    // paddingLeft: 5,
-                    paddingRight: 5,
-                    // height: 40,
-                    borderRadius: Platform.OS == 'ios' ? 2 : 0,
-                    borderWidth: Platform.OS == 'ios' ? 0.1 : 0
-                }}>
-                    <ModalSelector
-                        data={relationshipStatusArray}
-                        initValue="Select relationship status"
-                        //   supportedOrientations={['landscape']}
-                        accessible={true}
-                        scrollViewAccessibilityLabel={'Scrollable options'}
-                        cancelButtonAccessibilityLabel={'Cancel Button'}
-                        onChange={(option) => { this.handleRelationshipStatusChange(option.label) }}>
-
+                        </ModalSelector>
+                    </View>
+                    <Text style={style.labelStyle}>Hobbies/ Personal interest</Text>
+                    <View>
                         <TextInput
                             style={style.inputStyle}
-                            editable={false}
-                            placeholder="Select relationship status"
-                            value={relationshipStatus} />
+                            //  value={this.props.diagnostic_Tests_Ref}
+                            editable={true}
+                            value={hobbies}
+                            onChangeText={(text) => this.handleHobbiesChange(text)}
 
-                    </ModalSelector>
+                        />
+                    </View>
+                    <Text style={style.labelStyle}>Current location</Text>
+                    <View>
+                        <TextInput
+                            style={style.inputStyle}
+                            editable={true}
+                            value={currentLocation}
+                            onChangeText={(text) => this.handleCurrentLocationChange(text)}
+                        />
+                    </View>
+                    <Text style={style.labelStyle}>Home location</Text>
+                    <View>
+                        <TextInput
+                            style={style.inputStyle}
+
+                            value={homeLocation}
+                            onChangeText={(text) => this.handlelHomeLocationChange(text)}
+
+                        />
+                    </View>
+                    <View
+                        style={style.horizontalDivider}
+                    />
                 </View>
-            </View>)
+            </View>
+        );
+
+        // return (
+        //     <View style={{ marginTop: 10 }}>
+        //         <Text style={style.labelStyle}>Intagram username</Text>
+        //         <View>
+        //             <TextInput
+        //                 style={style.inputStyle}
+        //                 editable={true}
+        //                 value={instaLink}
+        //                 onChangeText={(text) => this.handleInstaIDChange(text)}
+        //             />
+        //         </View>
+        //         <Text style={style.labelStyle}>Facebook profile link</Text>
+        //         <View>
+
+        //             <TextInput
+        //                 style={style.inputStyle}
+        //                 editable={true}
+        //                 value={fbLink}
+        //                 onChangeText={(text) => this.handleFBLinkChange(text)}
+
+        //             />
+
+
+        //         </View>
+        //         <Text style={style.labelStyle}>Hobbies/ Personal interest</Text>
+        //         <View>
+
+        //             <TextInput
+        //                 style={style.inputStyle}
+        //                 //  value={this.props.diagnostic_Tests_Ref}
+        //                 editable={true}
+        //                 value={hobbies}
+        //                 onChangeText={(text) => this.handleHobbiesChange(text)}
+
+        //             />
+
+
+        //         </View>
+
+        //         <Text style={style.labelStyle}>Relationship Status</Text>
+        //         <View style={{
+        //             //  width: Dimensions.get('window').width * 0.80,
+        //             // paddingLeft: 5,
+        //             paddingRight: 5,
+        //             // height: 40,
+        //             borderRadius: Platform.OS == 'ios' ? 2 : 0,
+        //             borderWidth: Platform.OS == 'ios' ? 0.1 : 0
+        //         }}>
+        //             <ModalSelector
+        //                 data={relationshipStatusArray}
+        //                 initValue="Select relationship status"
+        //                 //   supportedOrientations={['landscape']}
+        //                 accessible={true}
+        //                 scrollViewAccessibilityLabel={'Scrollable options'}
+        //                 cancelButtonAccessibilityLabel={'Cancel Button'}
+        //                 onChange={(option) => { this.handleRelationshipStatusChange(option.label) }}>
+
+        //                 <TextInput
+        //                     style={style.inputStyle}
+        //                     editable={false}
+        //                     placeholder="Select relationship status"
+        //                     value={relationshipStatus} />
+
+        //             </ModalSelector>
+        //         </View>
+        //     </View>)
     }
     renderProfessionalInfo = () => {
         let { userInfo, } = this.props;
-        let { linkedinLink, currentOrganization, previousOrganization, professionalEmail, professionalInterests, skills } = this.state;
+        let { currentOrganization, previousOrganization, languages, professionalInterests, skills } = this.state;
         return (
             <View style={{ marginTop: 10 }}>
-                <Text style={style.labelStyle}>Linkedin profile link</Text>
-                <View>
-                    <TextInput
-                        style={style.inputStyle}
-                        editable={true}
-                        value={linkedinLink}
-                        onChangeText={(text) => this.handleLinkedinChange(text)}
-                    />
+                <Text style={style.sectionHeader}>Professional Info</Text>
+                <View style={{ marginTop: 10 }}>
+
+
+                    <Text style={style.labelStyle}>Current college/company</Text>
+                    <View>
+
+                        <TextInput
+                            style={style.inputStyle}
+                            //  value={this.props.diagnostic_Tests_Ref}
+                            editable={true}
+                            value={currentOrganization}
+                            onChangeText={(text) => this.handleCurrentOrganizationChange(text)}
+
+                        />
+
+
+                    </View>
+                    <Text style={style.labelStyle}>Previous college/company</Text>
+                    <View>
+
+                        <TextInput
+                            style={style.inputStyle}
+                            //  value={this.props.diagnostic_Tests_Ref}
+                            editable={true}
+                            value={previousOrganization}
+                            onChangeText={(text) => this.handlePreviousOrganizationChange(text)}
+
+                        />
+                    </View>
+                    <Text style={style.labelStyle}>Professional interests</Text>
+                    <View>
+
+                        <TextInput
+                            style={style.inputStyle}
+                            //  value={this.props.diagnostic_Tests_Ref}
+                            editable={true}
+                            value={professionalInterests}
+                            onChangeText={(text) => this.handleProfessionalInterestsChange(text)}
+
+                        />
+                    </View>
+                    <Text style={style.labelStyle}>Skills</Text>
+                    <View>
+                        <TextInput
+                            style={style.inputStyle}
+                            //  value={this.props.diagnostic_Tests_Ref}
+                            editable={true}
+                            value={skills}
+                            onChangeText={(text) => this.handleSkillsChange(text)}
+
+                        />
+                    </View>
+                    <Text style={style.labelStyle}>Languages you speak</Text>
+                    <View>
+                        <TextInput
+                            style={style.inputStyle}
+                            //  value={this.props.diagnostic_Tests_Ref}
+                            editable={true}
+                            value={languages}
+                            onChangeText={(text) => this.handleLanguagesChange(text)}
+
+                        />
+                    </View>
                 </View>
-                <Text style={style.labelStyle}>Professional email</Text>
-                <View>
-
-                    <TextInput
-                        style={style.inputStyle}
-
-                        value={professionalEmail}
-                        onChangeText={(text) => this.handlelProfessionalEmailChange(text)}
-                        keyboardType='email-address'
-                    />
-
-
-                </View>
-                <Text style={style.labelStyle}>Current college/company</Text>
-                <View>
-
-                    <TextInput
-                        style={style.inputStyle}
-                        //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
-                        value={currentOrganization}
-                        onChangeText={(text) => this.handleCurrentOrganizationChange(text)}
-
-                    />
-
-
-                </View>
-                <Text style={style.labelStyle}>Previous college/company</Text>
-                <View>
-
-                    <TextInput
-                        style={style.inputStyle}
-                        //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
-                        value={previousOrganization}
-                        onChangeText={(text) => this.handlePreviousOrganizationChange(text)}
-
-                    />
-                </View>
-                <Text style={style.labelStyle}>Professional interests</Text>
-                <View>
-
-                    <TextInput
-                        style={style.inputStyle}
-                        //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
-                        value={professionalInterests}
-                        onChangeText={(text) => this.handleProfessionalInterestsChange(text)}
-
-                    />
-                </View>
-                <Text style={style.labelStyle}>Skills</Text>
-                <View>
-                    <TextInput
-                        style={style.inputStyle}
-                        //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
-                        value={skills}
-                        onChangeText={(text) => this.handleSkillsChange(text)}
-
-                    />
-                </View>
-
-
-
             </View>)
     }
     renderOtherInfo = () => {
         let { currentLocation, homeLocation, languages, aboutMe } = this.state;
         return (
             <View style={{ marginTop: 10 }}>
-                <Text style={style.labelStyle}>Current location</Text>
-                <View>
-                    <TextInput
-                        style={style.inputStyle}
-                        editable={true}
-                        value={currentLocation}
-                        onChangeText={(text) => this.handleCurrentLocationChange(text)}
-                    />
-                </View>
-                <Text style={style.labelStyle}>Home location</Text>
-                <View>
-
-                    <TextInput
-                        style={style.inputStyle}
-
-                        value={homeLocation}
-                        onChangeText={(text) => this.handlelHomeLocationChange(text)}
-
-                    />
-
-
-                </View>
-                <Text style={style.labelStyle}>Languages you speak</Text>
-                <View>
-
-                    <TextInput
-                        style={style.inputStyle}
-                        //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
-                        value={languages}
-                        onChangeText={(text) => this.handleLanguagesChange(text)}
-
-                    />
-                </View>
-                {/* <Text style={style.labelStyle}>About yourself</Text>
-                <View>
-
-                    <TextInput
-                        style={style.inputStyle}
-                        //  value={this.props.diagnostic_Tests_Ref}
-                        editable={true}
-                        value={aboutMe}
-                        onChangeText={(text) => this.handleAboutMeChange(text)}
-
-                    />
-                </View> */}
 
             </View>)
     }
     render() {
         let { error, isLoading, userInfo, } = this.props;
+        let { isImageChanged, profImg_imageUrl } = this.state;
         //   console.log(userInfo.profilePicture)
         //   console.log(this.state.name);
         if (error) {
@@ -665,6 +863,28 @@ export default class Profile extends React.Component {
                             keyboardShouldPersistTaps={'handled'}
                             enableAutomaticScroll={(Platform.OS === 'ios')}
                         >
+                            {this.state.showFullSizeImage &&
+                                <Modal
+                                    visible={this.state.showFullSizeImage}
+                                    transparent={true}
+                                >
+                                    <View style={{
+                                        flex: 1,
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        marginTop: 22
+                                    }}>
+                                        <Image
+                                            style={{ width: Dimensions.get('window').width, height: 300, resizeMode: 'contain', }}
+                                            source={{ uri: isImageChanged ? profImg_imageUrl : userInfo.profilePicture ? userInfo.profilePicture : 'no-img', }}
+                                        />
+                                    </View>
+
+                                </Modal>
+
+
+                            }
+
                             <DateTimePickerModal
                                 isVisible={this.state.isDateTimePickerVisible}
                                 onConfirm={this.handleDatePicked}
@@ -674,7 +894,8 @@ export default class Profile extends React.Component {
                             <Spinner color='grey'
                                 visible={isLoading}
                             />
-                            {userInfo &&
+
+                            {userInfo && !this.state.showFullSizeImage &&
                                 this.renderUserInfo()
                             }
 
