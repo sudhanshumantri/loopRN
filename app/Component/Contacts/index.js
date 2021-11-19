@@ -23,6 +23,7 @@ import {
     MenuTrigger,
 } from 'react-native-popup-menu';
 
+import ModalPopup from '../Shared/ModalPopup/index';
 import style from './style';
 export default class Home extends Component {
     constructor(props) {
@@ -30,7 +31,11 @@ export default class Home extends Component {
         this.state = {
             searchText: '',
             isReresshed: false,
-            matchedContact: null
+            matchedContact: null,
+            showPopup: false,
+            placeholder: '',
+            title: '',
+            inputType: ''
         };
     }
 
@@ -43,6 +48,33 @@ export default class Home extends Component {
     onRefresh() {
         this.setState({ matchedContact: null })
         this.props.fetchUserContactList();
+    }
+    showPopupModal = (type, contactInfo) => {
+        let title = '';
+        let placeholder = '';
+        let inputType = 'text';
+
+        if (type == 'edit-notes') {
+            title = 'Add Note for ' + contactInfo.name;
+            placeholder = 'Enter Note';
+
+        }
+        this.setState({
+            showPopup: true,
+            placeholder,
+            inputType,
+            title
+        })
+    }
+    closePopupModal = () => {
+        this.setState({
+            showPopup: false
+        })
+    }
+    handleModalInfoSave = (value) => {
+        this.setState({
+            showPopup: false
+        })
     }
     updateSearch = (search) => {
         let contactListObj = this.props.contactList;
@@ -107,11 +139,11 @@ export default class Home extends Component {
                     <Menu>
                         <MenuTrigger><Icon type='material-community' name='dots-vertical' size={40} color='black' /></MenuTrigger>
                         <MenuOptions style={{ backgroundColor: '#E8E8E8', padding: 10, borderRadius: 5 }}>
-                            <MenuOption text='Add To Phone Contact' />
+                            <MenuOption text='Add To Phone Contact' on />
                             <View style={style.horizontalDivider} />
-                            <MenuOption text='Permission Settings' />
+                            <MenuOption text='Permission Settings' onSelect={() => this.props.navigation.navigate('permission-settings', { userInfo: item.contactId })} />
                             <View style={style.horizontalDivider} />
-                            <MenuOption text='Edit/View Note' />
+                            <MenuOption text='Edit/View Note' onSelect={() => this.showPopupModal('edit-notes', item.contactId)} />
                             <View style={style.horizontalDivider} />
                             <MenuOption text='Feelings' />
 
@@ -142,7 +174,8 @@ export default class Home extends Component {
     }
     render() {
         let { isLoading, contactList, error } = this.props;
-        let { matchedContact } = this.state;
+        let { matchedContact, title, placeholder, inputType } = this.state;
+        console.log(this.state.showPopup)
         if (error) {
             return (
                 <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', }}>
@@ -156,9 +189,9 @@ export default class Home extends Component {
             return (
 
                 <SafeAreaView style={style.container}>
-                    {/* <Spinner color='grey'
-                        visible={isLoading}
-                    /> */}
+                    {this.state.showPopup && (
+                        <ModalPopup closePopupModal={this.closePopupModal} handleSave={this.handleModalInfoSave} title={title} inputType={inputType} placeholder={placeholder} />
+                    )}
                     <FlatList
                         // data={this.state.data}
                         ListEmptyComponent={this.renderEmpty()}

@@ -23,6 +23,7 @@ import UpdatePassword from '../Container/Security/updatePassword';
 
 import Settings from '../Container/Settings/index'
 import Contacts from '../Container/Contacts/index'
+import PermissionSettings from '../Component/PermissionSettings/index'
 
 import ContactsDetails from '../Component/ContactDetails'
 import Profile from '../Container/Profile/index'
@@ -112,6 +113,17 @@ export default function MyStack() {
         }}
 
       />
+      <Stack.Screen name="permission-settings" component={PermissionSettings}
+        options={{
+          title: "",
+          headerTitleStyle: { color: 'white' },
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white',
+          headerBackTitleVisible: false
+        }}
+
+      />
+      
       <Stack.Screen name="contact-details" component={ContactsDetails}
         options={{
           title: "Contact Details",
@@ -171,7 +183,6 @@ export default function MyStack() {
           headerTintColor: 'white',
           headerBackTitleVisible: false
         }}
-
       />
 
       {/* <
