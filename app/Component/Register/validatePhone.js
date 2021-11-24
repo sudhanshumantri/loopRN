@@ -84,10 +84,7 @@ export default class ValidatePhone extends React.Component {
                         <View style={{
                             flex: 1,
                             backgroundColor: 'white',
-
-                            // width: Dimensions.get('window').width,
                             height: Dimensions.get('window').height,
-                            //justifyContent: 'center',
                             alignItems: 'center'
                         }}>
                             <Spinner color='grey'
@@ -100,12 +97,11 @@ export default class ValidatePhone extends React.Component {
                                 width: Dimensions.get('window').width * 0.85,
                                 // alignItems: 'center',
                                 justifyContent: 'center',
-
                             }}>
-
+                                <Text style={{fontSize:26,marginBottom:10}}>Sign Up</Text>
                                 <Input
                                     containerStyle={{ height: 60, marginTop: 10 }}
-                                    placeholder=' Mobile Number '
+                                    placeholder=' Enter Mobile Number '
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
                                     inputStyle={{ color: 'black' }}
                                     leftIcon={

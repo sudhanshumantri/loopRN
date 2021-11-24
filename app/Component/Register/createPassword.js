@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, ImageBackground, Image, Dimensions, ActivityIndicator, SafeAreaView, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import { Card, Input, Button, CheckBox, Icon } from 'react-native-elements';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import * as NavigationService from '../../Navigation/navigationService';
 export default class CreatePassword extends React.Component {
 
     constructor() {
@@ -19,7 +20,8 @@ export default class CreatePassword extends React.Component {
     }
     componentDidUpdate(prevProps, prevState) {
         if (!prevProps.error && !this.props.error && !this.props.isUserRegistrationRequested && prevProps.isUserRegistrationRequested) {
-            this.props.navigation.navigate('PersonalInfo')
+            NavigationService.navigate('App');
+            //  this.props.navigation.navigate('PersonalInfo')
         }
     }
     toggleShowPassword = () => {

@@ -81,8 +81,8 @@ export default class ValidateOTP extends React.Component {
     handleSubmit = () => {
         let { otp, phone, otpAct } = this.state;
         //  console.log(otp);
-        let otpCombined = otp.join('');
-        if (otpCombined === otpAct) {
+       // let otpCombined = otp.join('');
+        if (otp === otpAct) {
             this.props.navigation.navigate('BasicInfo', { phone })
         } else {
             this.setState({
@@ -135,7 +135,7 @@ export default class ValidateOTP extends React.Component {
     render() {
         let { phoneValidationRequested } = this.props;
         let { otpValidationError, password, passwordCheck, passwordError, OTPResent } = this.state;
-        let { mobile,otpAct } = this.state;
+        let { mobile, otpAct } = this.state;
         console.log(otpAct)
         return (
             <SafeAreaView style={{
@@ -149,25 +149,52 @@ export default class ValidateOTP extends React.Component {
                     <View style={{
                         backgroundColor: 'white',
                         flex: 1,
-                        // width: Dimensions.get('window').width,
                         height: Dimensions.get('window').height,
-                        // justifyContent: 'center',
                         alignItems: 'center'
                     }}>
                         {this.renderLogo()}
                         <Spinner color='grey'
                             visible={phoneValidationRequested}
                         />
-                        <Text style={{ color: 'black' }}>OTP has been sent </Text>
-                        {otpValidationError && (
-                            <Text style={{ color: 'red' }}>Invalid OTP</Text>
+                        <View style={{
+                            backgroundColor: 'white',
+                            width: Dimensions.get('window').width * 0.85,
+                            // alignItems: 'center',
+                            justifyContent: 'center',
+                        }}>
+                            <Text style={{ fontSize: 26, marginBottom: 10 }}>Sign Up</Text>
+                            <Input
+                                    containerStyle={{ height: 60, marginTop: 10 }}
+                                    placeholder=' Enter Six Digit OTP '
+                                    inputContainerStyle={{ borderBottomWidth: 0.5 }}
+                                    inputStyle={{ color: 'black' }}
+                                    maxLength={6}
+                                    leftIcon={
+                                        <Icon
+                                            name='message-outline'
+                                            size={24}
+                                            color='black'
+                                            type='material-community'
+                                        />
+                                    }
+                                    leftIconContainerStyle={{ marginLeft: -1 }}
+                                    value={mobile}
+                                    onChangeText={text => this.handleOTPChange(text)}
+                                 //   errorMessage={mobileErrorMessage}
+                                   keyboardType='number-pad'
+                                />
+                            {/* {otpValidationError && (
+                                <Text style={{ color: 'red' }}>Invalid OTP</Text>
 
-                        )}
-
-                        <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                            {this.renderInputs()}
+                            )} */}
 
                         </View>
+
+
+                        {/* <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                            {this.renderInputs()}
+
+                        </View> */}
                         <Button color='black'
                             containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
                             buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'black' }}
@@ -175,8 +202,9 @@ export default class ValidateOTP extends React.Component {
                             titleStyle={{ fontWeight: 'bold', color: 'white' }}
                             onPress={this.handleSubmit} />
                         <View style={{ justifyContent: "center", alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
-                            <TouchableOpacity onPress={() => { this.hanleResendOTP() }}>
-                                <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 14, lineHeight: 20 }}>Resend OTP</Text>
+                            <TouchableOpacity onPress={() => { this.hanleResendOTP() }} style={{flexDirection:'row'}}>
+                                <Text style={{ color: 'grey', fontSize: 16 }}>Didn't Get the OTP?</Text>
+                                <Text style={{ color: 'black', fontWeight: '600', fontSize: 16 }}> Resend OTP</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

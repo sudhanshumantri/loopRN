@@ -105,7 +105,7 @@ export default class Login extends React.Component {
                                 width: Dimensions.get('window').width * 0.85,
                                 // alignItems: 'center',
                                 justifyContent: 'center',
-                               
+
                             }}>
                                 <View style={{ alignItems: 'center', }}>
                                     <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20, }}>Login </Text>
@@ -117,7 +117,7 @@ export default class Login extends React.Component {
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Mobile Number '
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                                    inputStyle={{color:'black' }}
+                                    inputStyle={{ color: 'black' }}
                                     leftIcon={
                                         <Icon
                                             name='cellphone-android'
@@ -135,8 +135,8 @@ export default class Login extends React.Component {
 
                                 <Input
                                     containerStyle={{ height: 60, marginTop: 20 }}
-                                    inputContainerStyle={{ borderBottomWidth: 0.5,}}
-                                    inputStyle={{color:'black' }}
+                                    inputContainerStyle={{ borderBottomWidth: 0.5, }}
+                                    inputStyle={{ color: 'black' }}
                                     placeholder='Enter Password'
                                     value={password} onChangeText={text => this.handlePasswordChange(text)}
                                     errorMessage={passwordErrorMessage}
@@ -160,7 +160,7 @@ export default class Login extends React.Component {
                                     }
                                     leftIconContainerStyle={{ marginLeft: -1 }}
                                 />
-                                 <TouchableOpacity style={{ marginTop:20,alignItems:'flex-end' }} onPress={() => { this.props.navigation.navigate('ForgetPassword') }}>
+                                <TouchableOpacity style={{ marginTop: 20, alignItems: 'flex-end' }} onPress={() => { this.props.navigation.navigate('ForgetPassword') }}>
                                     <Text style={{ color: 'white', textDecorationLine: 'underline' }}>Forgot Password</Text>
                                 </TouchableOpacity>
                                 <Button color='white'
@@ -169,14 +169,13 @@ export default class Login extends React.Component {
                                     title='SIGN IN'
                                     titleStyle={{ fontWeight: 'bold', color: 'white' }}
                                     onPress={this.handleSubmit} />
-                               
 
-                                <View style={{ justifyContent: "center", alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
+
+                                <TouchableOpacity onPress={() => { this.props.navigation.navigate('Register') }}
+                                    style={{ justifyContent: "center", alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
                                     <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 14, lineHeight: 20 }}>Don't  have an Account?</Text>
-                                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('Register') }}>
-                                        <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 14, lineHeight: 20 }}> SIGN UP</Text>
-                                    </TouchableOpacity>
-                                </View>
+                                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 14, lineHeight: 20 }}> SIGN UP</Text>
+                                </TouchableOpacity>
                                 <View style={{ justifyContent: "center", alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
                                     <TouchableOpacity onPress={() => { this.props.navigation.navigate('Login-ValidatePhone') }}>
                                         <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 14, lineHeight: 20 }}>Login with OTP</Text>

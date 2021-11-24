@@ -93,7 +93,6 @@ export default class ValidatePhone extends React.Component {
                             <Spinner color='grey'
                                 visible={isLoading}
                             />
-
                             {this.renderLogo()}
                             <View style={{
                                 backgroundColor: 'white',
@@ -102,10 +101,11 @@ export default class ValidatePhone extends React.Component {
                                 justifyContent: 'center',
 
                             }}>
+                                <Text style={{fontSize:26,marginBottom:10}}>Sign In</Text>
 
                                 <Input
                                     containerStyle={{ height: 60, marginTop: 10 }}
-                                    placeholder=' Mobile Number '
+                                    placeholder=' Enter Mobile Number '
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
                                     inputStyle={{ color: 'black' }}
                                     leftIcon={

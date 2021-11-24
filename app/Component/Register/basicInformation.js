@@ -85,37 +85,36 @@ export default class BasicInfo extends React.Component {
                 nameError: 'Enter valid  name'
             })
         }
-        if (email == '' || emailError != '') {
-            isValidated = false;
-            this.setState({
-                emailError: 'Enter valid email'
-            })
-        }
-        if (dob == '') {
-            isValidated = false;
-            this.setState({
-                dobError: 'Enter valid DOB'
-            })
-        }
-        if (age == '') {
-            isValidated = false;
-            this.setState({
-                ageError: 'Enter valid age'
-            })
-        }
+        // if (email == '' || emailError != '') {
+        //     isValidated = false;
+        //     this.setState({
+        //         emailError: 'Enter valid email'
+        //     })
+        // }
+        // if (dob == '') {
+        //     isValidated = false;
+        //     this.setState({
+        //         dobError: 'Enter valid DOB'
+        //     })
+        // }
+        // if (age == '') {
+        //     isValidated = false;
+        //     this.setState({
+        //         ageError: 'Enter valid age'
+        //     })
+        // }
         return isValidated;
     }
     handleSubmit = () => {
         if (this.validatePersonalInfo()) {
-            let { phone, name, email, dob, gender } = this.state;
+            let { phone, name } = this.state;
             let user = {
-                phone, name, email, dob, gender
+                phone, name
             }
             this.props.navigation.navigate('SetPassword', { user })
         }
 
     }
-
     renderLogo = () => {
         return (
             <View>
@@ -144,7 +143,6 @@ export default class BasicInfo extends React.Component {
                         <View style={{
                             flex: 1,
                             backgroundColor: 'white',
-
                             // width: Dimensions.get('window').width,
                             height: Dimensions.get('window').height,
                             //justifyContent: 'center',
@@ -152,12 +150,7 @@ export default class BasicInfo extends React.Component {
                         }}>
 
                             {this.renderLogo()}
-                            <DateTimePickerModal
-                                isVisible={this.state.isDateTimePickerVisible}
-                                onConfirm={this.handleDatePicked}
-                                onCancel={this.hideDateTimePicker}
-                                maximumDate={new Date()}
-                            />
+                           
                             <View style={{
                                 backgroundColor: 'white',
                                 width: Dimensions.get('window').width * 0.85,
@@ -165,15 +158,11 @@ export default class BasicInfo extends React.Component {
                                 justifyContent: 'center',
 
                             }}>
-                                <View style={{ alignItems: 'center', }}>
-                                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20, }}>Basic Information </Text>
-                                    {/* <Text style={{ color: 'red', fontSize: 14, }}>{authError} </Text> */}
-
-                                </View>
-
+                                    <Text style={{ fontSize:26,marginBottom:10 }}>Almost There </Text>
+                                   
                                 <Input
                                     containerStyle={{ height: 60, marginTop: 10 }}
-                                    placeholder=' Your name '
+                                    placeholder=' Enter Full Name Here '
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
                                     inputStyle={{ color: 'black' }}
                                     leftIcon={
@@ -189,7 +178,7 @@ export default class BasicInfo extends React.Component {
                                     onChangeText={text => this.handleNameChange(text)}
                                     errorMessage={nameError}
                                 />
-                                <Input
+                                {/* <Input
                                     containerStyle={{ height: 60, marginTop: 10 }}
                                     placeholder=' Your email '
                                     inputContainerStyle={{ borderBottomWidth: 0.5 }}
@@ -280,13 +269,13 @@ export default class BasicInfo extends React.Component {
                                     </View>
 
 
-                                </View>
+                                </View> */}
 
 
                                 <Button
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
                                     buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'black' }}
-                                    title='Next'
+                                    title='Get Your Loop Profile'
                                     titleStyle={{ fontWeight: 'bold', color: 'white' }}
                                     onPress={this.handleSubmit} />
 
