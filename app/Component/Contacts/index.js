@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import {
-    ActivityIndicator,
-    AsyncStorage,
-    StatusBar,
     View,
     Image,
     Text, SafeAreaView,
-    ScrollView,
+    PermissionsAndroid,
+    Platform,
     Dimensions,
     StyleSheet,
     Linking,
@@ -14,6 +12,7 @@ import {
     FlatList,
     Alert
 } from 'react-native';
+import Contacts from 'react-native-contacts';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { SearchBar, Avatar, ListItem, Icon } from 'react-native-elements';
 import {
@@ -49,6 +48,65 @@ export default class Home extends Component {
         this.setState({ matchedContact: null })
         this.props.fetchUserContactList();
     }
+    openContactPicker = async (userInfo) => {
+        let { profilePicture, name, email, phone } = userInfo;
+
+        var newPerson = {
+            emailAddresses: [{
+                label: "personal",
+                email: email,
+            },
+            ], phoneNumbers: [{
+                label: "mobile",
+                number: String(phone),
+            }],
+            displayName: name,
+            givenName: name
+        }
+        try {
+            if (Platform.OS === 'android') {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+                    {
+                        title: "Loop App Contacts Permission",
+                        message:
+                            "Loop App needs access to your contacts ",
+                        buttonNegative: "Cancel",
+                        buttonPositive: "OK"
+                    }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    Contacts.openContactForm(newPerson).then(contact => {
+                        if (contact) {
+                            this.props.navigation.goBack();
+                            showMessage({
+                                message: "Contact saved successfully",
+                                type: "success",
+                            });
+                        }
+                    }).catch(error => {
+                        console.log(error)
+                    })
+                } else {
+                    console.log("contacts permission denied");
+                }
+            } else {
+                Contacts.openContactForm(newPerson).then(contact => {
+                    if (contact) {
+                        this.props.navigation.goBack();
+                        showMessage({
+                            message: "Contact saved successfully",
+                            type: "success",
+                        });
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    };
     showPopupModal = (type, contactInfo) => {
         let title = '';
         let placeholder = '';
@@ -139,7 +197,7 @@ export default class Home extends Component {
                     <Menu>
                         <MenuTrigger><Icon type='material-community' name='dots-vertical' size={40} color='black' /></MenuTrigger>
                         <MenuOptions style={{ backgroundColor: '#E8E8E8', padding: 10, borderRadius: 5 }}>
-                            <MenuOption text='Add To Phone Contact' on />
+                            <MenuOption text='Add To Phone Contact' onSelect={()=>this.openContactPicker(item.contactId)} />
                             <View style={style.horizontalDivider} />
                             <MenuOption text='Permission Settings' onSelect={() => this.props.navigation.navigate('permission-settings', { userInfo: item.contactId })} />
                             <View style={style.horizontalDivider} />
@@ -175,7 +233,6 @@ export default class Home extends Component {
     render() {
         let { isLoading, contactList, error } = this.props;
         let { matchedContact, title, placeholder, inputType } = this.state;
-        console.log(this.state.showPopup)
         if (error) {
             return (
                 <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', }}>

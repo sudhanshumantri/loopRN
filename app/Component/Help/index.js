@@ -1,9 +1,6 @@
 import React from 'react';
 import { View, Text, Platform, StyleSheet, Alert, TouchableOpacity, Dimensions, Picker, SafeAreaView, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { Card, Input, Avatar, Button, CheckBox, Icon, Divider } from 'react-native-elements';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { showMessage, hideMessage } from "react-native-flash-message";
 import moment from 'moment';
 import style from './style';
 export default class Help extends React.Component {

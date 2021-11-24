@@ -10,12 +10,18 @@ const styles = {
     },
 
     textTitle: {
-        fontWeight: 'bold',
-        fontSize: 18,
+        fontWeight: '600',
+        fontSize: 16,
         textAlign: 'center',
         // padding: 16,
         color: 'black',
         marginBottom:25
+    },
+    horizontalDivider: {
+      //  marginTop: 20,
+        borderBottomColor: '#C1C1C1',
+        borderBottomWidth: 2,
+        width:300
     },
     inputStyle: {
         height: 40,

@@ -24,7 +24,7 @@ import UpdatePassword from '../Container/Security/updatePassword';
 import Settings from '../Container/Settings/index'
 import Contacts from '../Container/Contacts/index'
 import PermissionSettings from '../Component/PermissionSettings/index'
-
+import CustomSharingSettings from '../Component/CustomSharing/index'
 import ContactsDetails from '../Component/ContactDetails'
 import Profile from '../Container/Profile/index'
 import InformationSharing from '../Container/InformationSharing/index'
@@ -106,6 +106,7 @@ export default function MyStack() {
       <Stack.Screen name="your-contacts" component={Contacts}
         options={{
           title: "Contacts",
+          headerTitleAlign:'left',
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',
@@ -123,10 +124,22 @@ export default function MyStack() {
         }}
 
       />
+       <Stack.Screen name="custom-sharing-settings" component={CustomSharingSettings}
+        options={{
+          title: "Custom Sharing",
+          headerTitleAlign:'left',
+          headerTitleStyle: { color: 'white' },
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white',
+          headerBackTitleVisible: false
+        }}
+
+      />
       
       <Stack.Screen name="contact-details" component={ContactsDetails}
         options={{
           title: "Contact Details",
+          headerTitleAlign:'left',
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',
@@ -137,16 +150,17 @@ export default function MyStack() {
       <Stack.Screen name="information-sharing" component={InformationSharing}
         options={{
           title: "Information Sharing",
+          headerTitleAlign:'left',
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',
           headerBackTitleVisible: false
         }}
-
       />
       <Stack.Screen name="scan-qrcode" component={QRCodeScan}
         options={{
           title: "Scan QR Code",
+          headerTitleAlign:'left',
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',

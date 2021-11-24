@@ -35,7 +35,7 @@ export default class ModalPopup extends React.Component {
                         placeholder={this.props.placeholder}
                         inputContainerStyle={{ borderBottomWidth: 0.5 }}
                         inputStyle={{ color: 'black' }}
-                        value={inputValue ? inputValue : this.props.value}
+                        value={inputValue!=undefined ? inputValue : this.props.value}
                         onChangeText={text => this.handleInputValueChange(text)}
                         // errorMessage={mobileErrorMessage}
                         keyboardType='phone-pad'
@@ -50,7 +50,7 @@ export default class ModalPopup extends React.Component {
                         </Pressable>
                         <Pressable
                             style={[style.button, style.buttonSave]}
-                            onPress={() => this.props.handleSave(inputValue ? inputValue : this.props.value)}
+                            onPress={() => this.props.handleSave(inputValue!=undefined  ? inputValue : this.props.value)}
                         >
                             <Text style={style.textStyle}>Save</Text>
                         </Pressable>
@@ -60,9 +60,6 @@ export default class ModalPopup extends React.Component {
         </Modal>)
     }
     render() {
-        // let { isImageChanged, profImg_imageUrl, userInfo, isLoading } = this.state;
-        // console.log(userInfo)
-        console.log(this.props);
         return (
             <View>
                 {this.renderModalComponent()}

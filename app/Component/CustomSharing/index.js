@@ -10,7 +10,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import moment from 'moment';
 import style from './style';
 let index = 0;
-export default class PermissionSettings extends React.Component {
+export default class CustomSharingSettings extends React.Component {
 
     constructor(props) {
         super(props);
@@ -20,14 +20,6 @@ export default class PermissionSettings extends React.Component {
 
         }
     }
-    componentDidMount() {
-       // console.log(this.props.route.params.userInfo);
-        this.setState({
-            userInfo: this.props.route.params.userInfo
-        })
-
-    }
-
     handleSubmit() {
         // console.log(data);
         //  console.log(this.validatePersonalInfo());
@@ -54,8 +46,9 @@ export default class PermissionSettings extends React.Component {
     }
     renderSharingConfiguration = () => {
         let { userInfo } = this.state
-        return (<View>
-            <Text style={style.labelStyle}>Choose What to Share with {userInfo.name}</Text>
+        return (<View style={{marginTop:20}}>
+            <Text style={style.textBoldStyle}>Select Info to Add to Your Custom Profile</Text>
+            <View style={style.horizontalDivider} />
             {this.renderSocialAndContactInfo()}
             {this.renderPersonalInfo()}
             {this.renderProfessionalInfo()}
@@ -65,48 +58,12 @@ export default class PermissionSettings extends React.Component {
     renderUserInfo = () => {
         return (
             <View>
-                {this.renderProfileImage()}
-                {this.renderContactSharingToggle()}
+                {/* {this.renderContactSharingToggle()} */}
                 {this.renderSharingConfiguration()}
             </View>
         )
     }
-    
-    renderProfileImage = () => {
-        let { isImageChanged, profImg_imageUrl, userInfo } = this.state;
-        //  console.log(isImageChanged, profImg_imageUrl,userInfo.profilePicture);
-        return (
-            <View>
-                <View style={style.profileTopContainer}>
-                    <View style={{ flex: 1 / 3 }}>
-                        <Avatar
-                            containerStyle={{ marginTop: -10 }}
-                            rounded
-                            icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
-                            source={{
 
-                                uri: userInfo.profilePicture ? userInfo.profilePicture : 'no-img',
-                            }}
-                            overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
-                            // onEditPress={this.handleImageChange}
-                            // onPress={this.showImageFullSize}
-                            size={100}
-                        >
-                        </Avatar>
-                    </View>
-                    <View style={{ flex: 2 / 3 }}>
-                        <Text style={style.textBoldStyle}>{userInfo.name}</Text>
-                        <Text>(Bio) Hey! My first name is FirstName and last name is LastName. Text me on WhatsApp for quick response.</Text>
-                    </View>
-
-                </View>
-                <View
-                    style={style.horizontalDivider}
-                />
-            </View>
-        )
-
-    }
     renderSocialAndContactInfo = () => {
         return (
             <View style={{ marginTop: 10 }}>
@@ -302,8 +259,6 @@ export default class PermissionSettings extends React.Component {
             </View>)
     }
     renderPersonalInfo = () => {
-        let { userInfo, } = this.props;
-        let { dob, gender, homeLocation, currentLocation, relationshipStatus, hobbies } = this.state;
         return (
             <View style={{ marginTop: 10 }}>
                 <View style={style.flexToggleRootContainer}>
@@ -394,8 +349,6 @@ export default class PermissionSettings extends React.Component {
         );
     }
     renderProfessionalInfo = () => {
-        let { userInfo, } = this.props;
-        let { currentOrganization, previousOrganization, languages, professionalInterests, skills } = this.state;
         return (
             <View style={{ marginTop: 10 }}>
                 <View style={style.flexToggleRootContainer}>
@@ -474,10 +427,6 @@ export default class PermissionSettings extends React.Component {
         )
     }
     render() {
-        // let { error, , userInfo, } = this.props;
-        let { isImageChanged, profImg_imageUrl, userInfo, isLoading } = this.state;
-        console.log(userInfo)
-        //   console.log(this.state.name);
         return (
             <View
                 style={style.conatiner}>
@@ -486,34 +435,11 @@ export default class PermissionSettings extends React.Component {
                     keyboardShouldPersistTaps={'handled'}
                     style={{ marginBottom: 10, paddingLeft: 10, paddingRight: 10 }}
                 >
-                    {/* {this.state.showFullSizeImage &&
-                        <Modal
-                            visible={this.state.showFullSizeImage}
-                            transparent={true}
-                        >
-                            <View style={{
-                                flex: 1,
-                                justifyContent: "center",
-                                alignItems: "center",
-                                marginTop: 22
-                            }}>
-                                <Image
-                                    style={{ width: Dimensions.get('window').width, height: 300, resizeMode: 'contain', }}
-                                    source={{ uri: isImageChanged ? profImg_imageUrl : userInfo.profilePicture ? userInfo.profilePicture : 'no-img', }}
-                                />
-                            </View>
-
-                        </Modal>
-
-
-                    } */}
-                    <Spinner color='grey'
+                    {/* <Spinner color='grey'
                         visible={isLoading}
-                    />
+                    /> */}
 
-                    {userInfo && !this.state.showFullSizeImage &&
-                        this.renderUserInfo()
-                    }
+                    {this.renderUserInfo()}
                 </ScrollView>
             </View >
         )

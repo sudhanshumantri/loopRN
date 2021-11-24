@@ -35,14 +35,14 @@ import {
 } from 'react-native-global-props';
 
 import 'react-native-gesture-handler';
-// const customTextProps = {
-//   style: {
-//     // fontSize: 16,
-//     fontFamily: 'Asap-Regular',
-//     color: 'black'
-//   }
-// };
-//setCustomText(customTextProps);
+const customTextProps = {
+  style: {
+    // fontSize: 16,
+    fontFamily: 'Asap-SemiBold',
+    color: 'black'
+  }
+};
+setCustomText(customTextProps);
 export default class App extends React.Component {
   render() {
     return (

@@ -44,6 +44,7 @@ export default class Home extends React.Component {
 
                             uri: userInfo.profilePicture ? userInfo.profilePicture : 'no-img',
                         }}
+                        onPress={()=>this.props.navigation.navigate('Profile')}
                         overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
                         size={70}
                     />

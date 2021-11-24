@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, TextInput, Image, Pressable, TouchableOpacity, Dimensions, SafeAreaView, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { Card, Input, Avatar, Button, CheckBox, Icon, Divider } from 'react-native-elements';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+//import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Picker } from '@react-native-picker/picker';
 import ModalSelector from 'react-native-modal-selector'
@@ -10,6 +11,7 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import Spinner from 'react-native-loading-spinner-overlay';
 import moment from 'moment';
 import style from './style';
+import ModalPopup from '../Shared/ModalPopup/index';
 let index = 0;
 const relationshipStatusArray = [
     { key: index++, label: 'Single' },
@@ -29,14 +31,23 @@ export default class Profile extends React.Component {
             name: undefined,
             dob: undefined,
             email: undefined,
+            professionalEmail: undefined,
             fbLink: undefined,
             phone: undefined,
             instaLink: undefined,
             linkedinLink: undefined,
+            twitterLink:undefined,
+            telegramLink:undefined,
             phone: undefined,
             gender: undefined,
             isDateTimePickerVisible: false,
-            showFullSizeImage: false
+            showFullSizeImage: false,
+            showPopup: false,
+            placeholder: '',
+            title: '',
+            inputType: '',
+            modalInputValue: '',
+            socialContactUpdateType: ''
 
         }
     }
@@ -45,8 +56,168 @@ export default class Profile extends React.Component {
         let data = this.props.userInfo ? this.props.userInfo : {};
         data.isDateTimePickerVisible = false;
         data.isImageChanged = false;
-        this.setState(data)
+        this.setState(data);
+    }
+    showPopupModal = (type, value) => {
+        let title = '';
+        let placeholder = '';
+        let inputType = 'email';
 
+        if (type == 'email') {
+            title = 'Edit your email';
+            placeholder = 'Enter email';
+
+        } else if (type == 'work-email') {
+            title = 'Edit your professional email';
+            placeholder = 'Enter email';
+
+        } else if (type == 'instagram') {
+            title = 'Edit your Intagram';
+            placeholder = 'Enter Instagram Link';
+
+        } else if (type == 'facebook') {
+            title = 'Edit your Facebook';
+            placeholder = 'Enter Facebook Link';
+
+        }
+        else if (type == 'linkedin') {
+            title = 'Edit your Linkedin';
+            placeholder = 'Enter Linkedin Link';
+
+        }
+        else if (type == 'twitter') {
+            title = 'Edit your Twitter';
+            placeholder = 'Enter Twitter Link';
+
+        }
+        else if (type == 'telegram') {
+            title = 'Edit your Telegram';
+            placeholder = 'Enter Telegram Link';
+
+        }
+        this.setState({
+            showPopup: true,
+            placeholder,
+            socialContactUpdateType: type,
+            inputType,
+            title,
+            modalInputValue: value
+        })
+    }
+    closePopupModal = () => {
+        this.setState({
+            showPopup: false
+        })
+    }
+    validateInstagramLink = (values) => {
+        var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
+        if (urlregex.test(values)) {
+            isValidated = false;
+            showMessage({
+                message: "Instgram username is not valid",
+                type: "danger",
+            });
+            return false;
+        } else {
+            return true;
+        }
+    }
+    validatePersonalEmail = (values) => {
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values)) {
+            isValidated = false;
+            showMessage({
+                message: "Email is not valid",
+                type: "danger",
+            });
+            return false
+        } else {
+            return true
+        }
+    }
+    validateProfessionalEmail = (values) => {
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values)) {
+            isValidated = false;
+            showMessage({
+                message: "Email is not valid",
+                type: "danger",
+            });
+            return false;
+        } else {
+            return true
+        }
+    }
+    validateFBLink = (values) => {
+        if (!/(ftp|http|https):\/\/?(?:www\.)?facebook.com(\w+:{0,1}\w*@)?(\S+)(:([0-9])+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(values)) {
+            isValidated = false;
+            showMessage({
+                message: "Facebook profile is not valid",
+                type: "danger",
+            });
+            return false;
+        } else {
+            return true
+        }
+    }
+    validateLinkedin = (values) => {
+        if (values.trim > 0) {
+            if (!/(ftp|http|https):\/\/?(?:www\.)?linkedin.com(\w+:{0,1}\w*@)?(\S+)(:([0-9])+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/.test(values)) {
+                isValidated = false;
+                showMessage({
+                    message: "Linkedin profile is not valid",
+                    type: "danger",
+                });
+                return false;
+            } else {
+                return true
+            }
+        }else{
+            return true
+        }
+    }
+    handleSocialContactUpdate = (values) => {
+     
+        this.setState({
+            showPopup: false
+        })
+        let { socialContactUpdateType } = this.state;
+        if (socialContactUpdateType == 'email') {
+            if (this.validatePersonalEmail(values)) {
+                this.setState({
+                    email: values
+                })
+                this.props.updateUserInfo({ email: values })
+            }
+        }
+        else if (socialContactUpdateType == 'work-email') {
+            if (this.validateProfessionalEmail(values)) {
+                this.setState({
+                    professionalEmail: values
+                })
+                this.props.updateUserInfo({ professionalEmail: values })
+            }
+        }
+        else if (socialContactUpdateType == 'instagram') {
+            if (this.validateInstagramLink(values)) {
+                this.setState({
+                    instaLink: values
+                })
+                this.props.updateUserInfo({ instaLink: values })
+            }
+        } else if (socialContactUpdateType == 'facebook') {
+            if (this.validateFBLink(values)) {
+                this.setState({
+                    fbLink: values
+                })
+                this.props.updateUserInfo({ fbLink: values })
+            }
+        } else if (socialContactUpdateType == 'linkedin') {
+            if (this.validateLinkedin(values)) {
+                this.setState({
+                    linkedinLink: values
+                })
+                this.props.updateUserInfo({ linkedinLink: values })
+            }
+        }
     }
     showImageFullSize = () => {
         this.setState({
@@ -275,19 +446,30 @@ export default class Profile extends React.Component {
         const options = {
             mediaType: 'photo',
             includeBase64: true,
-            maxWidth: 150,
-            maxHeight: 150,
+            width: 150,
+            height: 150,
             quality: 0.5,
+            cropping: true
         }
-        launchImageLibrary(options, response => {
-            if (response.assets && response.assets[0].uri) {
+        ImagePicker.openPicker(options).then(image => {
+            if (image && image.data) {
                 this.setState({
                     isImageChanged: true,
-                    profImg_imageUrl: response.assets[0].uri
+                    profImg_imageUrl: image
                 })
-                this.props.updateUserProfilePic({ profilePicture: response.assets[0].base64 })
+                this.props.updateUserProfilePic({ profilePicture: image.data })
             }
-        })
+        });
+        // ImagePicker.openPicker(options, response => {
+        //     // launchImageLibrary(options, response => {
+        //     if (response.assets && response.assets[0].uri) {
+        //         this.setState({
+        //             isImageChanged: true,
+        //             profImg_imageUrl: response.assets[0].uri
+        //         })
+        //         this.props.updateUserProfilePic({ profilePicture: response.assets[0].base64 })
+        //     }
+        // })
     }
     renderUserInfo = () => {
         return (
@@ -323,7 +505,7 @@ export default class Profile extends React.Component {
                             icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
                             source={{
 
-                                uri: isImageChanged ? profImg_imageUrl : userInfo.profilePicture ? userInfo.profilePicture : 'no-img',
+                                uri: isImageChanged ? `data:${profImg_imageUrl.mime};base64,${profImg_imageUrl.data}` : userInfo.profilePicture ? userInfo.profilePicture : 'no-img',
                             }}
                             overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
                             showAccessory={true}
@@ -369,6 +551,7 @@ export default class Profile extends React.Component {
 
     }
     renderSocialAndContactInfo = () => {
+        let { phone, email, professionalEmail, instaLink, fbLink, linkedinLink, twitterLink, telegramLink } = this.state;
         return (
             <View style={{ marginTop: 10 }}>
                 <Text style={style.sectionHeader}>Social and Contact Info</Text>
@@ -376,9 +559,9 @@ export default class Profile extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/Call.png')
+                                require('../../../assets/icons/V_Call.png')
                             }
-                            // onPress={this.handleImageChange}
+                            // onPress={()=>this.showPopupModal('phone', item.contactId)}
                             size={60}
                         >
                         </Avatar>
@@ -387,9 +570,10 @@ export default class Profile extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/PersonalEmail.png')
+                                (email && email.trim().length) > 0 ? require('../../../assets/icons/V_PersonalEmail.png') : require('../../../assets/icons/BW_V_PersonalEmail.png')
+                              
                             }
-                            // onPress={this.handleImageChange}
+                            onPress={() => this.showPopupModal('email', email)}
                             size={60}
                         >
                         </Avatar>
@@ -398,9 +582,10 @@ export default class Profile extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/WorkEmail.png')
+                                (professionalEmail && professionalEmail.trim().length) > 0 ? require('../../../assets/icons/V_WorkEmail.png') : require('../../../assets/icons/BW_V_WorkEmail.png')
+                              
                             }
-                            // onPress={this.handleImageChange}
+                            onPress={() => this.showPopupModal('work-email', professionalEmail)}
                             size={60}
                         >
                         </Avatar>
@@ -410,9 +595,9 @@ export default class Profile extends React.Component {
 
                         <Avatar
                             source={
-                                require('../../../assets/icons/Instagram.png')
+                                (instaLink && instaLink.trim().length) > 0 ? require('../../../assets/icons/V_Instagram.png') : require('../../../assets/icons/BW_V_Instagram.png')
                             }
-                            // onPress={this.handleImageChange}
+                            onPress={() => this.showPopupModal('instagram', instaLink)}
                             size={60}
                         >
                         </Avatar>
@@ -421,9 +606,9 @@ export default class Profile extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/Facebook.png')
+                                (fbLink && fbLink.trim().length) > 0 ? require('../../../assets/icons/V_Facebook.png') : require('../../../assets/icons/BW_V_Facebook.png')
                             }
-                            // onPress={this.handleImageChange}
+                            onPress={() => this.showPopupModal('facebook', fbLink)}
                             size={60}
                         >
                         </Avatar>
@@ -432,9 +617,9 @@ export default class Profile extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/LinkedIn.png')
+                                (linkedinLink && linkedinLink.trim().length) > 0 ? require('../../../assets/icons/V_LinkedIn.png') : require('../../../assets/icons/BW_V_LinkedIn.png')
                             }
-                            // onPress={this.handleImageChange}
+                            onPress={() => this.showPopupModal('linkedin', linkedinLink)}
                             size={60}
                         >
                         </Avatar>
@@ -443,9 +628,10 @@ export default class Profile extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/Twitter.png')
+                                (twitterLink && twitterLink.trim().length) > 0 ? require('../../../assets/icons/V_Twitter.png') : require('../../../assets/icons/BW_V_Twitter.png')
+                               
                             }
-                            // onPress={this.handleImageChange}
+                            onPress={() => this.showPopupModal('twitter', twitterLink)}
                             size={60}
                         >
                         </Avatar>
@@ -454,9 +640,11 @@ export default class Profile extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/Telegram.png')
+                                (telegramLink && telegramLink.trim().length) > 0 ? require('../../../assets/icons/V_Telegram.png') : require('../../../assets/icons/BW_V_Telegram.png')
+                               
+                               
                             }
-                            // onPress={this.handleImageChange}
+                            onPress={() => this.showPopupModal('telegram', telegramLink)}
                             size={60}
                         >
                         </Avatar>
@@ -820,7 +1008,7 @@ export default class Profile extends React.Component {
     }
     render() {
         let { error, isLoading, userInfo, } = this.props;
-        let { isImageChanged, profImg_imageUrl } = this.state;
+        let { isImageChanged, profImg_imageUrl, email, title, inputType, placeholder, modalInputValue } = this.state;
         //   console.log(userInfo.profilePicture)
         //   console.log(this.state.name);
         if (error) {
@@ -863,6 +1051,9 @@ export default class Profile extends React.Component {
                             keyboardShouldPersistTaps={'handled'}
                             enableAutomaticScroll={(Platform.OS === 'ios')}
                         >
+                            {this.state.showPopup && (
+                                <ModalPopup closePopupModal={this.closePopupModal} handleSave={this.handleSocialContactUpdate} title={title} inputType={inputType} placeholder={placeholder} value={modalInputValue} />
+                            )}
                             {this.state.showFullSizeImage &&
                                 <Modal
                                     visible={this.state.showFullSizeImage}
@@ -876,7 +1067,7 @@ export default class Profile extends React.Component {
                                     }}>
                                         <Image
                                             style={{ width: Dimensions.get('window').width, height: 300, resizeMode: 'contain', }}
-                                            source={{ uri: isImageChanged ? profImg_imageUrl : userInfo.profilePicture ? userInfo.profilePicture : 'no-img', }}
+                                            source={{ uri: isImageChanged ? `data:${profImg_imageUrl.mime};base64,${profImg_imageUrl.data}` : userInfo.profilePicture ? userInfo.profilePicture : 'no-img', }}
                                         />
                                     </View>
 

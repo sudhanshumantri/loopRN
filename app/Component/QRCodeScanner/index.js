@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { Card, Input, Avatar, Button, CheckBox, Icon,  } from 'react-native-elements';
+import { Card, Input, Avatar, Button, CheckBox, Icon, } from 'react-native-elements';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Contacts from 'react-native-contacts';
 import style from './scanStyle'
@@ -272,10 +272,11 @@ export default class QRCodeScan extends Component {
 
             <SafeAreaView style={{
                 flex: 1,
-                // padding: 20,
+                padding: 20,
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: 'white',
+
             }}>
                 {/* <ScrollView
                     showsVerticalScrollIndicator={false}
@@ -294,14 +295,18 @@ export default class QRCodeScan extends Component {
 
                 {scan &&
                     <QRCodeScanner
+                      //  cameraStyle={{width:500}}
                         reactivate={true}
                         cameraProps={{ captureAudio: false }}
                         showMarker={true}
                         ref={(node) => { this.scanner = node }}
                         onRead={this.onSuccess}
                         topContent={
-                            <Text style={style.textTitle}>
-                                Scan QR Code</Text>
+                            <View>
+                                <Text style={style.textTitle}>
+                                    Scan a Loop Code</Text>
+                                <View style={style.horizontalDivider}/>  
+                            </View>
                         }
 
                     />

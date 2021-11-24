@@ -124,7 +124,7 @@ export default class Settings extends React.Component {
                                 style={style.horizontalDivider}
                             />
                         </View>
-                        <View>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('custom-sharing-settings')}>
                             <View style={style.flexRootContainer}>
                                 <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
                                     <Icon type='antdesign' name='menufold' size={30} />
@@ -135,32 +135,36 @@ export default class Settings extends React.Component {
                             <View
                                 style={style.horizontalDivider}
                             />
-                        </View>
-                        <View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.handleCustomFunction('handleShare')}>
                             <View style={style.flexRootContainer}>
-                                <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
+                                <TouchableOpacity
+                                    onPress={() => this.handleCustomFunction('handleShare')}
+                                    style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }} >
                                     <Icon type='material' name='share' size={30} />
                                     <Text style={style.titleStyle}>Share</Text>
-                                </View>
+                                </TouchableOpacity>
                             </View>
                             <Text>Liking Loop? Share the convenience with your close ones</Text>
                             <View
                                 style={style.horizontalDivider}
                             />
-                        </View>
-                        <View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.handleCustomFunction('handleLogout')}>
                             <View style={style.flexRootContainer}>
-                                <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
+                                <TouchableOpacity
+                                    onPress={() => this.handleCustomFunction('handleLogout')}
+                                    style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
                                     <Icon type='material' name='logout' size={30} />
                                     <Text style={style.titleStyle}>Log Out</Text>
-                                </View>
+                                </TouchableOpacity>
                             </View>
                             <Text>You can always login easily via OTP on your registered phone number or by using your password</Text>
                             <View
                                 style={style.horizontalDivider}
                             />
-                        </View>
-                        <View>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
                             <View style={style.flexRootContainer}>
                                 <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
                                     <Icon type='feather' name='info' size={30} />
@@ -171,8 +175,8 @@ export default class Settings extends React.Component {
                             <View
                                 style={style.horizontalDivider}
                             />
-                        </View>
-                        
+                        </TouchableOpacity>
+
 
                     </View>
 
