@@ -22,6 +22,7 @@ const INITIAL_STATE = fromJS({
     isInfoLoading: false,
     infoError: null,
     userPersonalDetails: null,
+    isSharingInfoUpdateRequest:false,
     userSharingInfo: null,
     error: null,
     qrCodeError: null,
@@ -44,6 +45,13 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
                 instaLink: action.data.instaLink,
                 fbLink: action.data.fbLink,
                 linkedinLink: action.data.linkedinLink,
+                professionalEmail: action.data.professionalEmail,
+                sharedAllInfo: action.data.sharedAllInfo,
+                socialMediaSharing: action.data.socialMediaSharing,
+                personalInfoSharing: action.data.personalInfoSharing,
+                professionalInfoSharing: action.data.professionalInfoSharing,
+                customInfoSharing: action.data.customInfoSharing,
+
             }
             //  console.log(action.data.data.Admin.user_icons);
             return state.set('isInfoLoading', false)
@@ -70,13 +78,17 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
             return state.set('isInfoLoading', false)
                 .set('error', action.error);
 
-        case UPDATE_USER_SHARING_DETAILS_REQUESTED:
-            return state
+
         case UPDATE_PROFILE_PIC_SUCCESS:
             userInfoObject.profilePicture = action.data;
             return state.set('isInfoLoading', false)
                 .set('userPersonalDetails', userInfoObject)
                 .set('error', null);
+        case UPDATE_USER_SHARING_DETAILS_REQUESTED:
+            return state.set('isInfoLoading', false)
+                .set('isSharingInfoUpdateRequest', true)
+                .set('error', null);
+            
         case UPDATE_USER_SHARING_DETAILS_SUCCESS:
             var userSharingObj = {
                 phone: action.data.phone,
@@ -87,13 +99,22 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
                 instaLink: action.data.instaLink,
                 fbLink: action.data.fbLink,
                 linkedinLink: action.data.linkedinLink,
+                professionalEmail: action.data.professionalEmail,
+                sharedAllInfo: action.data.sharedAllInfo,
+                socialMediaSharing: action.data.socialMediaSharing,
+                personalInfoSharing: action.data.personalInfoSharing,
+                professionalInfoSharing: action.data.professionalInfoSharing,
+                customInfoSharing: action.data.customInfoSharing,
+
             }
             return state.set('isInfoLoading', false)
                 .set('userSharingInfo', userSharingObj)
+                .set('isSharingInfoUpdateRequest', false)
                 .set('error', null);
         case UPDATE_USER_PERSOANAL_DETAILS_FAILED:
 
             return state.set('isInfoLoading', false)
+                .set('isSharingInfoUpdateRequest', false)
                 .set('error', action.error);
 
         //QR Code Access

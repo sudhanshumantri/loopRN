@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import Home from '../../Component/Home';
+import CustomSharing from '../../Component/CustomSharing/index';
 import { fetchUserProfileAction,updateUserSharingInfoAction } from '../../Actions/user';
 
 import {
@@ -16,8 +16,7 @@ const mapStateToProps = createStructuredSelector({
 })
 
 const mapDispatchToProps = {
-    fetchUserInfo: fetchUserProfileAction,
     updateUserSharingInfo:updateUserSharingInfoAction
 
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomSharing);

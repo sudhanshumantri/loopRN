@@ -28,25 +28,9 @@ export default class CustomSharingSettings extends React.Component {
         }
 
     }
-    renderContactSharingToggle = () => {
-        return (<View>
-            <View style={style.flexToggleRootContainer}>
-                <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
-                    <Icon type='font-awesome' name='exchange' size={30} style={{ marginRight: 10 }} />
-                    <Text style={style.titleStyle}>Contact Exchange</Text>
-                </View>
-
-                <View style={{ flex: 1 / 3, justifyContent: 'center', alignItems: 'flex-end' }}><Switch value={false} color="orange" /></View>
-            </View>
-            <Text>Turn off to block this contact</Text>
-            <View
-                style={style.horizontalDivider}
-            />
-        </View>)
-    }
     renderSharingConfiguration = () => {
         let { userInfo } = this.state
-        return (<View style={{marginTop:20}}>
+        return (<View style={{ marginTop: 20 }}>
             <Text style={style.textBoldStyle}>Select Info to Add to Your Custom Profile</Text>
             <View style={style.horizontalDivider} />
             {this.renderSocialAndContactInfo()}
@@ -65,6 +49,9 @@ export default class CustomSharingSettings extends React.Component {
     }
 
     renderSocialAndContactInfo = () => {
+        let {socialMediaSharing} = this.props.userSharingInfo.customInfoSharing.sharingConfigurations
+        console.log(socialMediaSharing);
+        // this.props.userSharingInfo.socialMediaSharing.sharingConfigurations.isShared
         return (
             <View style={{ marginTop: 10 }}>
                 <View style={style.flexToggleRootContainer}>
@@ -72,13 +59,13 @@ export default class CustomSharingSettings extends React.Component {
                         <Text style={style.titleStyle}>Social and Contact Info</Text>
                     </View>
 
-                    <View style={{ flex: 1 / 3, justifyContent: 'center', alignItems: 'flex-end' }}><Switch value={false} color="orange" /></View>
+                    <View style={{ flex: 1 / 3, justifyContent: 'center', alignItems: 'flex-end' }}><Switch value={socialMediaSharing.isShared} color="orange" /></View>
                 </View>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/Call.png')
+                                (socialMediaSharing.isShared ? require('../../../assets/icons/V_Call.png') : require('../../../assets/icons/BW_V_Call.png') )
                             }
                             // onPress={this.handleImageChange}
                             size={60}
@@ -89,7 +76,9 @@ export default class CustomSharingSettings extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/PersonalEmail.png')
+                                (socialMediaSharing.isShared ? require('../../../assets/icons/V_PersonalEmail.png') : require('../../../assets/icons/BW_V_PersonalEmail.png') )
+                    
+                                // require('../../../assets/icons/PersonalEmail.png')
                             }
                             // onPress={this.handleImageChange}
                             size={60}
@@ -100,7 +89,8 @@ export default class CustomSharingSettings extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/WorkEmail.png')
+                                (socialMediaSharing.isShared ? require('../../../assets/icons/V_WorkEmail.png') : require('../../../assets/icons/BW_V_WorkEmail.png'))
+
                             }
                             // onPress={this.handleImageChange}
                             size={60}
@@ -112,7 +102,7 @@ export default class CustomSharingSettings extends React.Component {
 
                         <Avatar
                             source={
-                                require('../../../assets/icons/Instagram.png')
+                                (socialMediaSharing.isShared ? require('../../../assets/icons/V_Instagram.png') : require('../../../assets/icons/BW_V_Instagram.png'))
                             }
                             // onPress={this.handleImageChange}
                             size={60}
@@ -123,7 +113,8 @@ export default class CustomSharingSettings extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/Facebook.png')
+                                (socialMediaSharing.isShared? require('../../../assets/icons/V_Facebook.png') : require('../../../assets/icons/BW_V_Facebook.png'))
+                     
                             }
                             // onPress={this.handleImageChange}
                             size={60}
@@ -134,7 +125,8 @@ export default class CustomSharingSettings extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/LinkedIn.png')
+                                (socialMediaSharing.isShared ? require('../../../assets/icons/V_LinkedIn.png') : require('../../../assets/icons/BW_V_LinkedIn.png'))
+                          
                             }
                             // onPress={this.handleImageChange}
                             size={60}
@@ -145,7 +137,7 @@ export default class CustomSharingSettings extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/Twitter.png')
+                                socialMediaSharing.isShared > 0 ? require('../../../assets/icons/V_Twitter.png') : require('../../../assets/icons/BW_V_Twitter.png')
                             }
                             // onPress={this.handleImageChange}
                             size={60}
@@ -156,7 +148,9 @@ export default class CustomSharingSettings extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                                require('../../../assets/icons/Telegram.png')
+                                socialMediaSharing.isShared ? require('../../../assets/icons/V_Telegram.png') : require('../../../assets/icons/BW_V_Telegram.png')
+
+
                             }
                             // onPress={this.handleImageChange}
                             size={60}
@@ -263,7 +257,7 @@ export default class CustomSharingSettings extends React.Component {
             <View style={{ marginTop: 10 }}>
                 <View style={style.flexToggleRootContainer}>
                     <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
-                        <Text style={style.titleStyle}>Social and Contact Info</Text>
+                        <Text style={style.titleStyle}>Personal Info</Text>
                     </View>
 
                     <View style={{ flex: 1 / 3, justifyContent: 'center', alignItems: 'flex-end' }}><Switch value={false} color="orange" /></View>
@@ -427,6 +421,7 @@ export default class CustomSharingSettings extends React.Component {
         )
     }
     render() {
+        console.log(this.props.userSharingInfo);
         return (
             <View
                 style={style.conatiner}>

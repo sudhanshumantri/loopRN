@@ -24,15 +24,12 @@ import UpdatePassword from '../Container/Security/updatePassword';
 import Settings from '../Container/Settings/index'
 import Contacts from '../Container/Contacts/index'
 import PermissionSettings from '../Component/PermissionSettings/index'
-import CustomSharingSettings from '../Component/CustomSharing/index'
+import CustomSharingSettings from '../Container/CustomSharing/index'
 import ContactsDetails from '../Component/ContactDetails'
 import Profile from '../Container/Profile/index'
 import InformationSharing from '../Container/InformationSharing/index'
 import QRCodeScan from '../Container/QRCodeScanner'
 import { color } from 'react-native-elements/dist/helpers';
-
-
-
 
 const Tab = createBottomTabNavigator();
 function MyTabs() {
@@ -52,7 +49,7 @@ function MyTabs() {
             <MaterialCommunityIcons name="home" color={color} size={size} />
           )
         }} />
-        <Tab.Screen name="Loops"
+      <Tab.Screen name="Loops"
         component={Contacts}
         options={{
           headerShown: false,
@@ -85,10 +82,11 @@ export default function MyStack() {
   return (
     <Stack.Navigator initialRouteName="Tabs" >
       <Stack.Screen name="Tabs" component={MyTabs} options={({ route, navigation }) => ({
-        headerTitle: () => <Image
+        headerLeft: () => (<Image
           style={{ width: 120, height: 60, }}
           source={require('../../assets/loopHorizontalWhite.png')}
-        />,
+        />
+        ),
         // headerBackground:()=>
         // headerTitleStyle: { color: 'white' },
         headerTitleAlign: 'center',
@@ -100,13 +98,14 @@ export default function MyStack() {
           <Icon name='help' type='material' color='white' onPress={() => { navigation.navigate('need-help') }} />
         ),
         headerRightContainerStyle: { paddingRight: 10 },
+        headerLeftContainerStyle:{paddingLeft:10},
         gestureDirection: 'horizontal'
 
       })} />
       <Stack.Screen name="your-contacts" component={Contacts}
         options={{
           title: "Contacts",
-          headerTitleAlign:'left',
+          headerTitleAlign: 'left',
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',
@@ -124,22 +123,27 @@ export default function MyStack() {
         }}
 
       />
-       <Stack.Screen name="custom-sharing-settings" component={CustomSharingSettings}
+      <Stack.Screen name="custom-sharing-settings" component={CustomSharingSettings}
         options={{
           title: "Custom Sharing",
-          headerTitleAlign:'left',
+          headerTitleAlign: 'left',
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',
-          headerBackTitleVisible: false
+          headerBackTitleVisible: false,
+          headerRight: (props) => (
+            <View style={{ marginRight: 20 }}>
+              <Text style={{ color: 'white', fontSize: 18, fontWeight: '600' }}>Save</Text>
+            </View>
+          )
         }}
 
       />
-      
+
       <Stack.Screen name="contact-details" component={ContactsDetails}
         options={{
           title: "Contact Details",
-          headerTitleAlign:'left',
+          headerTitleAlign: 'left',
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',
@@ -150,7 +154,7 @@ export default function MyStack() {
       <Stack.Screen name="information-sharing" component={InformationSharing}
         options={{
           title: "Information Sharing",
-          headerTitleAlign:'left',
+          headerTitleAlign: 'left',
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',
@@ -160,7 +164,7 @@ export default function MyStack() {
       <Stack.Screen name="scan-qrcode" component={QRCodeScan}
         options={{
           title: "Scan QR Code",
-          headerTitleAlign:'left',
+          headerTitleAlign: 'left',
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',

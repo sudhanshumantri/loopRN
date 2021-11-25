@@ -36,8 +36,8 @@ export default class Profile extends React.Component {
             phone: undefined,
             instaLink: undefined,
             linkedinLink: undefined,
-            twitterLink:undefined,
-            telegramLink:undefined,
+            twitterLink: undefined,
+            telegramLink: undefined,
             phone: undefined,
             gender: undefined,
             isDateTimePickerVisible: false,
@@ -64,35 +64,40 @@ export default class Profile extends React.Component {
         let inputType = 'email';
 
         if (type == 'email') {
-            title = 'Edit your email';
+            title = 'Edit Your Email';
             placeholder = 'Enter email';
 
         } else if (type == 'work-email') {
-            title = 'Edit your professional email';
+            title = 'Edit Your Professional Email';
             placeholder = 'Enter email';
 
         } else if (type == 'instagram') {
-            title = 'Edit your Intagram';
+            title = 'Edit Your Intagram Username';
             placeholder = 'Enter Instagram Link';
 
         } else if (type == 'facebook') {
-            title = 'Edit your Facebook';
+            title = 'Edit Your Facebook';
             placeholder = 'Enter Facebook Link';
 
-        }
-        else if (type == 'linkedin') {
-            title = 'Edit your Linkedin';
+        } else if (type == 'linkedin') {
+            title = 'Edit Your Linkedin';
             placeholder = 'Enter Linkedin Link';
 
-        }
-        else if (type == 'twitter') {
-            title = 'Edit your Twitter';
+        } else if (type == 'twitter') {
+            title = 'Edit Your Twitter';
             placeholder = 'Enter Twitter Link';
 
-        }
-        else if (type == 'telegram') {
-            title = 'Edit your Telegram';
+        } else if (type == 'telegram') {
+            title = 'Edit Your Telegram';
             placeholder = 'Enter Telegram Link';
+
+        } else if (type == 'name') {
+            title = 'Edit Your Name';
+            placeholder = 'Enter Your Name';
+
+        } else if (type == 'aboutMe') {
+            title = 'Edit About Me';
+            placeholder = '';
 
         }
         this.setState({
@@ -170,12 +175,24 @@ export default class Profile extends React.Component {
             } else {
                 return true
             }
-        }else{
+        } else {
+            return true
+        }
+    }
+    validateUserName = (value) => {
+        if (value.trim().length == 0) {
+            isValidated = false;
+            showMessage({
+                message: "Name can't be empty",
+                type: "danger",
+            });
+            return false;
+        } else {
             return true
         }
     }
     handleSocialContactUpdate = (values) => {
-     
+
         this.setState({
             showPopup: false
         })
@@ -217,6 +234,18 @@ export default class Profile extends React.Component {
                 })
                 this.props.updateUserInfo({ linkedinLink: values })
             }
+        } else if (socialContactUpdateType == 'name') {
+            if (this.validateUserName(values)) {
+                this.setState({
+                    name: values
+                })
+                this.props.updateUserInfo({ name: values })
+            }
+        } else if (socialContactUpdateType == 'aboutMe') {
+            this.setState({
+                aboutMe: values
+            })
+            this.props.updateUserInfo({ aboutMe: values })
         }
     }
     showImageFullSize = () => {
@@ -302,9 +331,9 @@ export default class Profile extends React.Component {
     handleSubmit() {
         // console.log(data);
         //  console.log(this.validatePersonalInfo());
-        if (this.validatePersonalInfo()) {
-            this.props.updateUserInfo(this.state)
-        }
+        //  if (this.validatePersonalInfo()) {
+        this.props.updateUserInfo(this.state)
+        //  }
 
     }
     handleProfileChange = (type, value) => {
@@ -523,23 +552,27 @@ export default class Profile extends React.Component {
                         </Avatar>
                     </View>
                     <View style={{ flex: 2 / 3 }}>
+
                         <TextInput
                             style={style.inputStyle}
-                            editable={true}
+                            editable={false}
                             value={userInfo.name}
-                            onChangeText={(text) => this.handleProfileChange('name', text)}
+                            onPressIn={() => this.showPopupModal('name', userInfo.name)}
+                            onPressOut={() => this.showPopupModal('name', userInfo.name)}
                         />
                         <TextInput
                             style={style.inputStyle}
-                            editable={true}
+                            editable={false}
+                            onPressIn={() => this.showPopupModal('aboutMe', userInfo.aboutMe)}
+                            onPressOut={() => this.showPopupModal('aboutMe', userInfo.aboutMe)}
                             placeholder="Tell us about yourself "
                             multiline={true}
                             numberOfLines={Platform.OS === 'ios' ? null : 3}
                             minHeight={(Platform.OS === 'ios') ? (5 * 10) : null}
-                        // value={userInfo.name}
-                        // onChangeText={(text) => this.handleProfileChange('name', text)}
+                            value={userInfo.aboutMe}
+
                         />
-                        {/* <Text style={{ color: 'black', fontSize: 22, fontWeight: "bold" }}>{userInfo.name}</Text> */}
+
                     </View>
 
                 </View>
@@ -571,7 +604,7 @@ export default class Profile extends React.Component {
                         <Avatar
                             source={
                                 (email && email.trim().length) > 0 ? require('../../../assets/icons/V_PersonalEmail.png') : require('../../../assets/icons/BW_V_PersonalEmail.png')
-                              
+
                             }
                             onPress={() => this.showPopupModal('email', email)}
                             size={60}
@@ -583,7 +616,7 @@ export default class Profile extends React.Component {
                         <Avatar
                             source={
                                 (professionalEmail && professionalEmail.trim().length) > 0 ? require('../../../assets/icons/V_WorkEmail.png') : require('../../../assets/icons/BW_V_WorkEmail.png')
-                              
+
                             }
                             onPress={() => this.showPopupModal('work-email', professionalEmail)}
                             size={60}
@@ -629,7 +662,7 @@ export default class Profile extends React.Component {
                         <Avatar
                             source={
                                 (twitterLink && twitterLink.trim().length) > 0 ? require('../../../assets/icons/V_Twitter.png') : require('../../../assets/icons/BW_V_Twitter.png')
-                               
+
                             }
                             onPress={() => this.showPopupModal('twitter', twitterLink)}
                             size={60}
@@ -641,8 +674,8 @@ export default class Profile extends React.Component {
                         <Avatar
                             source={
                                 (telegramLink && telegramLink.trim().length) > 0 ? require('../../../assets/icons/V_Telegram.png') : require('../../../assets/icons/BW_V_Telegram.png')
-                               
-                               
+
+
                             }
                             onPress={() => this.showPopupModal('telegram', telegramLink)}
                             size={60}

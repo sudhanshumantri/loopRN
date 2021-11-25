@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { Card, Avatar, Divider, Icon, Badge, Button } from 'react-native-elements';
+import Spinner from 'react-native-loading-spinner-overlay';
 import style from './style';
 export default class Home extends React.Component {
     constructor() {
@@ -22,13 +23,54 @@ export default class Home extends React.Component {
     componentDidMount() {
         this.props.fetchUserInfo();
     }
-    handleSharingPreferenceChange = (index) => {
-        this.setState({
-            currentSharingPosition: index
-        })
+    handleSharingPreferenceChange = (type) => {
+        this.props.updateUserSharingInfo({ sharingType: type })
+        // this.setState({
+        //     currentSharingPosition: index
+        // })
     }
     handleNavigation = (route) => {
         this.props.navigation.navigate(route)
+    }
+    renderSharingStatusToggle = () => {
+        let { userInfo } = this.props;
+        let isAllShared = this.props.userSharingInfo.sharedAllInfo;
+        let socialMediaSharing = false;
+        let personalInfoSharing = false;
+        let professionalInfoSharing = false;
+        let customInfoSharing = false
+        if (isAllShared) {
+
+        } else {
+            socialMediaSharing = this.props.userSharingInfo.socialMediaSharing.sharingConfigurations.isShared;
+            personalInfoSharing = this.props.userSharingInfo.personalInfoSharing.sharingConfigurations.isShared;
+            professionalInfoSharing = this.props.userSharingInfo.professionalInfoSharing.sharingConfigurations.isShared;
+            customInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared;
+
+        }
+        return (
+            <View style={style.qrCodeBottomSection}>
+                <View style={style.qrCodeBottomSectionLeft}>
+                    <Image
+                        style={{ width: 250, height: 250, backgroundColor: 'white' }}
+                        source={{ uri: userInfo.qrCode }}
+                    //  source={require('../../../assets/qrCodeImage.png')}
+                    />
+                </View>
+                <View style={style.qrCodeBottomSectionRight}>
+                    <View style={style.verticalLine}>
+                        <View style={style.verticalLineTextContainer}>
+                            <TouchableOpacity style={isAllShared ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('isAllShared')}><Text>All</Text></TouchableOpacity>
+                            <TouchableOpacity style={personalInfoSharing ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('personalInfoSharing')}><Text>Personal</Text></TouchableOpacity>
+                            <TouchableOpacity style={professionalInfoSharing ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('professionalInfoSharing')}><Text>Professional</Text></TouchableOpacity>
+                            <TouchableOpacity style={customInfoSharing ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('customInfoSharing')}><Text>Custom</Text></TouchableOpacity>
+                        </View>
+
+                    </View>
+                </View>
+
+            </View>
+        )
     }
     renderQRCode = () => {
         let { userInfo } = this.props;
@@ -44,37 +86,17 @@ export default class Home extends React.Component {
 
                             uri: userInfo.profilePicture ? userInfo.profilePicture : 'no-img',
                         }}
-                        onPress={()=>this.props.navigation.navigate('Profile')}
+                        onPress={() => this.props.navigation.navigate('Profile')}
                         overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
                         size={70}
                     />
                     <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 20 }}>{userInfo.name}</Text>
                 </View>
-                <Text style={{ marginTop: 20 }}>My BIO to rule the word and i will rule it one day. Sooner or later,My BIO to rule the word and i will rule it one day. Sooner or later, </Text>
+                <Text style={{ marginTop: 20 }}>{userInfo.aboutMe}</Text>
                 <View
                     style={style.horizontalDivider}
                 />
-                <View style={style.qrCodeBottomSection}>
-                    <View style={style.qrCodeBottomSectionLeft}>
-                        <Image
-                            style={{ width: 250, height: 250, backgroundColor: 'white' }}
-                            source={{ uri: userInfo.qrCode }}
-                        //  source={require('../../../assets/qrCodeImage.png')}
-                        />
-                    </View>
-                    <View style={style.qrCodeBottomSectionRight}>
-                        <View style={style.verticalLine}>
-                            <View style={style.verticalLineTextContainer}>
-                                <TouchableOpacity style={this.state.currentSharingPosition==0?style.activeShared:''} onPress={() => this.handleSharingPreferenceChange(0)}><Text>All</Text></TouchableOpacity>
-                                <TouchableOpacity style={this.state.currentSharingPosition==1?style.activeShared:''} onPress={() => this.handleSharingPreferenceChange(1)}><Text>Personal</Text></TouchableOpacity>
-                                <TouchableOpacity style={this.state.currentSharingPosition==2?style.activeShared:''} onPress={() => this.handleSharingPreferenceChange(2)}><Text>Professional</Text></TouchableOpacity>
-                                <TouchableOpacity style={this.state.currentSharingPosition==3?style.activeShared:''} onPress={() => this.handleSharingPreferenceChange(3)}><Text>Custom</Text></TouchableOpacity>
-                            </View>
-
-                        </View>
-                    </View>
-
-                </View>
+                {this.renderSharingStatusToggle()}
             </View>
         );
     }
@@ -98,7 +120,8 @@ export default class Home extends React.Component {
     }
     // Render any loading content that you like here
     render() {
-        let { error, isLoading, userInfo, } = this.props;
+        let { error, isLoading, userInfo, userSharingInfo, isInformationSharingUpdate } = this.props;
+        console.log(userSharingInfo);
         if (error) {
             return (
                 <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', }}>
@@ -124,6 +147,9 @@ export default class Home extends React.Component {
             return (
                 <SafeAreaView style={style.safeAreaView}>
                     <View style={style.container}>
+                        <Spinner color='grey'
+                            visible={isInformationSharingUpdate} />
+
                         {this.renderQRCode()}
                         {this.renderButtons()}
                     </View>

@@ -83,7 +83,6 @@ export function* updateUserSharingInfo({ data }) {
     let responseData = '';
     //  console.log('updateUserSharingInfo', data);
     responseData = yield call(callUpdateUserSharingInfo, data);
-    //  console.log('updateUserSharingInfo',responseData.data)
     if (responseData.status == 200) {
 
         yield put(
@@ -92,7 +91,7 @@ export function* updateUserSharingInfo({ data }) {
             ),
         );
         yield call(showMessage, {
-            message: 'Profile updates sucessfully',
+            message: 'Sharing preferences updated sucessfully',
             type: "success",
         });
     } else {

@@ -7,10 +7,12 @@ export const selectInfoLoading = () =>
     createSelector(selectUserData, properties => properties.toJS()['isInfoLoading']);
 export const selectError = () =>
     createSelector(selectUserData, properties => properties.toJS()['error']);
+    export const selectIsInformationSharingUpdate = () =>
+    createSelector(selectUserData, properties => properties.toJS()['isSharingInfoUpdateRequest']);
 export const selectInformationSharing = () =>
     createSelector(selectUserData, properties => properties.toJS()['userSharingInfo']);
-    export const selectQRCodeData = () =>
+export const selectQRCodeData = () =>
     createSelector(selectUserData, properties => properties.toJS()['qrCodeData']);
-    export const selectQRCodeError = () =>
+export const selectQRCodeError = () =>
     createSelector(selectUserData, properties => properties.toJS()['qrCodeError']);
-    
+
