@@ -37,6 +37,7 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
                 .set('error', null);
         case FETCH_USER_PROFILE_DETAILS_SUCCESS:
             var userSharingObj = {
+                contactExchange:action.data.contactExchange,
                 phone: action.data.phone,
                 name: action.data.name,
                 email: action.data.email,
@@ -44,6 +45,7 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
                 gender: action.data.gender,
                 instaLink: action.data.instaLink,
                 fbLink: action.data.fbLink,
+                hasCustomSharing:action.data.hasCustomSharing,
                 linkedinLink: action.data.linkedinLink,
                 professionalEmail: action.data.professionalEmail,
                 sharedAllInfo: action.data.sharedAllInfo,
@@ -91,6 +93,7 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
             
         case UPDATE_USER_SHARING_DETAILS_SUCCESS:
             var userSharingObj = {
+                contactExchange:action.data.contactExchange,
                 phone: action.data.phone,
                 name: action.data.name,
                 email: action.data.email,
@@ -98,6 +101,7 @@ export default function userProfileReducer(state = INITIAL_STATE, action = {}) {
                 gender: action.data.gender,
                 instaLink: action.data.instaLink,
                 fbLink: action.data.fbLink,
+                hasCustomSharing:action.data.hasCustomSharing,
                 linkedinLink: action.data.linkedinLink,
                 professionalEmail: action.data.professionalEmail,
                 sharedAllInfo: action.data.sharedAllInfo,

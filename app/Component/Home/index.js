@@ -35,6 +35,7 @@ export default class Home extends React.Component {
     renderSharingStatusToggle = () => {
         let { userInfo } = this.props;
         let isAllShared = this.props.userSharingInfo.sharedAllInfo;
+        let hasCustomSharing = this.props.userSharingInfo.hasCustomSharing;
         let socialMediaSharing = false;
         let personalInfoSharing = false;
         let professionalInfoSharing = false;
@@ -63,7 +64,9 @@ export default class Home extends React.Component {
                             <TouchableOpacity style={isAllShared ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('isAllShared')}><Text>All</Text></TouchableOpacity>
                             <TouchableOpacity style={personalInfoSharing ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('personalInfoSharing')}><Text>Personal</Text></TouchableOpacity>
                             <TouchableOpacity style={professionalInfoSharing ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('professionalInfoSharing')}><Text>Professional</Text></TouchableOpacity>
-                            <TouchableOpacity style={customInfoSharing ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('customInfoSharing')}><Text>Custom</Text></TouchableOpacity>
+                            {hasCustomSharing && (
+                                <TouchableOpacity style={customInfoSharing ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('customInfoSharing')}><Text>Custom</Text></TouchableOpacity>
+                            )}
                         </View>
 
                     </View>
@@ -121,7 +124,7 @@ export default class Home extends React.Component {
     // Render any loading content that you like here
     render() {
         let { error, isLoading, userInfo, userSharingInfo, isInformationSharingUpdate } = this.props;
-        console.log(userSharingInfo);
+      //  console.log(userSharingInfo);
         if (error) {
             return (
                 <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', }}>

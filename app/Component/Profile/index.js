@@ -552,26 +552,30 @@ export default class Profile extends React.Component {
                         </Avatar>
                     </View>
                     <View style={{ flex: 2 / 3 }}>
+                        <Pressable onPress={() => this.showPopupModal('name', userInfo.name)}>
+                            <TextInput
+                                style={style.inputStyle}
+                                editable={false}
+                                value={userInfo.name}
+                                onPressIn={() => this.showPopupModal('name', userInfo.name)}
+                                onPressOut={() => this.showPopupModal('name', userInfo.name)}
+                            />
+                        </Pressable>
+                        <Pressable onPress={() => this.showPopupModal('aboutMe', userInfo.aboutMe)}>
+                            <TextInput
+                                style={style.inputStyle}
+                                editable={false}
+                                onPressIn={() => this.showPopupModal('aboutMe', userInfo.aboutMe)}
+                                onPressOut={() => this.showPopupModal('aboutMe', userInfo.aboutMe)}
+                                placeholder="Tell us about yourself "
+                                multiline={true}
+                                numberOfLines={Platform.OS === 'ios' ? null : 3}
+                                minHeight={(Platform.OS === 'ios') ? (5 * 10) : null}
+                                value={userInfo.aboutMe}
 
-                        <TextInput
-                            style={style.inputStyle}
-                            editable={false}
-                            value={userInfo.name}
-                            onPressIn={() => this.showPopupModal('name', userInfo.name)}
-                            onPressOut={() => this.showPopupModal('name', userInfo.name)}
-                        />
-                        <TextInput
-                            style={style.inputStyle}
-                            editable={false}
-                            onPressIn={() => this.showPopupModal('aboutMe', userInfo.aboutMe)}
-                            onPressOut={() => this.showPopupModal('aboutMe', userInfo.aboutMe)}
-                            placeholder="Tell us about yourself "
-                            multiline={true}
-                            numberOfLines={Platform.OS === 'ios' ? null : 3}
-                            minHeight={(Platform.OS === 'ios') ? (5 * 10) : null}
-                            value={userInfo.aboutMe}
+                            />
+                        </Pressable>
 
-                        />
 
                     </View>
 

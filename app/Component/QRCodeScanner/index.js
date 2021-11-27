@@ -115,9 +115,9 @@ export default class QRCodeScan extends Component {
     renderProfileImage = () => {
         let userInfo = this.props.qrCodeData;
         return (
-            <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', marginTop: 20 }}>
+            <View style={{ alignItems: 'center',marginBottom:10  }}>
                 <Avatar
-                    containerStyle={{ marginTop: -10 }}
+                  //  containerStyle={{ marginTop: -10 }}
                     rounded
                     icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
                     icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
@@ -133,6 +133,7 @@ export default class QRCodeScan extends Component {
                 // onEditPress={this.showEditProfileModal}
                 />
                 <Text style={{ color: 'black', fontSize: 22, fontWeight: "bold" }}>{userInfo.name}</Text>
+                <Text>{userInfo.aboutMe}</Text>
             </View>
         )
 
@@ -240,19 +241,59 @@ export default class QRCodeScan extends Component {
             </View>)
     }
     renderQRCodeSuccessData = () => {
-        return (<ScrollView showsVerticalScrollIndicator={false}>
-            {this.renderProfileImage()}
-            {this.renderPersonalInfo()}
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        return (<View style={style.postScanContainer}>
+            <View style={style.postScannerHolder}>
+                <Text style={style.textTitle}>Loop In</Text>
+                {this.renderProfileImage()}
+                <View style={{ flexDirection: 'row',justifyContent:'space-around',marginBottom:10}}>
+                    <Button
+                        onPress={() => this.openContactPicker()}
+                        title="Exchange Contact"
+                        TouchableOpacity={1}
+                        buttonStyle={style.buttonStyle} 
+                        titleStyle={{ fontWeight:'600', fontSize: 12 }}
+                        />
+                    <Button
+                        onPress={() => this.openContactPicker()}
+                        title="Add To Phone Contact"
+                        TouchableOpacity={1}
+                        buttonStyle={style.buttonStyle} 
+                        titleStyle={{ fontWeight:'600', fontSize: 12 }}
+                        />
+
+                </View>
+                <View style={style.horizontalDivider}/>
+
+            </View>
+            <View style={{ flexDirection: 'row',marginTop:30  }}>
+                    <Button
+                        type="outline"
+                        onPress={() => this.openContactPicker()}
+                        title="Add A Note"
+                        buttonStyle={style.personalNoteButtonStyle} 
+                        titleStyle={{ fontWeight:'600', color:'black' }}
+                        />
+                    <Button
+                        type="outline"
+                        onPress={() => this.openContactPicker()}
+                        title="Add A Feeling"
+                       
+                        buttonStyle={style.personalNoteButtonStyle} 
+                        titleStyle={{ fontWeight:'600', color:'black' }}
+                        />
+
+                </View>
+            {/* {this.renderPersonalInfo()} */}
+            {/* <View>
                 <Button
                     onPress={() => this.openContactPicker()}
                     title="Add to Contacts"
                     TouchableOpacity={1}
                     buttonStyle={style.buttonStyle}
                 />
-            </View>
+            </View> */}
 
-        </ScrollView>)
+        </View>)
     }
     renderQRCodeFailureData = () => {
         let { qrCodeData, isLoading, error } = this.props;
@@ -294,22 +335,27 @@ export default class QRCodeScan extends Component {
                 )}
 
                 {scan &&
-                    <QRCodeScanner
-                      //  cameraStyle={{width:500}}
-                        reactivate={true}
-                        cameraProps={{ captureAudio: false }}
-                        showMarker={true}
-                        ref={(node) => { this.scanner = node }}
-                        onRead={this.onSuccess}
-                        topContent={
-                            <View>
-                                <Text style={style.textTitle}>
-                                    Scan a Loop Code</Text>
-                                <View style={style.horizontalDivider}/>  
-                            </View>
-                        }
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={style.textTitle}>
+                            Scan a Loop Code</Text>
+                        <View style={style.horizontalDivider} />
+                        <QRCodeScanner
+                            cameraStyle={{ width: 'auto', height: 300, margin: 'auto' }}
+                            reactivate={true}
+                            cameraProps={{ captureAudio: false }}
+                            showMarker={true}
+                            ref={(node) => { this.scanner = node }}
+                            onRead={this.onSuccess}
+                        // topContent={
+                        //     <View>
+                        //         <Text >
+                        //             Scan a Loop Code</Text>
+                        //         <View style={style.horizontalDivider}/>  
+                        //     </View>
+                        // }
 
-                    />
+                        />
+                    </View>
                 }
 
                 {/* </ScrollView> */}

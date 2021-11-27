@@ -10,6 +10,7 @@ import {
   Linking,
   TouchableOpacity,
 } from 'react-native';
+import CustomSharingComponent from '../Component/CustomSharing/index';
 import { Icon, SearchBar } from 'react-native-elements'
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -124,19 +125,9 @@ export default function MyStack() {
 
       />
       <Stack.Screen name="custom-sharing-settings" component={CustomSharingSettings}
-        options={{
-          title: "Custom Sharing",
-          headerTitleAlign: 'left',
-          headerTitleStyle: { color: 'white' },
-          headerStyle: { backgroundColor: 'black' },
-          headerTintColor: 'white',
-          headerBackTitleVisible: false,
-          headerRight: (props) => (
-            <View style={{ marginRight: 20 }}>
-              <Text style={{ color: 'white', fontSize: 18, fontWeight: '600' }}>Save</Text>
-            </View>
-          )
-        }}
+        options={CustomSharingComponent.navigationOptions
+
+      }
 
       />
 

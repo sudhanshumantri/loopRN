@@ -10,7 +10,8 @@ import {
     Linking,
     TouchableOpacity,
 } from 'react-native';
-import { ListItem, Icon, Switch } from 'react-native-elements'
+import { ListItem, Icon, Switch } from 'react-native-elements';
+import Spinner from 'react-native-loading-spinner-overlay';
 import { showAlert } from '../../Utils/utilFunctions';
 import style from './style';
 const list = [
@@ -63,6 +64,12 @@ export default class Settings extends React.Component {
     handleNavigation = (route) => {
         this.props.navigation.navigate(route)
     }
+    handleContactSharingUpdate = () => {
+        this.props.updateUserSharingInfo({
+            sharingType: 'contact-exchange',
+            contactExchange: !this.props.userSharingInfo.contactExchange
+        })
+    }
     handleLogout = () => {
         showAlert('Are you sure to Log out').then(data => {
             if (data == 'yes') {
@@ -105,19 +112,23 @@ export default class Settings extends React.Component {
 
     // Render any loading content that you like here
     render() {
+        let { isInformationSharingUpdate } = this.props;
         //    console.log(userInfo.user.first_name, infoLoading)
         return (
             <SafeAreaView style={style.safeAreaView}>
                 {
                     <View style={style.container}>
                         <View>
+                            <Spinner color='grey'
+                                visible={isInformationSharingUpdate}
+                            />
                             <View style={style.flexRootContainer}>
                                 <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
                                     <Icon type='font-awesome' name='exchange' size={30} />
                                     <Text style={style.titleStyle}>Contact Exchange</Text>
                                 </View>
 
-                                <View style={{ flex: 1 / 3, justifyContent: 'center', alignItems: 'flex-end' }}><Switch value={false} color="orange" /></View>
+                                <View style={{ flex: 1 / 3, justifyContent: 'center', alignItems: 'flex-end' }}><Switch value={this.props.userSharingInfo.contactExchange}  onValueChange={() => this.handleContactSharingUpdate()} color="green" /></View>
                             </View>
                             <Text>'Exchange' contact details automatically irrespective of whether you scan someone's Loop code or they scan yours</Text>
                             <View
@@ -128,7 +139,7 @@ export default class Settings extends React.Component {
                             <View style={style.flexRootContainer}>
                                 <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
                                     <Icon type='antdesign' name='menufold' size={30} />
-                                    <Text style={style.titleStyle}>Customize A Profile</Text>
+                                    <Text style={[style.titleStyle]}>Customize A Profile</Text>
                                 </View>
                             </View>
                             <Text>Our default profiles can't cater to all your networking needs? Create a custom bucket of your own</Text>

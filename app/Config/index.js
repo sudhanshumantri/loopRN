@@ -6,9 +6,9 @@ export default {
 
   api: {
     
-     host:'http://10.0.2.2:8000/'
+    // host:'http://10.0.2.2:8000/'
     // host-old:'https://loop-backend.herokuapp.com/'
-    //host:'https://loop-backend-staging.herokuapp.com/'
+    host:'https://loop-backend-staging.herokuapp.com/'
 
 
   },
