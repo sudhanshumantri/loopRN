@@ -38,7 +38,7 @@ export default class ModalPopup extends React.Component {
                         value={inputValue!=undefined ? inputValue : this.props.value}
                         onChangeText={text => this.handleInputValueChange(text)}
                         // errorMessage={mobileErrorMessage}
-                        keyboardType='phone-pad'
+                       // keyboardType='phone-pad'
                     />
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
 

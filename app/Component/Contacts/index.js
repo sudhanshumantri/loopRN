@@ -174,7 +174,7 @@ export default class Home extends Component {
         //   console.log(item.contactId);
         return (
             <ListItem key={item.id} bottomDivider onPress={() => {
-                this.props.navigation.navigate('contact-details', { user: item.contactId })
+                this.props.navigation.navigate('contact-details', { user: item })
             }}>
 
                 <Avatar size="medium" rounded

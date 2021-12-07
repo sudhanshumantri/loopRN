@@ -15,12 +15,12 @@ const styles = {
         textAlign: 'center',
         // padding: 16,
         color: 'black',
-        marginBottom: 40
+        marginBottom: 10
     },
     horizontalDivider: {
         //  marginTop: 20,
         borderBottomColor: '#C1C1C1',
-        borderBottomWidth: 2,
+        borderBottomWidth: 1,
         width: 300
     },
     inputStyle: {
@@ -36,13 +36,13 @@ const styles = {
         fontSize: 18, color: 'black',
     },
     buttonStyle: {
-        marginLeft: 15, marginRight: 15, backgroundColor: 'black', borderRadius: 5,fontSize:12, fontWeight:'600'
+        marginLeft: 15, marginRight: 15, backgroundColor: 'black', borderRadius: 5,fontSize:12, fontWeight:'600',paddingTop:10,paddingBottom:10
     },
     postScanContainer: {
        alignItems: 'center', flex: 1, justifyContent: 'center', marginTop: 20
     },
     postScannerHolder:{
-        borderWidth: 1, borderColor: '#C1C1C1', borderRadius: 10, paddingTop:30,paddingBottom:30, paddingLeft:10, paddingLeft:10
+        borderWidth: 1, borderColor: '#C1C1C1', borderRadius: 10, paddingTop:10,paddingBottom:30, paddingLeft:10, paddingLeft:10
     },
     personalNoteButtonStyle:{
         borderRadius: 5,

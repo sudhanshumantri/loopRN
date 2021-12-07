@@ -16,8 +16,8 @@ export default class ContactsDetails extends React.Component {
             bio: '',
             dob: undefined,
             profilePicture: '',
-            twitterLink:undefined,
-            telegramLink:undefined,
+            twitterLink: undefined,
+            telegramLink: undefined,
             email: undefined,
             professionalEmail: undefined,
             fbLink: undefined,
@@ -27,14 +27,19 @@ export default class ContactsDetails extends React.Component {
             phone: undefined,
             gender: undefined,
             isDateTimePickerVisible: false,
+            userInfo:{},
+            allData:{}
+
 
 
         }
     }
     componentDidMount() {
-        this.setState(
-            this.props.route.params.user
-        )
+        this.setState({
+            userInfo: this.props.route.params.user.contactId,
+            allData: this.props.route.params.user
+
+        })
     }
 
     handLinking = (url, extraurl) => {
@@ -52,7 +57,7 @@ export default class ContactsDetails extends React.Component {
     }
 
     renderProfileImage = () => {
-        let { profilePicture, name, bio } = this.state;
+        let { profilePicture, name, bio } = this.state.userInfo;
         return (
             <View>
                 <View style={style.profileTopContainer}>
@@ -86,7 +91,8 @@ export default class ContactsDetails extends React.Component {
 
     }
     renderSocialAndContactInfo = () => {
-        let { name, phone, email, professionalEmail, instaLink, fbLink, linkedinLink,telegramLink,twitterLink } = this.state;
+        let { name, phone, email, professionalEmail, instaLink, fbLink, linkedinLink, telegramLink, twitterLink } = this.state.userInfo;
+        let {allData}=this.state;
         return (
             <View style={{ marginTop: 10 }}>
                 <Text style={style.sectionHeader}>Social and Contact Info</Text>
@@ -105,9 +111,8 @@ export default class ContactsDetails extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-
                                 (email && email.trim().length) > 0 ? require('../../../assets/icons/V_PersonalEmail.png') : require('../../../assets/icons/BW_V_PersonalEmail.png')
-                              
+
                             }
                             onPress={() => (email && email.trim().length) > 0 ? Linking.openURL('mailto:' + email) : ''}
 
@@ -119,8 +124,8 @@ export default class ContactsDetails extends React.Component {
                     <View style={style.iconContainer}>
                         <Avatar
                             source={
-                               (professionalEmail && professionalEmail.trim().length) > 0 ? require('../../../assets/icons/V_WorkEmail.png') : require('../../../assets/icons/BW_V_WorkEmail.png')
-                              
+                                (professionalEmail && professionalEmail.trim().length) > 0 ? require('../../../assets/icons/V_WorkEmail.png') : require('../../../assets/icons/BW_V_WorkEmail.png')
+
                             }
                             onPress={() => (professionalEmail && professionalEmail.trim().length) > 0 ? Linking.openURL('mailto:' + professionalEmail) : ''}
                             size={60}
@@ -133,7 +138,7 @@ export default class ContactsDetails extends React.Component {
                         <Avatar
                             source={
                                 (instaLink && instaLink.trim().length) > 0 ? require('../../../assets/icons/V_Instagram.png') : require('../../../assets/icons/BW_V_Instagram.png')
-                          
+
                             }
                             onPress={() => this.handLinking('https://www.instagram.com/', instaLink ? instaLink : 'no-url-provided')}
                             size={60}
@@ -145,7 +150,7 @@ export default class ContactsDetails extends React.Component {
                         <Avatar
                             source={
                                 (fbLink && fbLink.trim().length) > 0 ? require('../../../assets/icons/V_Facebook.png') : require('../../../assets/icons/BW_V_Facebook.png')
-                          
+
                             }
                             onPress={() => this.handLinking(fbLink)}
                             size={60}
@@ -157,7 +162,7 @@ export default class ContactsDetails extends React.Component {
                         <Avatar
                             source={
                                 (linkedinLink && linkedinLink.trim().length) > 0 ? require('../../../assets/icons/V_LinkedIn.png') : require('../../../assets/icons/BW_V_LinkedIn.png')
-                          
+
                             }
                             onPress={() => this.handLinking(linkedinLink)}
                             size={60}
@@ -169,7 +174,7 @@ export default class ContactsDetails extends React.Component {
                         <Avatar
                             source={
                                 (twitterLink && twitterLink.trim().length) > 0 ? require('../../../assets/icons/V_Twitter.png') : require('../../../assets/icons/BW_V_Twitter.png')
-                               
+
                             }
                             // onPress={this.handleImageChange}
                             size={60}
@@ -181,7 +186,7 @@ export default class ContactsDetails extends React.Component {
                         <Avatar
                             source={
                                 (telegramLink && telegramLink.trim().length) > 0 ? require('../../../assets/icons/V_Telegram.png') : require('../../../assets/icons/BW_V_Telegram.png')
-                               
+
                             }
                             // onPress={this.handleImageChange}
                             size={60}
@@ -198,7 +203,7 @@ export default class ContactsDetails extends React.Component {
     }
     renderPersonalInfo = () => {
         let { userInfo, } = this.props;
-        let { dob, gender, homeLocation, currentLocation, relationshipStatus, hobbies } = this.state;
+        let { dob, gender, homeLocation, currentLocation, relationshipStatus, hobbies } = this.state.userInfo;
         return (
             <View style={{ marginTop: 10 }}>
                 <Text style={style.sectionHeader}>Personal Info</Text>
@@ -268,7 +273,7 @@ export default class ContactsDetails extends React.Component {
     }
     renderProfessionalInfo = () => {
         let { userInfo, } = this.props;
-        let { currentOrganization, previousOrganization, languages, professionalInterests, skills } = this.state;
+        let { currentOrganization, previousOrganization, languages, professionalInterests, skills } = this.state.userInfo;
         return (
             <View style={{ marginTop: 10 }}>
                 <Text style={style.sectionHeader}>Professional Info</Text>
@@ -323,7 +328,7 @@ export default class ContactsDetails extends React.Component {
             </View>)
     }
     renderOtherInfo = () => {
-        let { currentLocation, homeLocation, languages, aboutMe } = this.state;
+        let { currentLocation, homeLocation, languages, aboutMe } = this.state.userInfo;
         return (
             <View style={{ marginTop: 10 }}>
                 <Text style={style.labelStyle}>Current location</Text>

@@ -4,6 +4,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { Card, Input, Avatar, Button, CheckBox, Icon, } from 'react-native-elements';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Contacts from 'react-native-contacts';
+import ModalPopup from '../Shared/ModalPopup/index';
 import style from './scanStyle'
 import {
     TouchableOpacity,
@@ -27,18 +28,56 @@ export default class QRCodeScan extends Component {
         this.state = {
             scan: true,
             ScanResult: false,
-            result: null
+            result: null,
+            showPopup: false,
+            placeholder: '',
+            title: '',
+            inputType: '',
+            modalInputValue: '',
         };
     }
+    showPopupModal = (type, value) => {
+        let title = '';
+        let placeholder = '';
+        let inputType = 'email';
 
+        if (type == 'notes') {
+            title = 'Enter Notes';
+            placeholder = 'Enter Notes';
+
+        } else if (type == 'work-email') {
+            title = 'Edit Your Professional Email';
+            placeholder = 'Enter email';
+
+        } 
+        this.setState({
+            showPopup: true,
+            placeholder,
+            socialContactUpdateType: type,
+            inputType,
+            title,
+            modalInputValue: value
+        })
+    }
+    handleContactUpdates = (values) => {
+        this.setState({
+            showPopup: false
+        })
+    }
+    closePopupModal = () => {
+        this.setState({
+            showPopup: false
+        })
+    }
     onSuccess = (e) => {
-        const check = e.data.substring(0, 4);
+        // const check = e.data.substring(0, 4);
         this.setState({
             result: e,
             scan: false,
             ScanResult: true
         })
-        this.props.validateQRCode({ phone: e.data })
+        // this.props.validateQRCode({ phone: e.data })
+        this.props.validateQRCode({ phone: '8530484193' })
 
     }
 
@@ -114,10 +153,11 @@ export default class QRCodeScan extends Component {
     };
     renderProfileImage = () => {
         let userInfo = this.props.qrCodeData;
+        console.log(this.props.userSharingInfo.contactExchange);
         return (
-            <View style={{ alignItems: 'center',marginBottom:10  }}>
+            <View style={{ alignItems: 'center', marginBottom: 10 }}>
                 <Avatar
-                  //  containerStyle={{ marginTop: -10 }}
+                    //  containerStyle={{ marginTop: -10 }}
                     rounded
                     icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
                     icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
@@ -132,7 +172,7 @@ export default class QRCodeScan extends Component {
                     size={100}
                 // onEditPress={this.showEditProfileModal}
                 />
-                <Text style={{ color: 'black', fontSize: 22, fontWeight: "bold" }}>{userInfo.name}</Text>
+                <Text style={{ color: 'black', fontSize: 20, fontWeight: "bold" }}>{userInfo.name}</Text>
                 <Text>{userInfo.aboutMe}</Text>
             </View>
         )
@@ -245,44 +285,47 @@ export default class QRCodeScan extends Component {
             <View style={style.postScannerHolder}>
                 <Text style={style.textTitle}>Loop In</Text>
                 {this.renderProfileImage()}
-                <View style={{ flexDirection: 'row',justifyContent:'space-around',marginBottom:10}}>
-                    <Button
-                        onPress={() => this.openContactPicker()}
-                        title="Exchange Contact"
-                        TouchableOpacity={1}
-                        buttonStyle={style.buttonStyle} 
-                        titleStyle={{ fontWeight:'600', fontSize: 12 }}
+                <View style={style.horizontalDivider} />
+                <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 }}>
+                    {!this.props.userSharingInfo.contactExchange && (
+                        <Button
+                            onPress={() => this.openContactPicker()}
+                            title="Exchange Contact"
+                            TouchableOpacity={1}
+                            buttonStyle={style.buttonStyle}
+                            titleStyle={{ fontWeight: '600', fontSize: 12 }}
                         />
+                    )}
                     <Button
                         onPress={() => this.openContactPicker()}
                         title="Add To Phone Contact"
                         TouchableOpacity={1}
-                        buttonStyle={style.buttonStyle} 
-                        titleStyle={{ fontWeight:'600', fontSize: 12 }}
-                        />
+                        buttonStyle={style.buttonStyle}
+                        titleStyle={{ fontWeight: '600', fontSize: 12 }}
+                    />
 
                 </View>
-                <View style={style.horizontalDivider}/>
+
 
             </View>
-            <View style={{ flexDirection: 'row',marginTop:30  }}>
-                    <Button
-                        type="outline"
-                        onPress={() => this.openContactPicker()}
-                        title="Add A Note"
-                        buttonStyle={style.personalNoteButtonStyle} 
-                        titleStyle={{ fontWeight:'600', color:'black' }}
-                        />
-                    <Button
-                        type="outline"
-                        onPress={() => this.openContactPicker()}
-                        title="Add A Feeling"
-                       
-                        buttonStyle={style.personalNoteButtonStyle} 
-                        titleStyle={{ fontWeight:'600', color:'black' }}
-                        />
+            <View style={{ flexDirection: 'row', marginTop: 30 }}>
+                <Button
+                    type="outline"
+                    onPress={() => this.showPopupModal('notes')}
+                    title="Add A Note"
+                    buttonStyle={style.personalNoteButtonStyle}
+                    titleStyle={{ fontWeight: '600', color: 'black' }}
+                />
+                <Button
+                    type="outline"
+                    onPress={() => this.openContactPicker()}
+                    title="Add A Feeling"
 
-                </View>
+                    buttonStyle={style.personalNoteButtonStyle}
+                    titleStyle={{ fontWeight: '600', color: 'black' }}
+                />
+
+            </View>
             {/* {this.renderPersonalInfo()} */}
             {/* <View>
                 <Button
@@ -307,7 +350,8 @@ export default class QRCodeScan extends Component {
     }
 
     render() {
-        const { scan, ScanResult, result } = this.state;
+       // let { isImageChanged, profImg_imageUrl, email, title, inputType, placeholder, modalInputValue } = this.state;
+        const { scan, ScanResult, result,itle, inputType, placeholder, modalInputValue } = this.state;
         let { qrCodeData, isLoading, error } = this.props;
         return (
 
@@ -333,12 +377,16 @@ export default class QRCodeScan extends Component {
                 {!scan && error && !qrCodeData && (
                     this.renderQRCodeFailureData()
                 )}
-
+                {this.state.showPopup && (
+                    <ModalPopup closePopupModal={this.closePopupModal} handleSave={this.handleContactUpdates} title={title} inputType={inputType} placeholder={placeholder} value={modalInputValue} />
+                )}
                 {scan &&
                     <View style={{ alignItems: 'center' }}>
                         <Text style={style.textTitle}>
                             Scan a Loop Code</Text>
+
                         <View style={style.horizontalDivider} />
+                        <Button title='click me' onPress={this.onSuccess} />
                         <QRCodeScanner
                             cameraStyle={{ width: 'auto', height: 300, margin: 'auto' }}
                             reactivate={true}
