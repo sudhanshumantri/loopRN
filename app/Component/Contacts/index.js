@@ -15,6 +15,7 @@ import {
 import Contacts from 'react-native-contacts';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { SearchBar, Avatar, ListItem, Icon } from 'react-native-elements';
+import ModalSelector from 'react-native-modal-selector'
 import {
     Menu,
     MenuOptions,
@@ -24,6 +25,14 @@ import {
 
 import ModalPopup from '../Shared/ModalPopup/index';
 import style from './style';
+let index = 0;
+const feelingtatusArray = [
+    { key: index++, label: 'Happy' },
+    { key: index++, label: 'Excited' },
+    { key: index++, label: 'Motivating' },
+    { key: index++, label: 'Boring', },
+    { key: index++, label: 'Not Interested', },
+];
 export default class Home extends Component {
     constructor(props) {
         super(props);
@@ -34,7 +43,9 @@ export default class Home extends Component {
             showPopup: false,
             placeholder: '',
             title: '',
-            inputType: ''
+            inputType: '',
+            contactInfo: null,
+            showFeelingModal: false
         };
     }
 
@@ -113,7 +124,7 @@ export default class Home extends Component {
         let inputType = 'text';
 
         if (type == 'edit-notes') {
-            title = 'Add Note for ' + contactInfo.name;
+            title = 'Add Note for ' + contactInfo.contactId.name;
             placeholder = 'Enter Note';
 
         }
@@ -121,7 +132,13 @@ export default class Home extends Component {
             showPopup: true,
             placeholder,
             inputType,
-            title
+            title,
+            contactInfo
+        })
+    }
+    showFeelingModal = () => {
+        this.setState({
+            showFeelingModal: true
         })
     }
     closePopupModal = () => {
@@ -129,10 +146,23 @@ export default class Home extends Component {
             showPopup: false
         })
     }
-    handleModalInfoSave = (value) => {
+    handleNotesUpdate = () => {
+        this.props.updateContactInfo()
+    }
+    handleModalInfoSave = (type, value, contactInfo) => {
+        if (!contactInfo) {
+            contactInfo = this.state.contactInfo;
+        }
+        let data = {
+            contactId: contactInfo._id,
+            type,
+            val: value
+        }
+        this.props.updateContactInfo(data)
         this.setState({
             showPopup: false
         })
+
     }
     updateSearch = (search) => {
         let contactListObj = this.props.contactList;
@@ -171,7 +201,6 @@ export default class Home extends Component {
         )
     }
     renderContacts = ({ item }) => {
-        //   console.log(item.contactId);
         return (
             <ListItem key={item.id} bottomDivider onPress={() => {
                 this.props.navigation.navigate('contact-details', { user: item })
@@ -191,20 +220,34 @@ export default class Home extends Component {
                     });
                 }}>
                     <ListItem.Title style={{ fontWeight: 'bold' }}>{item.contactId.name}</ListItem.Title>
-                    <ListItem.Subtitle>{item.contactId.phone}</ListItem.Subtitle>
+                    <ListItem.Subtitle>
+                        {item.notes && (<Text>{item.notes + ' / '}</Text>)}
+                        {item.feeling && (<Text>{item.feeling } {"\n"}</Text> )}
+                        <Text>{item.contactId.phone}</Text>
+                    </ListItem.Subtitle>
                 </ListItem.Content>
                 <View>
                     <Menu>
                         <MenuTrigger><Icon type='material-community' name='dots-vertical' size={40} color='black' /></MenuTrigger>
                         <MenuOptions style={{ backgroundColor: '#E8E8E8', padding: 10, borderRadius: 5 }}>
-                            <MenuOption text='Add To Phone Contact' onSelect={()=>this.openContactPicker(item.contactId)} />
+                            <MenuOption text='Add To Phone Contact' onSelect={() => this.openContactPicker(item.contactId)} />
                             <View style={style.horizontalDivider} />
                             <MenuOption text='Permission Settings' onSelect={() => this.props.navigation.navigate('permission-settings', { userInfo: item.contactId })} />
                             <View style={style.horizontalDivider} />
-                            <MenuOption text='Edit/View Note' onSelect={() => this.showPopupModal('edit-notes', item.contactId)} />
+                            <MenuOption text='Edit/View Note' onSelect={() => this.showPopupModal('edit-notes', item)} />
                             <View style={style.horizontalDivider} />
-                            <MenuOption text='Feelings' />
+                            <ModalSelector
+                                data={feelingtatusArray}
+                                // visible={this.state.showFeelingModal}
+                                initValue="Select how you feeling about this connect"
+                                //   supportedOrientations={['landscape']}
+                                accessible={true}
+                                scrollViewAccessibilityLabel={'Scrollable options'}
+                                cancelButtonAccessibilityLabel={'Cancel Button'}
+                                onChange={(option) => { this.handleModalInfoSave('feeling', option.label, item) }}>
 
+                                <MenuOption text='Feelings' />
+                            </ModalSelector>
                         </MenuOptions>
                     </Menu>
                 </View>
@@ -214,6 +257,7 @@ export default class Home extends Component {
 
             </ListItem>)
     }
+
     renderEmpty = () => {
         let { isLoading, contactList, error } = this.props;
         if (!isLoading) {
@@ -247,8 +291,12 @@ export default class Home extends Component {
 
                 <SafeAreaView style={style.container}>
                     {this.state.showPopup && (
-                        <ModalPopup closePopupModal={this.closePopupModal} handleSave={this.handleModalInfoSave} title={title} inputType={inputType} placeholder={placeholder} />
+                        <ModalPopup closePopupModal={this.closePopupModal} handleSave={(text) => this.handleModalInfoSave('notes', text)} title={title} inputType={inputType} placeholder={placeholder} />
                     )}
+                    {/* 
+                    {this.state.showFeelingModal && (
+                        this.renderMoalSelector()
+                    )} */}
                     <FlatList
                         // data={this.state.data}
                         ListEmptyComponent={this.renderEmpty()}

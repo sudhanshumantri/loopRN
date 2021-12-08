@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import Contacts from '../../Component/Contacts';
-import { fetchUserContactListAction } from '../../Actions/contacts';
+import { fetchUserContactListAction,updateContactInfoAction } from '../../Actions/contacts';
 
 import {
     selectContactList, selectIsLoading, selectError
@@ -14,7 +14,8 @@ const mapStateToProps = createStructuredSelector({
 })
 
 const mapDispatchToProps = {
-    fetchUserContactList: fetchUserContactListAction
+    fetchUserContactList: fetchUserContactListAction,
+    updateContactInfo:updateContactInfoAction
 
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Contacts);

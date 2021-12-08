@@ -27,8 +27,8 @@ export default class ContactsDetails extends React.Component {
             phone: undefined,
             gender: undefined,
             isDateTimePickerVisible: false,
-            userInfo:{},
-            allData:{}
+            userInfo: '',
+            allData: ''
 
 
 
@@ -92,240 +92,339 @@ export default class ContactsDetails extends React.Component {
     }
     renderSocialAndContactInfo = () => {
         let { name, phone, email, professionalEmail, instaLink, fbLink, linkedinLink, telegramLink, twitterLink } = this.state.userInfo;
-        let {allData}=this.state;
-        return (
-            <View style={{ marginTop: 10 }}>
-                <Text style={style.sectionHeader}>Social and Contact Info</Text>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
-                    <View style={style.iconContainer}>
-                        <Avatar
-                            source={
-                                require('../../../assets/icons/Call.png')
-                            }
-                            onPress={() => Linking.openURL(`tel:${phone}`)}
-                            size={60}
-                        >
-                        </Avatar>
-                        <Text style={style.iconLabel}>Phone</Text>
-                    </View>
-                    <View style={style.iconContainer}>
-                        <Avatar
-                            source={
-                                (email && email.trim().length) > 0 ? require('../../../assets/icons/V_PersonalEmail.png') : require('../../../assets/icons/BW_V_PersonalEmail.png')
-
-                            }
-                            onPress={() => (email && email.trim().length) > 0 ? Linking.openURL('mailto:' + email) : ''}
-
-                            size={60}
-                        >
-                        </Avatar>
-                        <Text style={style.iconLabel}>Email</Text>
-                    </View>
-                    <View style={style.iconContainer}>
-                        <Avatar
-                            source={
-                                (professionalEmail && professionalEmail.trim().length) > 0 ? require('../../../assets/icons/V_WorkEmail.png') : require('../../../assets/icons/BW_V_WorkEmail.png')
-
-                            }
-                            onPress={() => (professionalEmail && professionalEmail.trim().length) > 0 ? Linking.openURL('mailto:' + professionalEmail) : ''}
-                            size={60}
-                        >
-                        </Avatar>
-                        <Text style={style.iconLabel}>Work Email</Text>
-                    </View>
-                    <View style={style.iconContainer}>
-
-                        <Avatar
-                            source={
-                                (instaLink && instaLink.trim().length) > 0 ? require('../../../assets/icons/V_Instagram.png') : require('../../../assets/icons/BW_V_Instagram.png')
-
-                            }
-                            onPress={() => this.handLinking('https://www.instagram.com/', instaLink ? instaLink : 'no-url-provided')}
-                            size={60}
-                        >
-                        </Avatar>
-                        <Text style={style.iconLabel}>Instagram</Text>
-                    </View>
-                    <View style={style.iconContainer}>
-                        <Avatar
-                            source={
-                                (fbLink && fbLink.trim().length) > 0 ? require('../../../assets/icons/V_Facebook.png') : require('../../../assets/icons/BW_V_Facebook.png')
-
-                            }
-                            onPress={() => this.handLinking(fbLink)}
-                            size={60}
-                        >
-                        </Avatar>
-                        <Text style={style.iconLabel}>Facebook</Text>
-                    </View>
-                    <View style={style.iconContainer}>
-                        <Avatar
-                            source={
-                                (linkedinLink && linkedinLink.trim().length) > 0 ? require('../../../assets/icons/V_LinkedIn.png') : require('../../../assets/icons/BW_V_LinkedIn.png')
-
-                            }
-                            onPress={() => this.handLinking(linkedinLink)}
-                            size={60}
-                        >
-                        </Avatar>
-                        <Text style={style.iconLabel}>LinkedIn</Text>
-                    </View>
-                    <View style={style.iconContainer}>
-                        <Avatar
-                            source={
-                                (twitterLink && twitterLink.trim().length) > 0 ? require('../../../assets/icons/V_Twitter.png') : require('../../../assets/icons/BW_V_Twitter.png')
-
-                            }
-                            // onPress={this.handleImageChange}
-                            size={60}
-                        >
-                        </Avatar>
-                        <Text style={style.iconLabel}>Twitter</Text>
-                    </View>
-                    <View style={style.iconContainer}>
-                        <Avatar
-                            source={
-                                (telegramLink && telegramLink.trim().length) > 0 ? require('../../../assets/icons/V_Telegram.png') : require('../../../assets/icons/BW_V_Telegram.png')
-
-                            }
-                            // onPress={this.handleImageChange}
-                            size={60}
-                        >
-                        </Avatar>
-                        <Text style={style.iconLabel}>Telegram</Text>
-                    </View>
-                </View>
-                <View
-                    style={style.horizontalDivider}
-                />
-
-            </View>)
-    }
-    renderPersonalInfo = () => {
-        let { userInfo, } = this.props;
-        let { dob, gender, homeLocation, currentLocation, relationshipStatus, hobbies } = this.state.userInfo;
-        return (
-            <View style={{ marginTop: 10 }}>
-                <Text style={style.sectionHeader}>Personal Info</Text>
+        let allData = this.state.allData;
+        let socialMediaSharing = {};
+        if (allData) {
+            if (allData.isCustomSharing) {
+                //select from the sharingConfiguration
+            } else {
+                //get the data from the sharingPreferencesId
+                if (allData.sharingPreferencesId.customInfoSharing.sharingConfigurations.isShared) {
+                    console.log('came here customInfoSharing')
+                    socialMediaSharing = allData.sharingPreferencesId.customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations
+                } else {
+                    socialMediaSharing = allData.sharingPreferencesId.socialMediaSharing.sharingConfigurations
+                    //find the shared info and do that shared needs
+                }
+            }
+            console.log(socialMediaSharing);
+            return (
                 <View style={{ marginTop: 10 }}>
-                    <Text style={style.labelStyle}>Birthday</Text>
-                    <View>
-                        <TextInput
-                            style={style.inputStyle}
+                    <Text style={style.sectionHeader}>Social and Contact Info</Text>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
+                        <View style={style.iconContainer}>
+                            <Avatar
+                                source={
+                                    require('../../../assets/icons/Call.png')
+                                }
+                                onPress={() => Linking.openURL(`tel:${phone}`)}
+                                size={60}
+                            >
+                            </Avatar>
+                            <Text style={style.iconLabel}>Phone</Text>
+                        </View>
+                        <View style={style.iconContainer}>
+                            <Avatar
+                                source={
+                                    (socialMediaSharing.isShared && socialMediaSharing.email && email && email.trim().length) > 0 ? require('../../../assets/icons/V_PersonalEmail.png') : require('../../../assets/icons/BW_V_PersonalEmail.png')
 
-                            editable={false}
-                            value={dob}
-                        />
-                    </View>
-                    <Text style={style.labelStyle}>Gender</Text>
-                    <View>
-                        <TextInput
-                            style={style.inputStyle}
-                            editable={false}
-                            value={gender}
+                                }
+                                onPress={() => (socialMediaSharing.isShared && socialMediaSharing.email && email && email.trim().length) > 0 ? Linking.openURL('mailto:' + email) : ''}
 
-                        />
-                    </View>
-                    <Text style={style.labelStyle}>Relationship Status</Text>
-                    <View>
-                        <TextInput
-                            style={style.inputStyle}
-                            editable={false}
-                            value={relationshipStatus}
-                        />
-                    </View>
+                                size={60}
+                            >
+                            </Avatar>
+                            <Text style={style.iconLabel}>Email</Text>
+                        </View>
+                        <View style={style.iconContainer}>
+                            <Avatar
+                                source={
+                                    (socialMediaSharing.isShared && socialMediaSharing.professionalEmail && professionalEmail && professionalEmail.trim().length) > 0 ? require('../../../assets/icons/V_WorkEmail.png') : require('../../../assets/icons/BW_V_WorkEmail.png')
 
-                    <Text style={style.labelStyle}>Hobbies/ Personal interest</Text>
-                    <View>
-                        <TextInput
-                            style={style.inputStyle}
-                            //  value={this.props.diagnostic_Tests_Ref}
-                            editable={false}
-                            value={hobbies}
-                            editable={false}
+                                }
+                                onPress={() => (socialMediaSharing.isShared && socialMediaSharing.professionalEmail && professionalEmail && professionalEmail.trim().length) > 0 ? Linking.openURL('mailto:' + professionalEmail) : ''}
+                                size={60}
+                            >
+                            </Avatar>
+                            <Text style={style.iconLabel}>Work Email</Text>
+                        </View>
+                        <View style={style.iconContainer}>
 
-                        />
-                    </View>
-                    <Text style={style.labelStyle}>Current location</Text>
-                    <View>
-                        <TextInput
-                            style={style.inputStyle}
-                            editable={false}
-                            value={currentLocation}
+                            <Avatar
+                                source={
+                                    (socialMediaSharing.isShared && socialMediaSharing.instaLink && instaLink && instaLink.trim().length > 0) ? require('../../../assets/icons/V_Instagram.png') : require('../../../assets/icons/BW_V_Instagram.png')
 
-                        />
-                    </View>
-                    <Text style={style.labelStyle}>Home location</Text>
-                    <View>
-                        <TextInput
-                            style={style.inputStyle}
-                            editable={false}
-                            value={homeLocation}
+                                }
+                                onPress={() => this.handLinking('https://www.instagram.com/', (socialMediaSharing.isShared && socialMediaSharing.instaLink && instaLink && instaLink.trim().length > 0) ? instaLink : 'no-url-provided')}
+                                size={60}
+                            >
+                            </Avatar>
+                            <Text style={style.iconLabel}>Instagram</Text>
+                        </View>
+                        <View style={style.iconContainer}>
+                            <Avatar
+                                source={
+                                    (socialMediaSharing.isShared && socialMediaSharing.fbLink && fbLink && fbLink.trim().length) > 0 ? require('../../../assets/icons/V_Facebook.png') : require('../../../assets/icons/BW_V_Facebook.png')
 
+                                }
+                                onPress={() => this.handLinking(fbLink, (socialMediaSharing.isShared && socialMediaSharing.fbLink && fbLink && fbLink.trim().length > 0) ? fbLink : 'no-url-provided')}
 
-                        />
+                                // onPress={() => this.handLinking(fbLink)}
+                                size={60}
+                            >
+                            </Avatar>
+                            <Text style={style.iconLabel}>Facebook</Text>
+                        </View>
+                        <View style={style.iconContainer}>
+                            <Avatar
+                                source={
+                                    (socialMediaSharing.isShared && socialMediaSharing.linkedinLink && linkedinLink && linkedinLink.trim().length) > 0 ? require('../../../assets/icons/V_LinkedIn.png') : require('../../../assets/icons/BW_V_LinkedIn.png')
+
+                                }
+                                onPress={() => this.handLinking(linkedinLink, (socialMediaSharing.isShared && socialMediaSharing.linkedinLink && linkedinLink && linkedinLink.trim().length > 0) ? fbLink : 'no-url-provided')}
+                                size={60}
+                            >
+                            </Avatar>
+                            <Text style={style.iconLabel}>LinkedIn</Text>
+                        </View>
+                        <View style={style.iconContainer}>
+                            <Avatar
+                                source={
+                                    (twitterLink && twitterLink.trim().length) > 0 ? require('../../../assets/icons/V_Twitter.png') : require('../../../assets/icons/BW_V_Twitter.png')
+
+                                }
+                                // onPress={this.handleImageChange}
+                                size={60}
+                            >
+                            </Avatar>
+                            <Text style={style.iconLabel}>Twitter</Text>
+                        </View>
+                        <View style={style.iconContainer}>
+                            <Avatar
+                                source={
+                                    (telegramLink && telegramLink.trim().length) > 0 ? require('../../../assets/icons/V_Telegram.png') : require('../../../assets/icons/BW_V_Telegram.png')
+
+                                }
+                                // onPress={this.handleImageChange}
+                                size={60}
+                            >
+                            </Avatar>
+                            <Text style={style.iconLabel}>Telegram</Text>
+                        </View>
                     </View>
                     <View
                         style={style.horizontalDivider}
                     />
+
+                </View>);
+        }
+    }
+    renderPersonalInfo = () => {
+        let { userInfo, } = this.props;
+        let { dob, gender, homeLocation, currentLocation, relationshipStatus, hobbies } = this.state.userInfo;
+        let allData = this.state.allData;
+        let personalInfoSharing = {};
+        if (allData) {
+            if (allData.isCustomSharing) {
+                //select from the sharingConfiguration
+            } else {
+                //get the data from the sharingPreferencesId
+                if (allData.sharingPreferencesId.customInfoSharing.sharingConfigurations.isShared) {
+                    personalInfoSharing = allData.sharingPreferencesId.customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations
+                } else {
+                    personalInfoSharing = allData.sharingPreferencesId.personalInfoSharing.sharingConfigurations
+                    //find the shared info and do that shared needs
+                }
+            }
+            return (
+                <View>
+                    {personalInfoSharing.isShared && (
+                        <View style={{ marginTop: 10 }}>
+                            <Text style={style.sectionHeader}>Personal Info</Text>
+                            <View style={{ marginTop: 10 }}>
+                                {personalInfoSharing.isShared && personalInfoSharing.dob && (
+                                    <View>
+                                        <Text style={style.labelStyle}>Birthday</Text>
+                                        <View>
+                                            <TextInput
+                                                style={style.inputStyle}
+
+                                                editable={false}
+                                                value={dob}
+                                            />
+                                        </View>
+                                    </View>
+                                )}
+                                {personalInfoSharing.isShared && personalInfoSharing.gender && (
+                                    <View>
+                                        <Text style={style.labelStyle}>Gender</Text>
+                                        <View>
+                                            <TextInput
+                                                style={style.inputStyle}
+                                                editable={false}
+                                                value={gender}
+
+                                            />
+                                        </View>
+                                    </View>
+                                )}
+                                {personalInfoSharing.isShared && personalInfoSharing.relationshipStatus && (
+                                    <View>
+                                        <Text style={style.labelStyle}>Relationship Status</Text>
+                                        <View>
+                                            <TextInput
+                                                style={style.inputStyle}
+                                                editable={false}
+                                                value={relationshipStatus}
+                                            />
+                                        </View>
+                                    </View>
+                                )}
+                                {personalInfoSharing.isShared && personalInfoSharing.hobbies && (
+                                    <View>
+                                        <Text style={style.labelStyle}>Hobbies/ Personal interest</Text>
+                                        <View>
+                                            <TextInput
+                                                style={style.inputStyle}
+                                                //  value={this.props.diagnostic_Tests_Ref}
+                                                editable={false}
+                                                value={hobbies}
+                                                editable={false}
+
+                                            />
+                                        </View>
+                                    </View>
+                                )}
+                                {personalInfoSharing.isShared && personalInfoSharing.currentLocation && (
+                                    <View>
+                                        <Text style={style.labelStyle}>Current location</Text>
+                                        <View>
+                                            <TextInput
+                                                style={style.inputStyle}
+                                                editable={false}
+                                                value={currentLocation}
+
+                                            />
+                                        </View>
+                                    </View>
+                                )}
+                                {personalInfoSharing.isShared && personalInfoSharing.homeLocation && (
+                                    <View>
+                                        <Text style={style.labelStyle}>Home location</Text>
+                                        <View>
+                                            <TextInput
+                                                style={style.inputStyle}
+                                                editable={false}
+                                                value={homeLocation}
+
+
+                                            />
+                                        </View>
+                                    </View>
+                                )}
+                                <View
+                                    style={style.horizontalDivider}
+                                />
+                            </View>
+                        </View>
+                    )}
                 </View>
-            </View>)
+            )
+        }
     }
     renderProfessionalInfo = () => {
         let { userInfo, } = this.props;
         let { currentOrganization, previousOrganization, languages, professionalInterests, skills } = this.state.userInfo;
-        return (
-            <View style={{ marginTop: 10 }}>
-                <Text style={style.sectionHeader}>Professional Info</Text>
-                <View style={{ marginTop: 10 }}>
-                    <Text style={style.labelStyle}>Current college/company</Text>
-                    <View>
-                        <TextInput
-                            style={style.inputStyle}
-                            editable={false}
-                            value={currentOrganization}
+        let professionalInfoSharing = {};
+        let allData = this.state.allData;
+        if (allData) {
+            if (allData.isCustomSharing) {
+                //select from the sharingConfiguration
+            } else {
+                //get the data from the sharingPreferencesId
+                if (allData.sharingPreferencesId.customInfoSharing.sharingConfigurations.isShared) {
+                    professionalInfoSharing = allData.sharingPreferencesId.customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations
+                } else {
+                    professionalInfoSharing = allData.sharingPreferencesId.professionalInfoSharing.sharingConfigurations
+                    //find the shared info and do that shared needs
+                }
+            }
+            return (
+                <View>
+                    {professionalInfoSharing.isShared && (
+                        <View style={{ marginTop: 10 }}>
+                            {professionalInfoSharing.isShared && professionalInfoSharing.currentOrganization && (
+                                <View>
+                                    <Text style={style.sectionHeader}>Professional Info</Text>
+                                    <View style={{ marginTop: 10 }}>
+                                        <Text style={style.labelStyle}>Current college/company</Text>
 
-                        />
-                    </View>
-                    <Text style={style.labelStyle}>Previous college/company</Text>
-                    <View>
-                        <TextInput
-                            style={style.inputStyle}
-                            editable={false}
-                            value={previousOrganization}
-                        />
-                    </View>
-                    <Text style={style.labelStyle}>Professional interests</Text>
-                    <View>
-                        <TextInput
-                            style={style.inputStyle}
-                            //  value={this.props.diagnostic_Tests_Ref}
-                            editable={false}
-                            value={professionalInterests}
-                        />
-                    </View>
-                    <Text style={style.labelStyle}>Skills</Text>
-                    <View>
-                        <TextInput
-                            style={style.inputStyle}
-                            //  value={this.props.diagnostic_Tests_Ref}
-                            editable={false}
-                            value={skills}
-                        />
-                    </View>
-                    <Text style={style.labelStyle}>Languages you speak</Text>
-                    <View>
-                        <TextInput
-                            style={style.inputStyle}
-                            //  value={this.props.diagnostic_Tests_Ref}
-                            editable={false}
-                            value={languages}
+                                        <TextInput
+                                            style={style.inputStyle}
+                                            editable={false}
+                                            value={currentOrganization}
 
-                        />
-                    </View>
+                                        />
+                                    </View>
+                                </View>
+
+                            )}
+                            {professionalInfoSharing.isShared && professionalInfoSharing.previousOrganization && (
+                                <View>
+                                    <Text style={style.labelStyle}>Previous college/company</Text>
+                                    <View>
+                                        <TextInput
+                                            style={style.inputStyle}
+                                            editable={false}
+                                            value={previousOrganization}
+                                        />
+                                    </View>
+                                </View>
+                            )}
+                            {professionalInfoSharing.isShared && professionalInfoSharing.professionalInterests && (
+                                <View>
+                                    <Text style={style.labelStyle}>Professional interests</Text>
+                                    <View>
+                                        <TextInput
+                                            style={style.inputStyle}
+                                            //  value={this.props.diagnostic_Tests_Ref}
+                                            editable={false}
+                                            value={professionalInterests}
+                                        />
+                                    </View>
+                                </View>
+                            )}
+                            {professionalInfoSharing.isShared && professionalInfoSharing.skills && (
+                                <View>
+                                    <Text style={style.labelStyle}>Skills</Text>
+                                    <View>
+                                        <TextInput
+                                            style={style.inputStyle}
+                                            //  value={this.props.diagnostic_Tests_Ref}
+                                            editable={false}
+                                            value={skills}
+                                        />
+                                    </View>
+                                </View>
+                            )}
+                            {professionalInfoSharing.isShared && professionalInfoSharing.languages && (
+                                <View>
+                                    <Text style={style.labelStyle}>Languages you speak</Text>
+                                    <View>
+                                        <TextInput
+                                            style={style.inputStyle}
+                                            //  value={this.props.diagnostic_Tests_Ref}
+                                            editable={false}
+                                            value={languages}
+
+                                        />
+                                    </View>
+                                </View>
+                            )}
+                        </View>)}
                 </View>
-
-            </View>)
+            )
+        }
     }
     renderOtherInfo = () => {
         let { currentLocation, homeLocation, languages, aboutMe } = this.state.userInfo;
@@ -392,8 +491,9 @@ export default class ContactsDetails extends React.Component {
                     {this.renderProfileImage()}
                     {this.renderSocialAndContactInfo()}
                     {this.renderPersonalInfo()}
-                    {/* 
                     {this.renderProfessionalInfo()}
+                    {/* 
+                   
                     {this.renderOtherInfo()} */}
                 </ScrollView>
             </View >

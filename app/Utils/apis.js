@@ -29,6 +29,7 @@ const urls = {
         'sharing-info': 'api/user/sharingInfo',
         'scan-qrcode': 'api/user/scanQRCode',
         'contacts': 'api/user/conatcts',
+        'update-notes-feelings':'api/user/updateNotesAndFeelings',
         'feedback': 'api/user/shareFeedback',
         'app-version': 'api/appVersion'
 
@@ -188,7 +189,16 @@ export function callFetchUserContactList() {
         removeAuthorizationHeader: false
     });
 }
-
+//update contact 
+export function callupdateUserConact( data) {
+    //  console.log(data);
+    return callApi(getEndpoint('update-notes-feelings'), {
+        method: 'put',
+        data,
+        //    headers: { 'Authorization': "bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIwIiwibmJmIjoxNTc5MDgwOTcyLCJleHAiOjE2MTA2MTY5NzIsImlhdCI6MTU3OTA4MDk3Mn0.21uvDxfuo_dBd9T0Rs4y4nXVjp3DRyVJsnzPP89umYo' },
+        removeAuthorizationHeader: false
+    });
+}
 
 //fetch chat list
 

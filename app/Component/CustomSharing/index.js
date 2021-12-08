@@ -80,6 +80,7 @@ export default class CustomSharingSettings extends React.Component {
     handleSocialMediaToggle = (type) => {
         let socialMediaSharingObj = {}
         let customInfoSharing = this.state.customInfoSharing;
+        customInfoSharing.sharingConfigurations.isShared=true;
         if (!this.state.isConfChanged) {
             customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations=this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations;
             customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations=this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations;
@@ -103,7 +104,8 @@ export default class CustomSharingSettings extends React.Component {
                 splitwiseLink: !socialMediaSharingObj.isShared
             }
             
-            customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing;
+            customInfoSharing.sharingConfigurations.isShared=true;
             this.setState({
                 isConfChanged: true,
                 customInfoSharing: customInfoSharing
@@ -114,6 +116,7 @@ export default class CustomSharingSettings extends React.Component {
             socialMediaSharing.phone = !socialMediaSharing.phone;
          //   let customInfoSharing = this.state.customInfoSharing;
             customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            customInfoSharing.sharingConfigurations.isShared=true;
             this.setState({
                 isConfChanged: true,
                 customInfoSharing: customInfoSharing
@@ -124,6 +127,7 @@ export default class CustomSharingSettings extends React.Component {
             socialMediaSharing.email = !socialMediaSharing.email;
            // let customInfoSharing = this.state.customInfoSharing;
             customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            customInfoSharing.sharingConfigurations.isShared=true;
             this.setState({
                 isConfChanged: true,
                 customInfoSharing: customInfoSharing
@@ -134,6 +138,7 @@ export default class CustomSharingSettings extends React.Component {
             socialMediaSharing.professionalEmail = !socialMediaSharing.professionalEmail;
         //    let customInfoSharing = this.state.customInfoSharing;
             customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            customInfoSharing.sharingConfigurations.isShared=true;
             this.setState({
                 isConfChanged: true,
                 customInfoSharing: customInfoSharing
@@ -221,6 +226,7 @@ export default class CustomSharingSettings extends React.Component {
 
         let personalInfoSharingObj = {}
         let customInfoSharing = this.state.customInfoSharing;
+        customInfoSharing.sharingConfigurations.isShared=true;
         if (!this.state.isConfChanged) {
             personalInfoSharingObj = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations;
             customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations=this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations;
@@ -317,6 +323,7 @@ export default class CustomSharingSettings extends React.Component {
     handleProfessionalInfoToggle = (type) => {
         let professionalInfoSharingObj = {};
         let customInfoSharing = this.state.customInfoSharing;
+        customInfoSharing.sharingConfigurations.isShared=true;
         if (!this.state.isConfChanged) {
             professionalInfoSharingObj = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations;
             customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations=this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations;
