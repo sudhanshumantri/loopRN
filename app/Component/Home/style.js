@@ -43,6 +43,11 @@ const styles = {
     buttonContainer: {
         marginTop: 30, flexDirection: 'row', borderWidth: 1, height: 70, borderColor: '#C1C1C1', borderRadius: 10
     },
+    touchableStyle:{
+        width:120,
+        marginLeft:-20,
+        paddingLeft:20
+    },
     buttonHolderLeft: {
         justifyContent: 'center', alignItems: 'center', flex: 1 / 3
     },

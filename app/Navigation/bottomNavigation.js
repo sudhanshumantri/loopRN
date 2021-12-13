@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import CustomSharingComponent from '../Component/CustomSharing/index';
+
 import { Icon, SearchBar } from 'react-native-elements'
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -24,7 +25,8 @@ import UpdatePassword from '../Container/Security/updatePassword';
 
 import Settings from '../Container/Settings/index'
 import Contacts from '../Container/Contacts/index'
-import PermissionSettings from '../Component/PermissionSettings/index'
+import PermissionSettings from '../Container/PermissionSettings/index';
+import PermissionSettingsComponent from '../Component/PermissionSettings/index'
 import CustomSharingSettings from '../Container/CustomSharing/index'
 import ContactsDetails from '../Component/ContactDetails'
 import Profile from '../Container/Profile/index'
@@ -115,13 +117,14 @@ export default function MyStack() {
 
       />
       <Stack.Screen name="permission-settings" component={PermissionSettings}
-        options={{
-          title: "",
-          headerTitleStyle: { color: 'white' },
-          headerStyle: { backgroundColor: 'black' },
-          headerTintColor: 'white',
-          headerBackTitleVisible: false
-        }}
+          options={PermissionSettingsComponent.navigationOptions}
+        // options={{
+        //   title: "Permission Settings",
+        //   headerTitleStyle: { color: 'white' },
+        //   headerStyle: { backgroundColor: 'black' },
+        //   headerTintColor: 'white',
+        //   headerBackTitleVisible: false
+        // }}
 
       />
       <Stack.Screen name="custom-sharing-settings" component={CustomSharingSettings}

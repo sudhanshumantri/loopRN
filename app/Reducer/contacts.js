@@ -3,14 +3,18 @@ import {
     FETCH_USER_CONTACT_LIST_REQUESTED,
     FETCH_USER_CONTACT_LIST_SUCCESS,
     FETCH_USER_CONTACT_LIST_FAILED,
-
-
+    LOGOUT_REQUEST,
+    UPDATE_USER_CONTACT_SHARING_PREFERENCES_REQUESTED,
+    UPDATE_USER_CONTACT_SHARING_PREFERENCES_SUCCESS,
+    SAVE_EXCHANGE_CONTACT_WITH_USER_REQUESTED,
+    SAVE_EXCHANGE_CONTACT_WITH_USER_SUCCESS
 } from '../Actions/actionTypes';
 
 const INITIAL_STATE = fromJS({
-    contactList:[],
+    contactList: [],
     isLoading: false,
-    error: null
+    error: null,
+    isContactUpdate: false
 });
 
 export default function contactsReducer(state = INITIAL_STATE, action = {}) {
@@ -27,7 +31,19 @@ export default function contactsReducer(state = INITIAL_STATE, action = {}) {
             return state.set('isLoading', false)
                 .set('error', action.error)
                 .set('contactList', []);
+        case UPDATE_USER_CONTACT_SHARING_PREFERENCES_REQUESTED:
+            return state.set('isContactUpdate', true);
+        case UPDATE_USER_CONTACT_SHARING_PREFERENCES_SUCCESS:
+            return state.set('isContactUpdate', false);
+        case SAVE_EXCHANGE_CONTACT_WITH_USER_REQUESTED:
+            return state.set('isContactUpdate', true);
+        case SAVE_EXCHANGE_CONTACT_WITH_USER_SUCCESS:
+            return state.set('isContactUpdate', false);
 
+        case LOGOUT_REQUEST:
+            return state.set('isLoading', false)
+                .set('error', action.error)
+                .set('contactList', []);
         default:
             return state;
     }

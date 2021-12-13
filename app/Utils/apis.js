@@ -30,6 +30,8 @@ const urls = {
         'scan-qrcode': 'api/user/scanQRCode',
         'contacts': 'api/user/conatcts',
         'update-notes-feelings':'api/user/updateNotesAndFeelings',
+        'exchange-contact-with-user':'api/user/exchangeContact',
+        'update-contact-sharing-preferences':'api/user/updateContactSharingPreferences',
         'feedback': 'api/user/shareFeedback',
         'app-version': 'api/appVersion'
 
@@ -200,6 +202,25 @@ export function callupdateUserConact( data) {
     });
 }
 
-//fetch chat list
+//exchange contact with user
+
+export function callexchangeContactWithUser( data) {
+    //  console.log(data);
+    return callApi(getEndpoint('exchange-contact-with-user'), {
+        method: 'post',
+        data,
+        //    headers: { 'Authorization': "bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIwIiwibmJmIjoxNTc5MDgwOTcyLCJleHAiOjE2MTA2MTY5NzIsImlhdCI6MTU3OTA4MDk3Mn0.21uvDxfuo_dBd9T0Rs4y4nXVjp3DRyVJsnzPP89umYo' },
+        removeAuthorizationHeader: false
+    });
+}
 
 
+export function callupdateContactSharingPreferences( data) {
+    //  console.log(data);
+    return callApi(getEndpoint('update-contact-sharing-preferences'), {
+        method: 'post',
+        data,
+        //    headers: { 'Authorization': "bearer " + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjIwIiwibmJmIjoxNTc5MDgwOTcyLCJleHAiOjE2MTA2MTY5NzIsImlhdCI6MTU3OTA4MDk3Mn0.21uvDxfuo_dBd9T0Rs4y4nXVjp3DRyVJsnzPP89umYo' },
+        removeAuthorizationHeader: false
+    });
+}

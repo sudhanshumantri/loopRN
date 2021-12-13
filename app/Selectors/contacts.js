@@ -10,4 +10,8 @@ export const selectError = () =>
 
 export const selectContactList = () =>
     createSelector(selectContact, contact => contact.toJS()['contactList']);
+export const selectIsContactLoading = () =>
+    createSelector(selectContact, contact => contact.toJS()['isContactUpdate']);
+
+
 

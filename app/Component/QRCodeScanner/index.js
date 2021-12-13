@@ -5,6 +5,7 @@ import { Card, Input, Avatar, Button, CheckBox, Icon, } from 'react-native-eleme
 import { showMessage, hideMessage } from "react-native-flash-message";
 import Contacts from 'react-native-contacts';
 import ModalPopup from '../Shared/ModalPopup/index';
+import ModalSelector from 'react-native-modal-selector'
 import style from './scanStyle'
 import {
     TouchableOpacity,
@@ -21,7 +22,14 @@ import {
     Header,
     Colors,
 } from 'react-native/Libraries/NewAppScreen';
-
+let index = 0;
+const feelingtatusArray = [
+    { key: index++, label: 'Happy' },
+    { key: index++, label: 'Excited' },
+    { key: index++, label: 'Motivating' },
+    { key: index++, label: 'Boring', },
+    { key: index++, label: 'Not Interested', },
+];
 export default class QRCodeScan extends Component {
     constructor(props) {
         super(props);
@@ -45,11 +53,7 @@ export default class QRCodeScan extends Component {
             title = 'Enter Notes';
             placeholder = 'Enter Notes';
 
-        } else if (type == 'work-email') {
-            title = 'Edit Your Professional Email';
-            placeholder = 'Enter email';
-
-        } 
+        }
         this.setState({
             showPopup: true,
             placeholder,
@@ -76,7 +80,7 @@ export default class QRCodeScan extends Component {
             scan: false,
             ScanResult: true
         })
-        // this.props.validateQRCode({ phone: e.data })
+       //  this.props.validateQRCode({ phone: e.data })
         this.props.validateQRCode({ phone: '8530484193' })
 
     }
@@ -93,7 +97,7 @@ export default class QRCodeScan extends Component {
         })
     }
     openContactPicker = async () => {
-        let userInfo = this.props.qrCodeData;
+        let userInfo = this.props.qrCodeData.userDetails
         var newPerson = {
             emailAddresses: [{
                 label: "personal",
@@ -151,9 +155,34 @@ export default class QRCodeScan extends Component {
             console.warn(err);
         }
     };
+
+    exchangeContact = () => {
+        this.props.exchangeContact({ userDetailsId: this.props.qrCodeData.contactDetails.contactId })
+    }
+    showFeelingModal = () => {
+        this.setState({
+            showFeelingModal: true
+        })
+    }
+    handleNotesUpdate = () => {
+        this.props.updateContactInfo()
+    }
+    handleModalInfoSave = (type, value) => {
+        let contactInfo = this.props.qrCodeData.contactDetails
+        let data = {
+            contactId: contactInfo._id,
+            type,
+            val: value
+        }
+        this.props.updateContactInfo(data)
+        this.setState({
+            showPopup: false
+        })
+
+    }
     renderProfileImage = () => {
-        let userInfo = this.props.qrCodeData;
-        console.log(this.props.userSharingInfo.contactExchange);
+        let userInfo = this.props.qrCodeData.userDetails;
+        console.log(this.props.qrCodeData);
         return (
             <View style={{ alignItems: 'center', marginBottom: 10 }}>
                 <Avatar
@@ -283,13 +312,13 @@ export default class QRCodeScan extends Component {
     renderQRCodeSuccessData = () => {
         return (<View style={style.postScanContainer}>
             <View style={style.postScannerHolder}>
-                <Text style={style.textTitle}>Loop In</Text>
+                <Text style={style.textTitle}>Looped In</Text>
                 {this.renderProfileImage()}
                 <View style={style.horizontalDivider} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 }}>
                     {!this.props.userSharingInfo.contactExchange && (
                         <Button
-                            onPress={() => this.openContactPicker()}
+                            onPress={() => this.exchangeContact()}
                             title="Exchange Contact"
                             TouchableOpacity={1}
                             buttonStyle={style.buttonStyle}
@@ -316,14 +345,25 @@ export default class QRCodeScan extends Component {
                     buttonStyle={style.personalNoteButtonStyle}
                     titleStyle={{ fontWeight: '600', color: 'black' }}
                 />
-                <Button
-                    type="outline"
-                    onPress={() => this.openContactPicker()}
-                    title="Add A Feeling"
+                <ModalSelector
+                    data={feelingtatusArray}
+                    // visible={this.state.showFeelingModal}
+                    initValue="Select how you feeling about this connect"
+                    //   supportedOrientations={['landscape']}
+                    accessible={true}
+                    scrollViewAccessibilityLabel={'Scrollable options'}
+                    cancelButtonAccessibilityLabel={'Cancel Button'}
+                    onChange={(option) => { this.handleModalInfoSave('feeling', option.label) }}>
 
-                    buttonStyle={style.personalNoteButtonStyle}
-                    titleStyle={{ fontWeight: '600', color: 'black' }}
-                />
+                    <Button
+                        type="outline"
+                        // onPress={() => this.openContactPicker()}
+                        title="Add A Feeling"
+
+                        buttonStyle={style.personalNoteButtonStyle}
+                        titleStyle={{ fontWeight: '600', color: 'black' }}
+                    />
+                </ModalSelector>
 
             </View>
             {/* {this.renderPersonalInfo()} */}
@@ -341,8 +381,8 @@ export default class QRCodeScan extends Component {
     renderQRCodeFailureData = () => {
         let { qrCodeData, isLoading, error } = this.props;
         return (<View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }}>{error}</Text>
-            <Button onPress={this.activeQR} title="Click to Scan again!" buttonStyle={{ width: 200, backgroundColor: 'black', borderRadius: 5 }} />
+            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18, marginBottom: 20 }}>{error}</Text>
+            <Button onPress={this.activeQR} title="Scan Again" buttonStyle={{ width: 200, backgroundColor: 'black', borderRadius: 5 }} />
             {/* <TouchableOpacity onPress={this.activeQR} style={styles.buttonTouchable}>
                 <Text style={styles.buttonTextStyle}>Click to Scan !</Text>
             </TouchableOpacity> */}
@@ -350,8 +390,8 @@ export default class QRCodeScan extends Component {
     }
 
     render() {
-       // let { isImageChanged, profImg_imageUrl, email, title, inputType, placeholder, modalInputValue } = this.state;
-        const { scan, ScanResult, result,itle, inputType, placeholder, modalInputValue } = this.state;
+        // let { isImageChanged, profImg_imageUrl, email, title, inputType, placeholder, modalInputValue } = this.state;
+        const { scan, ScanResult, result, itle, inputType, placeholder, modalInputValue, title } = this.state;
         let { qrCodeData, isLoading, error } = this.props;
         return (
 
@@ -378,7 +418,7 @@ export default class QRCodeScan extends Component {
                     this.renderQRCodeFailureData()
                 )}
                 {this.state.showPopup && (
-                    <ModalPopup closePopupModal={this.closePopupModal} handleSave={this.handleContactUpdates} title={title} inputType={inputType} placeholder={placeholder} value={modalInputValue} />
+                    <ModalPopup closePopupModal={this.closePopupModal} handleSave={(text) => this.handleModalInfoSave('notes', text)} title={title} inputType={inputType} placeholder={placeholder} value={modalInputValue} />
                 )}
                 {scan &&
                     <View style={{ alignItems: 'center' }}>
@@ -394,14 +434,6 @@ export default class QRCodeScan extends Component {
                             showMarker={true}
                             ref={(node) => { this.scanner = node }}
                             onRead={this.onSuccess}
-                        // topContent={
-                        //     <View>
-                        //         <Text >
-                        //             Scan a Loop Code</Text>
-                        //         <View style={style.horizontalDivider}/>  
-                        //     </View>
-                        // }
-
                         />
                     </View>
                 }

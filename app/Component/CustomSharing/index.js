@@ -582,7 +582,7 @@ export default class CustomSharingSettings extends React.Component {
                             <Switch onValueChange={() => this.handlePersonalInfoToggle('gender')} value={personalInfoSharing.isShared && personalInfoSharing.gender} color="orange" />
                         </View>
                     </View>
-                    <View style={style.flexToggleRootContainer}>
+                    {/* <View style={style.flexToggleRootContainer}>
                         <View style={{ flex: 4 / 5 }}>
                             <TextInput
                                 style={style.inputStyle}
@@ -593,7 +593,7 @@ export default class CustomSharingSettings extends React.Component {
                         <View style={{ flex: 1 / 5, justifyContent: 'center', alignItems: 'flex-end' }}>
                             <Switch onValueChange={() => this.handlePersonalInfoToggle('relationshipStatus')} value={personalInfoSharing.isShared && personalInfoSharing.relationshipStatus} color="orange" />
                         </View>
-                    </View>
+                    </View> */}
                     <View style={style.flexToggleRootContainer}>
                         <View style={{ flex: 4 / 5 }}>
                             <TextInput
@@ -703,7 +703,7 @@ export default class CustomSharingSettings extends React.Component {
                             <Switch onValueChange={() => this.handleProfessionalInfoToggle('skills')} value={professionalInfoSharing.isShared && professionalInfoSharing.skills} color="orange" />
                         </View>
                     </View>
-                    <View style={style.flexToggleRootContainer}>
+                    {/* <View style={style.flexToggleRootContainer}>
                         <View style={{ flex: 4 / 5 }}>
                             <TextInput
                                 style={style.inputStyle}
@@ -714,7 +714,7 @@ export default class CustomSharingSettings extends React.Component {
                         <View style={{ flex: 1 / 5, justifyContent: 'center', alignItems: 'flex-end' }}>
                             <Switch onValueChange={() => this.handleProfessionalInfoToggle('languages')} value={professionalInfoSharing.isShared && professionalInfoSharing.languages} color="orange" />
                         </View>
-                    </View>
+                    </View> */}
                     <View
                         style={style.horizontalDivider}
                     />

@@ -108,6 +108,7 @@ export default class CreatePassword extends React.Component {
                                 justifyContent: 'center',
 
                             }}>
+                                 <Text style={{ fontSize:26,marginBottom:10 }}>Secure Your Account </Text>
                                 <View style={{ alignItems: 'center', }}>
                                     {/* <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, }}>SIGN UP </Text> */}
                                     <Text style={{ color: 'red', fontSize: 14, }}>{passwordError} </Text>

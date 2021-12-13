@@ -25,6 +25,7 @@ import {
 
 import ModalPopup from '../Shared/ModalPopup/index';
 import style from './style';
+import { setCustomScrollView } from 'react-native-global-props';
 let index = 0;
 const feelingtatusArray = [
     { key: index++, label: 'Happy' },
@@ -50,9 +51,9 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        if (this.props.contactList.length == 0) {
-            this.props.fetchUserContactList()
-        }
+        // if (this.props.contactList.length == 0) {
+        this.props.fetchUserContactList()
+        // }
     }
 
     onRefresh() {
@@ -133,7 +134,8 @@ export default class Home extends Component {
             placeholder,
             inputType,
             title,
-            contactInfo
+            contactInfo,
+            modalInputValue: contactInfo.notes
         })
     }
     showFeelingModal = () => {
@@ -221,8 +223,8 @@ export default class Home extends Component {
                 }}>
                     <ListItem.Title style={{ fontWeight: 'bold' }}>{item.contactId.name}</ListItem.Title>
                     <ListItem.Subtitle>
-                        {item.notes && (<Text>{item.notes + ' / '}</Text>)}
-                        {item.feeling && (<Text>{item.feeling } {"\n"}</Text> )}
+                        {item.notes && (<Text style={style.subheading}>{item.notes + ' / '}</Text>)}
+                        {item.feeling && (<Text style={style.subheading}>{item.feeling} {"\n"}</Text>)}
                         <Text>{item.contactId.phone}</Text>
                     </ListItem.Subtitle>
                 </ListItem.Content>
@@ -232,7 +234,7 @@ export default class Home extends Component {
                         <MenuOptions style={{ backgroundColor: '#E8E8E8', padding: 10, borderRadius: 5 }}>
                             <MenuOption text='Add To Phone Contact' onSelect={() => this.openContactPicker(item.contactId)} />
                             <View style={style.horizontalDivider} />
-                            <MenuOption text='Permission Settings' onSelect={() => this.props.navigation.navigate('permission-settings', { userInfo: item.contactId })} />
+                            <MenuOption text='Permission Settings' onSelect={() => this.props.navigation.navigate('permission-settings', { userInfo: item })} />
                             <View style={style.horizontalDivider} />
                             <MenuOption text='Edit/View Note' onSelect={() => this.showPopupModal('edit-notes', item)} />
                             <View style={style.horizontalDivider} />
@@ -276,7 +278,7 @@ export default class Home extends Component {
     }
     render() {
         let { isLoading, contactList, error } = this.props;
-        let { matchedContact, title, placeholder, inputType } = this.state;
+        let { matchedContact, title, placeholder, inputType, modalInputValue } = this.state;
         if (error) {
             return (
                 <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black', }}>
@@ -291,7 +293,7 @@ export default class Home extends Component {
 
                 <SafeAreaView style={style.container}>
                     {this.state.showPopup && (
-                        <ModalPopup closePopupModal={this.closePopupModal} handleSave={(text) => this.handleModalInfoSave('notes', text)} title={title} inputType={inputType} placeholder={placeholder} />
+                        <ModalPopup closePopupModal={this.closePopupModal} handleSave={(text) => this.handleModalInfoSave('notes', text)} title={title} inputType={inputType} placeholder={placeholder} value={modalInputValue} />
                     )}
                     {/* 
                     {this.state.showFeelingModal && (

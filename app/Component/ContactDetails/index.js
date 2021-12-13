@@ -57,7 +57,7 @@ export default class ContactsDetails extends React.Component {
     }
 
     renderProfileImage = () => {
-        let { profilePicture, name, bio } = this.state.userInfo;
+        let { profilePicture, name, aboutMe } = this.state.userInfo;
         return (
             <View>
                 <View style={style.profileTopContainer}>
@@ -79,7 +79,7 @@ export default class ContactsDetails extends React.Component {
                     </View>
                     <View style={{ flex: 5.5 / 6, marginLeft: 10 }}>
                         <Text style={style.textBoldStyle}>{name}</Text>
-                        <Text>{bio}</Text>
+                        <Text>{aboutMe}</Text>
                     </View>
 
                 </View>
@@ -96,136 +96,143 @@ export default class ContactsDetails extends React.Component {
         let socialMediaSharing = {};
         if (allData) {
             if (allData.isCustomSharing) {
+               
+                socialMediaSharing = allData.sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations
                 //select from the sharingConfiguration
             } else {
                 //get the data from the sharingPreferencesId
                 if (allData.sharingPreferencesId.customInfoSharing.sharingConfigurations.isShared) {
-                    console.log('came here customInfoSharing')
+
                     socialMediaSharing = allData.sharingPreferencesId.customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations
                 } else {
                     socialMediaSharing = allData.sharingPreferencesId.socialMediaSharing.sharingConfigurations
                     //find the shared info and do that shared needs
                 }
             }
-            console.log(socialMediaSharing);
+
             return (
-                <View style={{ marginTop: 10 }}>
-                    <Text style={style.sectionHeader}>Social and Contact Info</Text>
-                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
-                        <View style={style.iconContainer}>
-                            <Avatar
-                                source={
-                                    require('../../../assets/icons/Call.png')
-                                }
-                                onPress={() => Linking.openURL(`tel:${phone}`)}
-                                size={60}
-                            >
-                            </Avatar>
-                            <Text style={style.iconLabel}>Phone</Text>
+                <View>{socialMediaSharing.isShared && (
+                    <View style={{ marginTop: 10 }}>
+                        <Text style={style.sectionHeader}>Social and Contact Info</Text>
+                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
+                            <View style={style.iconContainer}>
+                                <Avatar
+                                    source={
+                                        require('../../../assets/icons/Call.png')
+                                    }
+                                    onPress={() => Linking.openURL(`tel:${phone}`)}
+                                    size={60}
+                                >
+                                </Avatar>
+                                <Text style={style.iconLabel}>Phone</Text>
+                            </View>
+                            <View style={style.iconContainer}>
+                                <Avatar
+                                    source={
+                                        (socialMediaSharing.isShared && socialMediaSharing.email && email && email.trim().length) > 0 ? require('../../../assets/icons/V_PersonalEmail.png') : require('../../../assets/icons/BW_V_PersonalEmail.png')
+
+                                    }
+                                    onPress={() => (socialMediaSharing.isShared && socialMediaSharing.email && email && email.trim().length) > 0 ? Linking.openURL('mailto:' + email) : ''}
+
+                                    size={60}
+                                >
+                                </Avatar>
+                                <Text style={style.iconLabel}>Email</Text>
+                            </View>
+                            <View style={style.iconContainer}>
+                                <Avatar
+                                    source={
+                                        (socialMediaSharing.isShared && socialMediaSharing.professionalEmail && professionalEmail && professionalEmail.trim().length) > 0 ? require('../../../assets/icons/V_WorkEmail.png') : require('../../../assets/icons/BW_V_WorkEmail.png')
+
+                                    }
+                                    onPress={() => (socialMediaSharing.isShared && socialMediaSharing.professionalEmail && professionalEmail && professionalEmail.trim().length) > 0 ? Linking.openURL('mailto:' + professionalEmail) : ''}
+                                    size={60}
+                                >
+                                </Avatar>
+                                <Text style={style.iconLabel}>Work Email</Text>
+                            </View>
+                            <View style={style.iconContainer}>
+
+                                <Avatar
+                                    source={
+                                        (socialMediaSharing.isShared && socialMediaSharing.instaLink && instaLink && instaLink.trim().length > 0) ? require('../../../assets/icons/V_Instagram.png') : require('../../../assets/icons/BW_V_Instagram.png')
+
+                                    }
+                                    onPress={() => this.handLinking('https://www.instagram.com/', (socialMediaSharing.isShared && socialMediaSharing.instaLink && instaLink && instaLink.trim().length > 0) ? instaLink : 'no-url-provided')}
+                                    size={60}
+                                >
+                                </Avatar>
+                                <Text style={style.iconLabel}>Instagram</Text>
+                            </View>
+                            <View style={style.iconContainer}>
+                                <Avatar
+                                    source={
+                                        (socialMediaSharing.isShared && socialMediaSharing.fbLink && fbLink && fbLink.trim().length) > 0 ? require('../../../assets/icons/V_Facebook.png') : require('../../../assets/icons/BW_V_Facebook.png')
+
+                                    }
+                                    onPress={() => this.handLinking(fbLink, (socialMediaSharing.isShared && socialMediaSharing.fbLink && fbLink && fbLink.trim().length > 0) ? fbLink : 'no-url-provided')}
+
+                                    // onPress={() => this.handLinking(fbLink)}
+                                    size={60}
+                                >
+                                </Avatar>
+                                <Text style={style.iconLabel}>Facebook</Text>
+                            </View>
+                            <View style={style.iconContainer}>
+                                <Avatar
+                                    source={
+                                        (socialMediaSharing.isShared && socialMediaSharing.linkedinLink && linkedinLink && linkedinLink.trim().length) > 0 ? require('../../../assets/icons/V_LinkedIn.png') : require('../../../assets/icons/BW_V_LinkedIn.png')
+
+                                    }
+                                    onPress={() => this.handLinking(linkedinLink, (socialMediaSharing.isShared && socialMediaSharing.linkedinLink && linkedinLink && linkedinLink.trim().length > 0) ? fbLink : 'no-url-provided')}
+                                    size={60}
+                                >
+                                </Avatar>
+                                <Text style={style.iconLabel}>LinkedIn</Text>
+                            </View>
+                            <View style={style.iconContainer}>
+                                <Avatar
+                                    source={
+                                        (twitterLink && twitterLink.trim().length) > 0 ? require('../../../assets/icons/V_Twitter.png') : require('../../../assets/icons/BW_V_Twitter.png')
+
+                                    }
+                                    // onPress={this.handleImageChange}
+                                    size={60}
+                                >
+                                </Avatar>
+                                <Text style={style.iconLabel}>Twitter</Text>
+                            </View>
+                            <View style={style.iconContainer}>
+                                <Avatar
+                                    source={
+                                        (telegramLink && telegramLink.trim().length) > 0 ? require('../../../assets/icons/V_Telegram.png') : require('../../../assets/icons/BW_V_Telegram.png')
+
+                                    }
+                                    // onPress={this.handleImageChange}
+                                    size={60}
+                                >
+                                </Avatar>
+                                <Text style={style.iconLabel}>Telegram</Text>
+                            </View>
                         </View>
-                        <View style={style.iconContainer}>
-                            <Avatar
-                                source={
-                                    (socialMediaSharing.isShared && socialMediaSharing.email && email && email.trim().length) > 0 ? require('../../../assets/icons/V_PersonalEmail.png') : require('../../../assets/icons/BW_V_PersonalEmail.png')
+                        <View
+                            style={style.horizontalDivider}
+                        />
 
-                                }
-                                onPress={() => (socialMediaSharing.isShared && socialMediaSharing.email && email && email.trim().length) > 0 ? Linking.openURL('mailto:' + email) : ''}
-
-                                size={60}
-                            >
-                            </Avatar>
-                            <Text style={style.iconLabel}>Email</Text>
-                        </View>
-                        <View style={style.iconContainer}>
-                            <Avatar
-                                source={
-                                    (socialMediaSharing.isShared && socialMediaSharing.professionalEmail && professionalEmail && professionalEmail.trim().length) > 0 ? require('../../../assets/icons/V_WorkEmail.png') : require('../../../assets/icons/BW_V_WorkEmail.png')
-
-                                }
-                                onPress={() => (socialMediaSharing.isShared && socialMediaSharing.professionalEmail && professionalEmail && professionalEmail.trim().length) > 0 ? Linking.openURL('mailto:' + professionalEmail) : ''}
-                                size={60}
-                            >
-                            </Avatar>
-                            <Text style={style.iconLabel}>Work Email</Text>
-                        </View>
-                        <View style={style.iconContainer}>
-
-                            <Avatar
-                                source={
-                                    (socialMediaSharing.isShared && socialMediaSharing.instaLink && instaLink && instaLink.trim().length > 0) ? require('../../../assets/icons/V_Instagram.png') : require('../../../assets/icons/BW_V_Instagram.png')
-
-                                }
-                                onPress={() => this.handLinking('https://www.instagram.com/', (socialMediaSharing.isShared && socialMediaSharing.instaLink && instaLink && instaLink.trim().length > 0) ? instaLink : 'no-url-provided')}
-                                size={60}
-                            >
-                            </Avatar>
-                            <Text style={style.iconLabel}>Instagram</Text>
-                        </View>
-                        <View style={style.iconContainer}>
-                            <Avatar
-                                source={
-                                    (socialMediaSharing.isShared && socialMediaSharing.fbLink && fbLink && fbLink.trim().length) > 0 ? require('../../../assets/icons/V_Facebook.png') : require('../../../assets/icons/BW_V_Facebook.png')
-
-                                }
-                                onPress={() => this.handLinking(fbLink, (socialMediaSharing.isShared && socialMediaSharing.fbLink && fbLink && fbLink.trim().length > 0) ? fbLink : 'no-url-provided')}
-
-                                // onPress={() => this.handLinking(fbLink)}
-                                size={60}
-                            >
-                            </Avatar>
-                            <Text style={style.iconLabel}>Facebook</Text>
-                        </View>
-                        <View style={style.iconContainer}>
-                            <Avatar
-                                source={
-                                    (socialMediaSharing.isShared && socialMediaSharing.linkedinLink && linkedinLink && linkedinLink.trim().length) > 0 ? require('../../../assets/icons/V_LinkedIn.png') : require('../../../assets/icons/BW_V_LinkedIn.png')
-
-                                }
-                                onPress={() => this.handLinking(linkedinLink, (socialMediaSharing.isShared && socialMediaSharing.linkedinLink && linkedinLink && linkedinLink.trim().length > 0) ? fbLink : 'no-url-provided')}
-                                size={60}
-                            >
-                            </Avatar>
-                            <Text style={style.iconLabel}>LinkedIn</Text>
-                        </View>
-                        <View style={style.iconContainer}>
-                            <Avatar
-                                source={
-                                    (twitterLink && twitterLink.trim().length) > 0 ? require('../../../assets/icons/V_Twitter.png') : require('../../../assets/icons/BW_V_Twitter.png')
-
-                                }
-                                // onPress={this.handleImageChange}
-                                size={60}
-                            >
-                            </Avatar>
-                            <Text style={style.iconLabel}>Twitter</Text>
-                        </View>
-                        <View style={style.iconContainer}>
-                            <Avatar
-                                source={
-                                    (telegramLink && telegramLink.trim().length) > 0 ? require('../../../assets/icons/V_Telegram.png') : require('../../../assets/icons/BW_V_Telegram.png')
-
-                                }
-                                // onPress={this.handleImageChange}
-                                size={60}
-                            >
-                            </Avatar>
-                            <Text style={style.iconLabel}>Telegram</Text>
-                        </View>
                     </View>
-                    <View
-                        style={style.horizontalDivider}
-                    />
-
-                </View>);
+                )}</View>);
         }
     }
     renderPersonalInfo = () => {
         let { userInfo, } = this.props;
         let { dob, gender, homeLocation, currentLocation, relationshipStatus, hobbies } = this.state.userInfo;
         let allData = this.state.allData;
+        let formattedDob=dob;
         let personalInfoSharing = {};
         if (allData) {
             if (allData.isCustomSharing) {
+                personalInfoSharing = allData.sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations
+              
                 //select from the sharingConfiguration
             } else {
                 //get the data from the sharingPreferencesId
@@ -235,6 +242,10 @@ export default class ContactsDetails extends React.Component {
                     personalInfoSharing = allData.sharingPreferencesId.personalInfoSharing.sharingConfigurations
                     //find the shared info and do that shared needs
                 }
+            }
+            if(dob && dob!=''){
+                var d = moment(dob,'DD-MM-YY');
+                formattedDob=d.format('MMM DD');
             }
             return (
                 <View>
@@ -250,7 +261,7 @@ export default class ContactsDetails extends React.Component {
                                                 style={style.inputStyle}
 
                                                 editable={false}
-                                                value={dob}
+                                                value={formattedDob}
                                             />
                                         </View>
                                     </View>
@@ -268,7 +279,7 @@ export default class ContactsDetails extends React.Component {
                                         </View>
                                     </View>
                                 )}
-                                {personalInfoSharing.isShared && personalInfoSharing.relationshipStatus && (
+                                {/* {personalInfoSharing.isShared && personalInfoSharing.relationshipStatus && (
                                     <View>
                                         <Text style={style.labelStyle}>Relationship Status</Text>
                                         <View>
@@ -279,7 +290,7 @@ export default class ContactsDetails extends React.Component {
                                             />
                                         </View>
                                     </View>
-                                )}
+                                )} */}
                                 {personalInfoSharing.isShared && personalInfoSharing.hobbies && (
                                     <View>
                                         <Text style={style.labelStyle}>Hobbies/ Personal interest</Text>
@@ -339,6 +350,8 @@ export default class ContactsDetails extends React.Component {
         let allData = this.state.allData;
         if (allData) {
             if (allData.isCustomSharing) {
+                professionalInfoSharing = allData.sharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations
+              
                 //select from the sharingConfiguration
             } else {
                 //get the data from the sharingPreferencesId
@@ -407,7 +420,7 @@ export default class ContactsDetails extends React.Component {
                                     </View>
                                 </View>
                             )}
-                            {professionalInfoSharing.isShared && professionalInfoSharing.languages && (
+                            {/* {professionalInfoSharing.isShared && professionalInfoSharing.languages && (
                                 <View>
                                     <Text style={style.labelStyle}>Languages you speak</Text>
                                     <View>
@@ -420,7 +433,7 @@ export default class ContactsDetails extends React.Component {
                                         />
                                     </View>
                                 </View>
-                            )}
+                            )} */}
                         </View>)}
                 </View>
             )

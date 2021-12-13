@@ -1,10 +1,11 @@
 import { call, all, put, select, takeLatest } from 'redux-saga/effects';
-import { callFetchUserContactList,callupdateUserConact} from '../Utils/apis';
+import { callexchangeContactWithUser, callFetchUserContactList, callupdateContactSharingPreferences, callupdateUserConact } from '../Utils/apis';
 //import jwt_decode from 'jwt-decode';
 import {
-    fetchUserContactListSucceededAction, updateContactInfoAction, updateContactInfoSucceededAction
+    exchangeContactInfoSucceededAction,
+    fetchUserContactListSucceededAction,fetchUserContactListFailedAction, updateContactInfoAction, updateContactInfoSucceededAction, updateContactSharingPreferencesSucceededAction
 } from '../Actions/contacts';
-
+import { showMessage, hideMessage } from "react-native-flash-message";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as NavigationService from './../Navigation/navigationService';
 
@@ -21,7 +22,7 @@ export function* fetchUserContactList() {
 
     } else {
         yield put(
-            fetchUserContactListSucceededAction(
+            fetchUserContactListFailedAction(
                 'Something went wrong'
             ),
         );
@@ -29,11 +30,58 @@ export function* fetchUserContactList() {
     }
 }
 export function* updateContactInfo({ data }) {
-    console.log(data);
     const responseData = yield call(callupdateUserConact, data);
     if (responseData.status == 201 || responseData.status == 200) {
+        yield call(showMessage, {
+            message: "Contact Preferences Updated Sucessfully",
+            type: "success",
+        });
         yield put(
             updateContactInfoSucceededAction(
+                responseData.data
+            ),
+        );
+    } else {
+        yield call(showMessage, {
+            message: "Something Went Wrong",
+            type: "danger",
+        });
+
+    }
+}
+
+export function* updateContactSharingPreferences({ data }) {
+    const responseData = yield call(callupdateContactSharingPreferences, data);
+    if (responseData.status == 201 || responseData.status == 200) {
+        yield call(showMessage, {
+            message: "Contact Preferences Updated Sucessfully",
+            type: "success",
+        });
+        yield put(
+            updateContactSharingPreferencesSucceededAction(
+                responseData.data
+            ),
+        );
+        
+
+    } else {
+
+        yield call(showMessage, {
+            message: "Something Went Wrong",
+            type: "danger",
+        });
+    }
+}
+
+export function* exchangeContactWithUser({ data }) {
+    const responseData = yield call(callexchangeContactWithUser, data);
+    if (responseData.status == 201 || responseData.status == 200) {
+        yield call(showMessage, {
+            message: "Contact Exchanged Sucessfully",
+            type: "success",
+        });
+        yield put(
+            exchangeContactInfoSucceededAction(
                 responseData.data
             ),
         );
@@ -43,11 +91,7 @@ export function* updateContactInfo({ data }) {
             message: "Something Went Wrong",
             type: "danger",
         });
-        yield put(
-            updateUserProfilePicFailedAction(
-                'Something went wrong'
-            ),
-        );
+
     }
 }
 
@@ -57,6 +101,10 @@ export function* contactsSagas() {
     // It returns task descriptor (just like fork) so we can continue execution
     yield all([takeLatest('FETCH_USER_CONTACT_LIST_REQUESTED', fetchUserContactList),
     takeLatest('UPDATE_USER_CONTACT_DETAILS_REQUESTED', updateContactInfo),
+    takeLatest('SAVE_EXCHANGE_CONTACT_WITH_USER_REQUESTED', exchangeContactWithUser),
+    takeLatest('UPDATE_USER_CONTACT_SHARING_PREFERENCES_REQUESTED', updateContactSharingPreferences),
+
+
 
 
     ]);

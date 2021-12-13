@@ -19,7 +19,7 @@ const styles = {
         color: 'black',
         borderWidth: Platform.OS === 'ios'?0.5:0.1,
         paddingLeft: 5,
-        textTransform:'uppercase'
+        textTransform:'capitalize'
     },
     labelStyle:{
         fontSize: 16, color: 'black',marginTop:10

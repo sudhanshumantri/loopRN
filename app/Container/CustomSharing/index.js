@@ -2,6 +2,8 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import CustomSharing from '../../Component/CustomSharing/index';
 import { fetchUserProfileAction,updateUserSharingInfoAction } from '../../Actions/user';
+import { updateContactSharingPreferencesInfoAction } from '../../Actions/contacts';
+
 
 import {
     selectUserInfo, selectInfoLoading, selectError,selectInformationSharing,selectIsInformationSharingUpdate
@@ -16,7 +18,8 @@ const mapStateToProps = createStructuredSelector({
 })
 
 const mapDispatchToProps = {
-    updateUserSharingInfo:updateUserSharingInfoAction
+    updateUserSharingInfo:updateUserSharingInfoAction,
+  
 
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CustomSharing);

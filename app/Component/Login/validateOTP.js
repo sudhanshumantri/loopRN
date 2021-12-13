@@ -26,7 +26,7 @@ export default class ValidateOTP extends React.Component {
     }
     componentDidMount() {
         //   console.log(this.props)
-        this.focusOTP();
+  //      this.focusOTP();
         this.setState({
             phone: this.props.phone,
             otpAct: this.props.otp
@@ -58,7 +58,7 @@ export default class ValidateOTP extends React.Component {
         let { phone, isResetPassword } = this.state;
         // forgetPassword:true 
         this.props.resendOTP({ phone });
-        this.focusOTP();
+    //    this.focusOTP();
         this.setState({
             OTPResent: true,
             otp: Array(6).fill(''),
@@ -81,8 +81,8 @@ export default class ValidateOTP extends React.Component {
     handleSubmit = () => {
         let { otp, phone, otpAct } = this.state;
         //  console.log(otp);
-        let otpCombined = otp.join('');
-        if (otpCombined === otpAct) {
+    //    let otpCombined = otp.join('');
+        if (otp === otpAct) {
             this.props.authUser({ phone, isOTPLogin: true })
         } else {
             this.setState({
@@ -173,9 +173,29 @@ export default class ValidateOTP extends React.Component {
                             <Text style={{ color: 'red' }}>Invalid OTP</Text>
 
                         )}
-                        <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                        <Input
+                                    containerStyle={{ height: 60, marginTop: 10 }}
+                                    placeholder=' Enter Six Digit OTP '
+                                    inputContainerStyle={{ borderBottomWidth: 0.5 }}
+                                    inputStyle={{ color: 'black' }}
+                                    maxLength={6}
+                                    leftIcon={
+                                        <Icon
+                                            name='message-outline'
+                                            size={24}
+                                            color='black'
+                                            type='material-community'
+                                        />
+                                    }
+                                    leftIconContainerStyle={{ marginLeft: -1 }}
+                                    value={mobile}
+                                    onChangeText={text => this.handleOTPChange(text)}
+                                 //   errorMessage={mobileErrorMessage}
+                                   keyboardType='number-pad'
+                                />
+                        {/* <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
                             {this.renderInputs()}
-                        </View>
+                        </View> */}
                         <Button color='black'
                             containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
                             buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'black' }}

@@ -14,8 +14,12 @@ const styles = {
     searchBarInputContainer: {
         backgroundColor: '#EEEEEE'
     },
+    subheading:{
+        color:'grey',
+    },
     horizontalDivider: {
-        marginTop:2,
+        marginTop:10,
+        marginBottom:8,
         borderBottomColor: '#C1C1C1',
         borderBottomWidth: 1,
     },

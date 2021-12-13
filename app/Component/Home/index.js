@@ -61,11 +61,11 @@ export default class Home extends React.Component {
                 <View style={style.qrCodeBottomSectionRight}>
                     <View style={style.verticalLine}>
                         <View style={style.verticalLineTextContainer}>
-                            <TouchableOpacity style={isAllShared ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('isAllShared')}><Text>All</Text></TouchableOpacity>
-                            <TouchableOpacity style={personalInfoSharing ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('personalInfoSharing')}><Text>Personal</Text></TouchableOpacity>
-                            <TouchableOpacity style={professionalInfoSharing ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('professionalInfoSharing')}><Text>Professional</Text></TouchableOpacity>
+                            <TouchableOpacity style={[isAllShared ? style.activeShared : '',style.touchableStyle]} onPress={() => this.handleSharingPreferenceChange('isAllShared')}><Text>All</Text></TouchableOpacity>
+                            <TouchableOpacity style={[personalInfoSharing ? style.activeShared : '',style.touchableStyle]} onPress={() => this.handleSharingPreferenceChange('personalInfoSharing')}><Text>Personal</Text></TouchableOpacity>
+                            <TouchableOpacity style={[professionalInfoSharing ? style.activeShared : '',style.touchableStyle]} onPress={() => this.handleSharingPreferenceChange('professionalInfoSharing')}><Text>Professional</Text></TouchableOpacity>
                             {hasCustomSharing && (
-                                <TouchableOpacity style={customInfoSharing ? style.activeShared : ''} onPress={() => this.handleSharingPreferenceChange('customInfoSharing')}><Text>Custom</Text></TouchableOpacity>
+                                <TouchableOpacity style={[customInfoSharing ? style.activeShared : '',style.touchableStyle]}onPress={() => this.handleSharingPreferenceChange('customInfoSharing')}><Text>Custom</Text></TouchableOpacity>
                             )}
                         </View>
 
@@ -104,12 +104,13 @@ export default class Home extends React.Component {
         );
     }
     renderButtons = () => {
+        let { userInfo } = this.props;
         return (
             <View style={style.buttonContainer}>
                 <TouchableOpacity style={style.buttonHolderLeft}
                     onPress={() => this.handleNavigation('your-contacts')}
                 >
-                    <Text style={{ fontWeight: 'bold' }}>70</Text>
+                    <Text style={{ fontWeight: 'bold' }}>{userInfo.contactCount}</Text>
                     <Text>Connections</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={style.buttonHolderRight}

@@ -5,7 +5,8 @@ import {
     LOGIN_FAILURE,
     LOGIN_VALIDATE_MOBILE_REQUEST,
     LOGIN_VALIDATE_MOBILE_SUCCESS,
-    LOGIN_VALIDATE_MOBILE_FAILURE
+    LOGIN_VALIDATE_MOBILE_FAILURE,
+    LOGOUT_REQUEST
 } from '../Actions/actionTypes';
 
 const INITIAL_STATE = fromJS({
@@ -43,6 +44,9 @@ export default function loginReducer(state = INITIAL_STATE, action = {}) {
             return state.set('isLoginRequested', false)
                 .set('otp', null)
                 .set('error', action.error);
+
+        case LOGOUT_REQUEST:
+            return state = INITIAL_STATE
         default:
             return state
     }

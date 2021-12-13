@@ -25,7 +25,7 @@ export default class ValidateOTP extends React.Component {
         //this.otpTextInput[] = React.createRef();
     }
     componentDidMount() {
-        console.log(this.props.phone, this.props.otp)
+     //   console.log(this.props.phone, this.props.otp)
         this.setState({
             phone: this.props.phone,
             otpAct: this.props.otp
@@ -58,7 +58,7 @@ export default class ValidateOTP extends React.Component {
         // forgetPassword:true 
         this.props.resendOTP({ phone })
         //   this.props.generateOTP({ mobile: mobile, forgetPassword: isResetPassword });
-        this.focusOTP();
+       // this.focusOTP();
         this.setState({
             OTPResent: true,
             otp: Array(6).fill(''),

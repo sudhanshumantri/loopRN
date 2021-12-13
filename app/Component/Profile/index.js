@@ -834,7 +834,7 @@ export default class Profile extends React.Component {
                             checkedColor='black'
                         />
                     </View>
-                    <Text style={style.labelStyle}>Relationship Status</Text>
+                    {/* <Text style={style.labelStyle}>Relationship Status</Text>
                     <View style={{
                         //  width: Dimensions.get('window').width * 0.80,
                         // paddingLeft: 5,
@@ -859,7 +859,7 @@ export default class Profile extends React.Component {
                                 value={relationshipStatus} />
 
                         </ModalSelector>
-                    </View>
+                    </View> */}
                     <Text style={style.labelStyle}>Hobbies/ Personal interest</Text>
                     <View>
                         <TextInput
@@ -1022,7 +1022,7 @@ export default class Profile extends React.Component {
 
                         />
                     </View>
-                    <Text style={style.labelStyle}>Languages you speak</Text>
+                    {/* <Text style={style.labelStyle}>Languages you speak</Text>
                     <View>
                         <TextInput
                             style={style.inputStyle}
@@ -1032,7 +1032,7 @@ export default class Profile extends React.Component {
                             onChangeText={(text) => this.handleLanguagesChange(text)}
 
                         />
-                    </View>
+                    </View> */}
                 </View>
             </View>)
     }
