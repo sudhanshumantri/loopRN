@@ -32,6 +32,8 @@ export default class Profile extends React.Component {
             dob: undefined,
             email: undefined,
             professionalEmail: undefined,
+            gpay: undefined,
+            paytmLink: undefined,
             fbLink: undefined,
             phone: undefined,
             instaLink: undefined,
@@ -47,7 +49,8 @@ export default class Profile extends React.Component {
             title: '',
             inputType: '',
             modalInputValue: '',
-            socialContactUpdateType: ''
+            socialContactUpdateType: '',
+            isTextArea:false
 
         }
     }
@@ -62,6 +65,8 @@ export default class Profile extends React.Component {
         let title = '';
         let placeholder = '';
         let inputType = 'email';
+        let helpingText = null;
+        let isTextArea=false;
 
         if (type == 'email') {
             title = 'Edit Your Email';
@@ -72,24 +77,27 @@ export default class Profile extends React.Component {
             placeholder = 'Enter email';
 
         } else if (type == 'instagram') {
-            title = 'Edit Your Intagram Username';
-            placeholder = 'Enter Instagram Link';
+            title = 'Edit Your Inta Username';
+            placeholder = 'Enter Your Insta Username';
+
 
         } else if (type == 'facebook') {
             title = 'Edit Your Facebook';
             placeholder = 'Enter Facebook Link';
+            helpingText = 'ie: https://www.facebook.com/XXXX'
 
         } else if (type == 'linkedin') {
             title = 'Edit Your Linkedin';
             placeholder = 'Enter Linkedin Link';
+            helpingText = 'ie: https://www.linkedin.com/in/XXXX'
 
         } else if (type == 'twitter') {
-            title = 'Edit Your Twitter';
-            placeholder = 'Enter Twitter Link';
+            title = 'Edit Your Twitter Username';
+            placeholder = 'Enter Twitter Username';
 
         } else if (type == 'telegram') {
-            title = 'Edit Your Telegram';
-            placeholder = 'Enter Telegram Link';
+            title = 'Edit Your Telegram ID';
+            placeholder = 'Edit Your Telegram ID';
 
         } else if (type == 'name') {
             title = 'Edit Your Name';
@@ -98,6 +106,18 @@ export default class Profile extends React.Component {
         } else if (type == 'aboutMe') {
             title = 'Edit About Me';
             placeholder = '';
+            helpingText = 'Max 200 characters allowed',
+            isTextArea=true;
+
+        } else if (type == 'gpay') {
+            title = 'Edit Gpay UPI Id ';
+            placeholder = '';
+            placeholder = 'Edit Your Gpay UPI Id';
+
+        } else if (type == 'paytm') {
+            title = 'Edit Paytm UPI Id ';
+            placeholder = '';
+            placeholder = 'Edit Your Paytm UPI Id';
 
         }
         this.setState({
@@ -106,7 +126,9 @@ export default class Profile extends React.Component {
             socialContactUpdateType: type,
             inputType,
             title,
-            modalInputValue: value
+            modalInputValue: value,
+            helpingText,
+            isTextArea
         })
     }
     closePopupModal = () => {
@@ -234,7 +256,21 @@ export default class Profile extends React.Component {
                 })
                 this.props.updateUserInfo({ linkedinLink: values })
             }
-        } else if (socialContactUpdateType == 'name') {
+        }//twitter
+        else if (socialContactUpdateType == 'twitter') {
+            this.setState({
+                twitterLink: values
+            })
+            this.props.updateUserInfo({ twitterLink: values })
+        }//telegramLink
+        else if (socialContactUpdateType == 'telegram') {
+            this.setState({
+                telegramLink: values
+            })
+            this.props.updateUserInfo({ telegramLink: values })
+        }
+
+        else if (socialContactUpdateType == 'name') {
             if (this.validateUserName(values)) {
                 this.setState({
                     name: values
@@ -247,6 +283,18 @@ export default class Profile extends React.Component {
             })
             this.props.updateUserInfo({ aboutMe: values })
         }
+        else if (socialContactUpdateType == 'gpay') {
+            this.setState({
+                gpay: values
+            })
+            this.props.updateUserInfo({ gpay: values })
+        }
+        else if (socialContactUpdateType == 'paytm') {
+            this.setState({
+                paytmLink: values
+            })
+            this.props.updateUserInfo({ paytmLink: values })
+        }
     }
     showImageFullSize = () => {
         this.setState({
@@ -256,7 +304,7 @@ export default class Profile extends React.Component {
                 this.setState({
                     showFullSizeImage: false
                 });
-            }, 500);
+            }, 1000);
         })
     }
     validatePersonalInfo = () => {
@@ -561,25 +609,17 @@ export default class Profile extends React.Component {
                                 onPressOut={() => this.showPopupModal('name', userInfo.name)}
                             />
                         </Pressable>
-                        <Pressable onPress={() => this.showPopupModal('aboutMe', userInfo.aboutMe)}>
-                            <TextInput
-                                style={style.inputStyle}
-                                editable={false}
-                                onPressIn={() => this.showPopupModal('aboutMe', userInfo.aboutMe)}
-                                onPressOut={() => this.showPopupModal('aboutMe', userInfo.aboutMe)}
-                                placeholder="Tell us about yourself "
-                                multiline={true}
-                                numberOfLines={Platform.OS === 'ios' ? null : 3}
-                                minHeight={(Platform.OS === 'ios') ? (5 * 10) : null}
-                                value={userInfo.aboutMe}
-
-                            />
-                        </Pressable>
-
-
+                        {/* <Pressable onPress={() => this.showPopupModal('aboutMe', userInfo.aboutMe)}>
+                            <Text style={{ marginTop: 20 }}>{(userInfo.aboutMe && userInfo.aboutMe.length>0)?userInfo.aboutMe:'Write about yourself'}</Text>
+                            
+                        </Pressable> */}
                     </View>
 
                 </View>
+                <Pressable onPress={() => this.showPopupModal('aboutMe', userInfo.aboutMe)}>
+                            <Text style={{ marginTop: 20 }}>{(userInfo.aboutMe && userInfo.aboutMe.length>0)?userInfo.aboutMe:'Write about yourself'}</Text>
+                            
+                        </Pressable>
                 <View
                     style={style.horizontalDivider}
                 />
@@ -588,7 +628,7 @@ export default class Profile extends React.Component {
 
     }
     renderSocialAndContactInfo = () => {
-        let { phone, email, professionalEmail, instaLink, fbLink, linkedinLink, twitterLink, telegramLink } = this.state;
+        let { phone, email, professionalEmail, gpay, paytmLink, instaLink, fbLink, linkedinLink, twitterLink, telegramLink } = this.state;
         return (
             <View style={{ marginTop: 10 }}>
                 <Text style={style.sectionHeader}>Social and Contact Info</Text>
@@ -686,6 +726,30 @@ export default class Profile extends React.Component {
                         >
                         </Avatar>
                         <Text style={style.iconLabel}>Telegram</Text>
+                    </View>
+                    <View style={style.iconContainer}>
+                        <Avatar
+                            source={
+                                (paytmLink && paytmLink.trim().length) > 0 ? require('../../../assets/icons/V_Paytm.png') : require('../../../assets/icons/BW_V_Paytm.png')
+
+                            }
+                            onPress={() => this.showPopupModal('paytm', paytmLink)}
+                            size={60}
+                        >
+                        </Avatar>
+                        <Text style={style.iconLabel}>Paytm</Text>
+                    </View>
+                    <View style={style.iconContainer}>
+                        <Avatar
+                            source={
+                                (gpay && gpay.trim().length) > 0 ? require('../../../assets/icons/V_GPay.png') : require('../../../assets/icons/BW_V_GPay.png')
+
+                            }
+                            onPress={() => this.showPopupModal('gpay', gpay)}
+                            size={60}
+                        >
+                        </Avatar>
+                        <Text style={style.iconLabel}>Gpay</Text>
                     </View>
                 </View>
                 <View
@@ -1045,7 +1109,7 @@ export default class Profile extends React.Component {
     }
     render() {
         let { error, isLoading, userInfo, } = this.props;
-        let { isImageChanged, profImg_imageUrl, email, title, inputType, placeholder, modalInputValue } = this.state;
+        let { isImageChanged, profImg_imageUrl, isTextArea, title, inputType, placeholder, modalInputValue, helpingText } = this.state;
         //   console.log(userInfo.profilePicture)
         //   console.log(this.state.name);
         if (error) {
@@ -1089,7 +1153,7 @@ export default class Profile extends React.Component {
                             enableAutomaticScroll={(Platform.OS === 'ios')}
                         >
                             {this.state.showPopup && (
-                                <ModalPopup closePopupModal={this.closePopupModal} handleSave={this.handleSocialContactUpdate} title={title} inputType={inputType} placeholder={placeholder} value={modalInputValue} />
+                                <ModalPopup closePopupModal={this.closePopupModal} handleSave={this.handleSocialContactUpdate} helpingText={helpingText} isTextArea={isTextArea} title={title} inputType={inputType} placeholder={placeholder} value={modalInputValue} />
                             )}
                             {this.state.showFullSizeImage &&
                                 <Modal

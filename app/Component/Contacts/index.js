@@ -22,7 +22,7 @@ import {
     MenuOption,
     MenuTrigger,
 } from 'react-native-popup-menu';
-
+import moment from 'moment';
 import ModalPopup from '../Shared/ModalPopup/index';
 import style from './style';
 import { setCustomScrollView } from 'react-native-global-props';
@@ -203,6 +203,8 @@ export default class Home extends Component {
         )
     }
     renderContacts = ({ item }) => {
+        var contactCreatedDate = moment(item.createdAt, 'YYYY-MM-DD');
+        contactCreatedDate = contactCreatedDate.format('MMM DD YY');
         return (
             <ListItem key={item.id} bottomDivider onPress={() => {
                 this.props.navigation.navigate('contact-details', { user: item })
@@ -223,8 +225,8 @@ export default class Home extends Component {
                 }}>
                     <ListItem.Title style={{ fontWeight: 'bold' }}>{item.contactId.name}</ListItem.Title>
                     <ListItem.Subtitle>
-                        {item.notes && (<Text style={style.subheading}>{item.notes + ' / '}</Text>)}
-                        {item.feeling && (<Text style={style.subheading}>{item.feeling} {"\n"}</Text>)}
+                        <Text style={style.subheading}>{(item.location ? item.location + '-' : '') + contactCreatedDate}{"\n"}</Text>
+                        {/* {item.feeling && (<Text style={style.subheading}>{item.feeling} {"\n"}</Text>)} */}
                         <Text>{item.contactId.phone}</Text>
                     </ListItem.Subtitle>
                 </ListItem.Content>

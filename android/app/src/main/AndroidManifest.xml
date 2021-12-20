@@ -5,6 +5,11 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
      <uses-permission android:name="android.permission.READ_CONTACTS" />
+     <!-- Define ACCESS_FINE_LOCATION if you will use enableHighAccuracy=true  -->
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+<!-- Define ACCESS_COARSE_LOCATION if you will use enableHighAccuracy=false  -->
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 <!--  android:roundIcon="@mipmap/ic_launcher_round"-->
     <application
       android:usesCleartextTraffic="true"

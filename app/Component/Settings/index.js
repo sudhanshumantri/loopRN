@@ -175,7 +175,7 @@ export default class Settings extends React.Component {
                                 style={style.horizontalDivider}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('about-loop')}>
                             <View style={style.flexRootContainer}>
                                 <View style={{ flex: 2 / 3, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-start' }}>
                                     <Icon type='feather' name='info' size={30} />

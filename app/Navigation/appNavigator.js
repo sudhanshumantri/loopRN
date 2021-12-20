@@ -18,7 +18,7 @@ import ValidatePhone from '../Container/Login/validatePhone'
 const AuthStack = createStackNavigator();
 function MyAuthStack() {
     return (
-        <AuthStack.Navigator initialRouteName="Login" >
+        <AuthStack.Navigator initialRouteName="Register" >
             <AuthStack.Screen name="Login" component={Login} options={{
                 headerShown: false,
             }} />

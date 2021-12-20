@@ -52,6 +52,12 @@ const styles = {
         fontSize:16,
         fontWeight:'600'
     },
+    modalSubText: {
+        // marginBottom: 15,
+        // textAlign: "center",
+        fontSize:12,
+        // fontWeight:'n'
+    },
     centeredView: {
         flex: 1,
         justifyContent: "center",

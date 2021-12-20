@@ -30,16 +30,40 @@ export default class ModalPopup extends React.Component {
             <View style={style.centeredView}>
                 <View style={style.modalView}>
                     <Text style={style.modalText}>{this.props.title}</Text>
-                    <Input
-                        containerStyle={{ height: 60, marginTop: 10 }}
-                        placeholder={this.props.placeholder}
-                        inputContainerStyle={{ borderBottomWidth: 0.5 }}
-                        inputStyle={{ color: 'black' }}
-                        value={inputValue!=undefined ? inputValue : this.props.value}
-                        onChangeText={text => this.handleInputValueChange(text)}
+                    {this.props.helpingText && (
+                        <Text style={style.modalSubText}>{this.props.helpingText}</Text>
+                    )}
+                    {!this.props.isTextArea && (
+                        <Input
+                            containerStyle={{ height: 60, marginTop: 10 }}
+                            placeholder={this.props.placeholder}
+                            inputContainerStyle={{ borderBottomWidth: 0.5 }}
+                            inputStyle={{ color: 'black' }}
+                            value={inputValue != undefined ? inputValue : this.props.value}
+                            onChangeText={text => this.handleInputValueChange(text)}
                         // errorMessage={mobileErrorMessage}
-                       // keyboardType='phone-pad'
-                    />
+                        // keyboardType='phone-pad'
+                        />
+                    )}
+                    {this.props.isTextArea && (
+                        <TextInput
+                            multiline={true}
+                            numberOfLines={4}
+                            maxLength={200}
+                            value={inputValue != undefined ? inputValue : this.props.value}
+                            onChangeText={text => this.handleInputValueChange(text)}
+                        />
+                        // <Input
+                        //     containerStyle={{ height: 60, marginTop: 10 }}
+                        //     placeholder={this.props.placeholder}
+                        //     inputContainerStyle={{ borderBottomWidth: 0.5 }}
+                        //     inputStyle={{ color: 'black' }}
+                        //     value={inputValue != undefined ? inputValue : this.props.value}
+                        //     onChangeText={text => this.handleInputValueChange(text)}
+                        // errorMessage={mobileErrorMessage}
+                        // keyboardType='phone-pad'
+                        // />
+                    )}
                     <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
 
                         <Pressable
@@ -50,7 +74,7 @@ export default class ModalPopup extends React.Component {
                         </Pressable>
                         <Pressable
                             style={[style.button, style.buttonSave]}
-                            onPress={() => this.props.handleSave(inputValue!=undefined  ? inputValue : this.props.value)}
+                            onPress={() => this.props.handleSave(inputValue != undefined ? inputValue : this.props.value)}
                         >
                             <Text style={style.textStyle}>Save</Text>
                         </Pressable>

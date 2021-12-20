@@ -30,6 +30,9 @@ const feelingtatusArray = [
     { key: index++, label: 'Boring', },
     { key: index++, label: 'Not Interested', },
 ];
+Geocoder.init("AIzaSyChteq7t9y3jVwV3_4zHkNHiGS5xecp1xM");
+import GetLocation from 'react-native-get-location';
+import Geocoder from 'react-native-geocoding';
 export default class QRCodeScan extends Component {
     constructor(props) {
         super(props);
@@ -42,7 +45,33 @@ export default class QRCodeScan extends Component {
             title: '',
             inputType: '',
             modalInputValue: '',
+            location: ''
         };
+    }
+    componentDidMount() {
+
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+        })
+            .then(location => {
+                console.log(location.latitude, location.longitude);
+                Geocoder.from(location.latitude, location.longitude)
+                    .then(json => {
+                        let locationName = json.results[0].address_components[0].short_name + ',' + json.results[0].address_components[1].short_name
+                        this.setState({
+                            location: locationName
+                        })
+                        // console.log(json.results[0].address_components[1].short_name);
+                        // var addressComponent = json.results[0].address_components[0].short_name;
+                        // console.log(addressComponent);
+                    })
+                    .catch(error => console.warn(error));
+            })
+            .catch(error => {
+                const { code, message } = error;
+                console.warn(code, message);
+            })
     }
     showPopupModal = (type, value) => {
         let title = '';
@@ -78,10 +107,11 @@ export default class QRCodeScan extends Component {
         this.setState({
             result: e,
             scan: false,
-            ScanResult: true
+            ScanResult: true,
+            location: this.state.location
         })
-       //  this.props.validateQRCode({ phone: e.data })
-        this.props.validateQRCode({ phone: '8530484193' })
+    this.props.validateQRCode({ phone: e.data,location:this.state.location })
+        //this.props.validateQRCode({ phone: '8861909294',location: this.state.location })
 
     }
 
@@ -157,7 +187,7 @@ export default class QRCodeScan extends Component {
     };
 
     exchangeContact = () => {
-        this.props.exchangeContact({ userDetailsId: this.props.qrCodeData.contactDetails.contactId })
+        this.props.exchangeContact({ userDetailsId: this.props.qrCodeData.userDetails._id })
     }
     showFeelingModal = () => {
         this.setState({
@@ -426,7 +456,7 @@ export default class QRCodeScan extends Component {
                             Scan a Loop Code</Text>
 
                         <View style={style.horizontalDivider} />
-                        <Button title='click me' onPress={this.onSuccess} />
+                        {/* <Button title='click me' onPress={this.onSuccess} /> */}
                         <QRCodeScanner
                             cameraStyle={{ width: 'auto', height: 300, margin: 'auto' }}
                             reactivate={true}

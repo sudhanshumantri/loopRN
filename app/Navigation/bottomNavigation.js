@@ -20,6 +20,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Home from '../Container/Home';
 import Help from '../Container/Help';
+import AboutLoop from '../Component/AboutLoop';
+
 import Security from '../Component/Security';
 import UpdatePassword from '../Container/Security/updatePassword';
 
@@ -85,7 +87,8 @@ export default function MyStack() {
   return (
     <Stack.Navigator initialRouteName="Tabs" >
       <Stack.Screen name="Tabs" component={MyTabs} options={({ route, navigation }) => ({
-        headerLeft: () => (<Image
+       title:'',
+       headerLeft: () => (<Image
           style={{ width: 120, height: 60, }}
           source={require('../../assets/loopHorizontalWhite.png')}
         />
@@ -169,6 +172,17 @@ export default function MyStack() {
       <Stack.Screen name="need-help" component={Help}
         options={{
           title: "Feedback",
+          headerTitleStyle: { color: 'white' },
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: 'white',
+          headerBackTitleVisible: false,
+          //    gestureDirection:'horizontal'
+        }}
+
+      />
+       <Stack.Screen name="about-loop" component={AboutLoop}
+        options={{
+          title: "About Loop",
           headerTitleStyle: { color: 'white' },
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: 'white',

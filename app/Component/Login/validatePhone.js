@@ -18,7 +18,6 @@ export default class ValidatePhone extends React.Component {
         }
     }
     componentDidMount() {
-        console.log('coming here');
     }
     componentDidUpdate(prevProps, prevState) {
         let { mobile } = this.state;

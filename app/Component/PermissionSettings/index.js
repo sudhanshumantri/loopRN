@@ -120,28 +120,34 @@ export default class PermissionSettings extends React.Component {
 
 
         if (!this.state.isConfChanged) {
-            if (allData.isSelfCustomSharing) {
-                socialMediaSharingObj = allData.selfSharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations
-                sharingConfiguration = allData.selfSharingConfiguration;
+            if (allData.selfSharingConfiguration.customInfoSharing.sharingConfigurations.isShared){
+                socialMediaSharingObj = allData.selfSharingConfiguration.customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations
+            }else{
+                socialMediaSharingObj = allData.selfSharingConfiguration.socialMediaSharing.sharingConfigurations
             }
-            else if (this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared) {
-                sharingConfiguration.sharingConfigurations.socialMediaSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.socialMediaSharing;
-                sharingConfiguration.sharingConfigurations.professionalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing;
-                sharingConfiguration.sharingConfigurations.personalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing;
-                socialMediaSharingObj = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations
-            } else {
-                sharingConfiguration.sharingConfigurations.socialMediaSharing = this.props.userSharingInfo.socialMediaSharing;
-                sharingConfiguration.sharingConfigurations.professionalInfoSharing = this.props.userSharingInfo.professionalInfoSharing;
-                sharingConfiguration.sharingConfigurations.personalInfoSharing = this.props.userSharingInfo.personalInfoSharing;
-                socialMediaSharingObj = this.props.userSharingInfo.socialMediaSharing.sharingConfigurations
+            sharingConfiguration=allData.selfSharingConfiguration;
+            // if (allData.isSelfCustomSharing) {
+            //     socialMediaSharingObj = allData.selfSharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations
+            //     sharingConfiguration = allData.selfSharingConfiguration;
+            // }
+            // else if (this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared) {
+            //     sharingConfiguration.sharingConfigurations.socialMediaSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.socialMediaSharing;
+            //     sharingConfiguration.sharingConfigurations.professionalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing;
+            //     sharingConfiguration.sharingConfigurations.personalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing;
+            //     socialMediaSharingObj = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations
+            // } else {
+            //     sharingConfiguration.sharingConfigurations.socialMediaSharing = this.props.userSharingInfo.socialMediaSharing;
+            //     sharingConfiguration.sharingConfigurations.professionalInfoSharing = this.props.userSharingInfo.professionalInfoSharing;
+            //     sharingConfiguration.sharingConfigurations.personalInfoSharing = this.props.userSharingInfo.personalInfoSharing;
+            //     socialMediaSharingObj = this.props.userSharingInfo.socialMediaSharing.sharingConfigurations
 
-            }
+            // }
 
             //  sharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations=this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations;
             // sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations=this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations;
 
         } else {
-            socialMediaSharingObj = this.state.sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations;
+            socialMediaSharingObj = this.state.sharingConfiguration.socialMediaSharing.sharingConfigurations;
         }
 
         let isShared = true;
@@ -159,9 +165,7 @@ export default class PermissionSettings extends React.Component {
                 paytmLink: !socialMediaSharingObj.isShared,
                 splitwiseLink: !socialMediaSharingObj.isShared
             }
-            console.log('socialMediaSharing', socialMediaSharing)
-
-            sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing;
+            sharingConfiguration.socialMediaSharing.sharingConfigurations = socialMediaSharing;
             //sharingConfiguration.sharingConfigurations.isShared = true;
             this.setState({
                 isConfChanged: true,
@@ -172,19 +176,19 @@ export default class PermissionSettings extends React.Component {
             socialMediaSharing.isShared = isShared;
             socialMediaSharing.phone = !socialMediaSharing.phone;
             //   let customInfoSharing = this.state.customInfoSharing;
-            sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
-            sharingConfiguration.sharingConfigurations.isShared = true;
+            sharingConfiguration.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            sharingConfiguration.isShared = true;
             this.setState({
                 isConfChanged: true,
-                customInfoSharing: customInfoSharing
+                sharingConfiguration: sharingConfiguration
             })
         } else if (type == 'email') {
             let socialMediaSharing = socialMediaSharingObj;
             socialMediaSharing.isShared = isShared;
             socialMediaSharing.email = !socialMediaSharing.email;
             // let customInfoSharing = this.state.customInfoSharing;
-            sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
-            sharingConfiguration.sharingConfigurations.isShared = true;
+            sharingConfiguration.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            sharingConfiguration.isShared = true;
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -194,8 +198,8 @@ export default class PermissionSettings extends React.Component {
             socialMediaSharing.isShared = isShared;
             socialMediaSharing.professionalEmail = !socialMediaSharing.professionalEmail;
             //    let customInfoSharing = this.state.customInfoSharing;
-            sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
-            sharingConfiguration.sharingConfigurations.isShared = true;
+            sharingConfiguration.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            sharingConfiguration.isShared = true;
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -205,7 +209,7 @@ export default class PermissionSettings extends React.Component {
             socialMediaSharing.isShared = isShared;
             socialMediaSharing.instaLink = !socialMediaSharing.instaLink;
             //  let customInfoSharing = this.state.customInfoSharing;
-            sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            sharingConfiguration.socialMediaSharing.sharingConfigurations = socialMediaSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -216,7 +220,7 @@ export default class PermissionSettings extends React.Component {
             socialMediaSharing.isShared = isShared;
             socialMediaSharing.fbLink = !socialMediaSharing.fbLink;
             //  let customInfoSharing = this.state.customInfoSharing;
-            sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            sharingConfiguration.socialMediaSharing.sharingConfigurations = socialMediaSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -227,7 +231,7 @@ export default class PermissionSettings extends React.Component {
             socialMediaSharing.isShared = isShared;
             socialMediaSharing.linkedinLink = !socialMediaSharing.linkedinLink;
             // let customInfoSharing = this.state.customInfoSharing;
-            sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            sharingConfiguration.socialMediaSharing.sharingConfigurations = socialMediaSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -238,7 +242,7 @@ export default class PermissionSettings extends React.Component {
             socialMediaSharing.isShared = isShared;
             socialMediaSharing.twitterLink = !socialMediaSharing.twitterLink;
             //    let customInfoSharing = this.state.customInfoSharing;
-            sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            sharingConfiguration.socialMediaSharing.sharingConfigurations = socialMediaSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -249,7 +253,7 @@ export default class PermissionSettings extends React.Component {
             socialMediaSharing.isShared = isShared;
             socialMediaSharing.telegramLink = !socialMediaSharing.telegramLink;
             //   let customInfoSharing = this.state.customInfoSharing;
-            sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            sharingConfiguration.socialMediaSharing.sharingConfigurations = socialMediaSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -260,7 +264,7 @@ export default class PermissionSettings extends React.Component {
             socialMediaSharing.isShared = isShared;
             socialMediaSharing.paytmLink = !socialMediaSharing.paytmLink;
             //  let customInfoSharing = this.state.customInfoSharing;
-            sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            sharingConfiguration.socialMediaSharing.sharingConfigurations = socialMediaSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -270,7 +274,7 @@ export default class PermissionSettings extends React.Component {
             socialMediaSharing.isShared = isShared;
             socialMediaSharing.splitwiseLink = !socialMediaSharing.splitwiseLink;
             //    let customInfoSharing = this.state.customInfoSharing;
-            sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations = socialMediaSharing
+            sharingConfiguration.socialMediaSharing.sharingConfigurations = socialMediaSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -283,29 +287,35 @@ export default class PermissionSettings extends React.Component {
         let sharingConfiguration = this.state.sharingConfiguration;
         let allData = this.state.allData
         if (!this.state.isConfChanged) {
-            if (allData.isSelfCustomSharing) {
-                personalInfoSharingObj = allData.selfSharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations
-                sharingConfiguration = allData.selfSharingConfiguration;
-
-            } else if (this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared) {
-                sharingConfiguration.sharingConfigurations.socialMediaSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.socialMediaSharing;
-                sharingConfiguration.sharingConfigurations.professionalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing;
-                sharingConfiguration.sharingConfigurations.personalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing;
-                personalInfoSharingObj = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations
-            } else {
-
-                sharingConfiguration.sharingConfigurations.socialMediaSharing = this.props.userSharingInfo.socialMediaSharing;
-                sharingConfiguration.sharingConfigurations.professionalInfoSharing = this.props.userSharingInfo.professionalInfoSharing;
-                sharingConfiguration.sharingConfigurations.personalInfoSharing = this.props.userSharingInfo.personalInfoSharing;
-                personalInfoSharingObj = this.props.userSharingInfo.personalInfoSharing.sharingConfigurations
-
+            if (allData.selfSharingConfiguration.customInfoSharing.sharingConfigurations.isShared){
+                personalInfoSharingObj = allData.selfSharingConfiguration.customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations
+            }else{
+                personalInfoSharingObj = allData.selfSharingConfiguration.personalInfoSharing.sharingConfigurations
             }
+            sharingConfiguration=allData.selfSharingConfiguration;
+            // if (allData.isSelfCustomSharing) {
+            //     personalInfoSharingObj = allData.selfSharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations
+            //     sharingConfiguration = allData.selfSharingConfiguration;
+
+            // } else if (this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared) {
+            //     sharingConfiguration.sharingConfigurations.socialMediaSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.socialMediaSharing;
+            //     sharingConfiguration.sharingConfigurations.professionalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing;
+            //     sharingConfiguration.sharingConfigurations.personalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing;
+            //     personalInfoSharingObj = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations
+            // } else {
+
+            //     sharingConfiguration.sharingConfigurations.socialMediaSharing = this.props.userSharingInfo.socialMediaSharing;
+            //     sharingConfiguration.sharingConfigurations.professionalInfoSharing = this.props.userSharingInfo.professionalInfoSharing;
+            //     sharingConfiguration.sharingConfigurations.personalInfoSharing = this.props.userSharingInfo.personalInfoSharing;
+            //     personalInfoSharingObj = this.props.userSharingInfo.personalInfoSharing.sharingConfigurations
+
+            // }
 
             //  sharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations=this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations;
             // sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations=this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations;
 
         } else {
-            personalInfoSharingObj = this.state.sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations;
+            personalInfoSharingObj = this.state.sharingConfiguration.personalInfoSharing.sharingConfigurations;
         }
 
         let isShared = true;
@@ -320,7 +330,7 @@ export default class PermissionSettings extends React.Component {
                 homeLocation: !personalInfoSharingObj.isShared,
             }
 
-            sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations = personalInfoSharing
+            sharingConfiguration.personalInfoSharing.sharingConfigurations = personalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -330,7 +340,7 @@ export default class PermissionSettings extends React.Component {
             personalInfoSharing.isShared = isShared;
             personalInfoSharing.dob = !personalInfoSharing.dob;
 
-            sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations = personalInfoSharing
+            sharingConfiguration.personalInfoSharing.sharingConfigurations = personalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -341,7 +351,7 @@ export default class PermissionSettings extends React.Component {
             personalInfoSharing.isShared = isShared;
             personalInfoSharing.gender = !personalInfoSharing.gender;
 
-            sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations = personalInfoSharing
+            sharingConfiguration.personalInfoSharing.sharingConfigurations = personalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -352,7 +362,7 @@ export default class PermissionSettings extends React.Component {
             personalInfoSharing.isShared = isShared;
             personalInfoSharing.relationshipStatus = !personalInfoSharing.relationshipStatus;
 
-            sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations = personalInfoSharing
+            sharingConfiguration.personalInfoSharing.sharingConfigurations = personalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -363,7 +373,7 @@ export default class PermissionSettings extends React.Component {
             personalInfoSharing.isShared = isShared;
             personalInfoSharing.hobbies = !personalInfoSharing.hobbies;
 
-            sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations = personalInfoSharing
+            sharingConfiguration.personalInfoSharing.sharingConfigurations = personalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -374,7 +384,7 @@ export default class PermissionSettings extends React.Component {
             personalInfoSharing.isShared = isShared;
             personalInfoSharing.currentLocation = !personalInfoSharing.currentLocation;
 
-            sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations = personalInfoSharing
+            sharingConfiguration.personalInfoSharing.sharingConfigurations = personalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -385,7 +395,7 @@ export default class PermissionSettings extends React.Component {
             personalInfoSharing.isShared = isShared;
             personalInfoSharing.homeLocation = !personalInfoSharing.homeLocation;
 
-            sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations = personalInfoSharing
+            sharingConfiguration.personalInfoSharing.sharingConfigurations = personalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -397,26 +407,32 @@ export default class PermissionSettings extends React.Component {
         let sharingConfiguration = this.state.sharingConfiguration;
         let allData = this.state.allData
         if (!this.state.isConfChanged) {
-            if (allData.isSelfCustomSharing) {
-                professionalInfoSharingObj = allData.selfSharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations
-                sharingConfiguration = allData.selfSharingConfiguration;
+            if (allData.selfSharingConfiguration.customInfoSharing.sharingConfigurations.isShared){
+                professionalInfoSharingObj = allData.selfSharingConfiguration.customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations
+            }else{
+                professionalInfoSharingObj = allData.selfSharingConfiguration.professionalInfoSharing.sharingConfigurations
             }
-            else if (this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared) {
-                sharingConfiguration.sharingConfigurations.socialMediaSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.socialMediaSharing;
-                sharingConfiguration.sharingConfigurations.professionalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing;
-                sharingConfiguration.sharingConfigurations.personalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing;
-                professionalInfoSharingObj = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations
-            } else {
+            sharingConfiguration=allData.selfSharingConfiguration;
+            // if (allData.isSelfCustomSharing) {
+            //     professionalInfoSharingObj = allData.selfSharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations
+            //     sharingConfiguration = allData.selfSharingConfiguration;
+            // }
+            // else if (this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared) {
+            //     sharingConfiguration.sharingConfigurations.socialMediaSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.socialMediaSharing;
+            //     sharingConfiguration.sharingConfigurations.professionalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing;
+            //     sharingConfiguration.sharingConfigurations.personalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing;
+            //     professionalInfoSharingObj = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations
+            // } else {
 
-                sharingConfiguration.sharingConfigurations.socialMediaSharing = this.props.userSharingInfo.socialMediaSharing;
-                sharingConfiguration.sharingConfigurations.professionalInfoSharing = this.props.userSharingInfo.professionalInfoSharing;
-                sharingConfiguration.sharingConfigurations.personalInfoSharing = this.props.userSharingInfo.personalInfoSharing;
-                professionalInfoSharingObj = this.props.userSharingInfo.professionalInfoSharing.sharingConfigurations
+            //     sharingConfiguration.sharingConfigurations.socialMediaSharing = this.props.userSharingInfo.socialMediaSharing;
+            //     sharingConfiguration.sharingConfigurations.professionalInfoSharing = this.props.userSharingInfo.professionalInfoSharing;
+            //     sharingConfiguration.sharingConfigurations.personalInfoSharing = this.props.userSharingInfo.personalInfoSharing;
+            //     professionalInfoSharingObj = this.props.userSharingInfo.professionalInfoSharing.sharingConfigurations
 
-            }
+            // }
 
         } else {
-            professionalInfoSharingObj = this.state.sharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations;
+            professionalInfoSharingObj = this.state.sharingConfiguration.professionalInfoSharing.sharingConfigurations;
         }
         let isShared = true;
         if (type == 'all') {
@@ -429,7 +445,7 @@ export default class PermissionSettings extends React.Component {
                 languages: !professionalInfoSharingObj.isShared,
 
             }
-            sharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations = professionalInfoSharing
+            sharingConfiguration.professionalInfoSharing.sharingConfigurations = professionalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -438,7 +454,7 @@ export default class PermissionSettings extends React.Component {
             let professionalInfoSharing = professionalInfoSharingObj;
             professionalInfoSharing.isShared = isShared;
             professionalInfoSharing.currentOrganization = !professionalInfoSharing.currentOrganization;
-            sharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations = professionalInfoSharing
+            sharingConfiguration.professionalInfoSharing.sharingConfigurations = professionalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -447,7 +463,7 @@ export default class PermissionSettings extends React.Component {
             let professionalInfoSharing = professionalInfoSharingObj;
             professionalInfoSharing.isShared = isShared;
             professionalInfoSharing.previousOrganization = !professionalInfoSharing.previousOrganization;
-            sharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations = professionalInfoSharing
+            sharingConfiguration.professionalInfoSharing.sharingConfigurations = professionalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -457,7 +473,7 @@ export default class PermissionSettings extends React.Component {
             professionalInfoSharing.isShared = isShared;
             professionalInfoSharing.professionalInterests = !professionalInfoSharing.professionalInterests;
 
-            sharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations = professionalInfoSharing
+            sharingConfiguration.professionalInfoSharing.sharingConfigurations = professionalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -466,7 +482,7 @@ export default class PermissionSettings extends React.Component {
             let professionalInfoSharing = professionalInfoSharingObj;
             professionalInfoSharing.isShared = isShared;
             professionalInfoSharing.languages = !professionalInfoSharing.languages;
-            sharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations = professionalInfoSharing
+            sharingConfiguration.professionalInfoSharing.sharingConfigurations = professionalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -475,7 +491,7 @@ export default class PermissionSettings extends React.Component {
             let professionalInfoSharing = professionalInfoSharingObj;
             professionalInfoSharing.isShared = isShared;
             professionalInfoSharing.skills = !professionalInfoSharing.skills;
-            sharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations = professionalInfoSharing
+            sharingConfiguration.professionalInfoSharing.sharingConfigurations = professionalInfoSharing
             this.setState({
                 isConfChanged: true,
                 sharingConfiguration: sharingConfiguration
@@ -566,18 +582,23 @@ export default class PermissionSettings extends React.Component {
         let { isConfChanged, sharingConfiguration, allData } = this.state;
         let socialMediaSharing = {};
         if (isConfChanged) {
-            socialMediaSharing = sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations
+            socialMediaSharing = sharingConfiguration.socialMediaSharing.sharingConfigurations
 
         } else {
-            if (allData.isSelfCustomSharing) {
-                socialMediaSharing = allData.selfSharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations
-            } else {
-                if (this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared) {
-                    socialMediaSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations;
-                } else {
-                    socialMediaSharing = this.props.userSharingInfo.socialMediaSharing.sharingConfigurations;
-                }
+            if (allData.selfSharingConfiguration.customInfoSharing.sharingConfigurations.isShared){
+                socialMediaSharing = allData.selfSharingConfiguration.customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations
+            }else{
+                socialMediaSharing = allData.selfSharingConfiguration.socialMediaSharing.sharingConfigurations
             }
+            // if (allData.isSelfCustomSharing) {
+            //     socialMediaSharing = allData.selfSharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations
+            // } else {
+            //     if (this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared) {
+            //         socialMediaSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.socialMediaSharing.sharingConfigurations;
+            //     } else {
+            //         socialMediaSharing = this.props.userSharingInfo.socialMediaSharing.sharingConfigurations;
+            //     }
+            // }
         }
 
         return (
@@ -695,18 +716,23 @@ export default class PermissionSettings extends React.Component {
         let { isConfChanged, sharingConfiguration, allData } = this.state;
         let personalInfoSharing = {};
         if (isConfChanged) {
-            personalInfoSharing = sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations
+            personalInfoSharing = sharingConfiguration.personalInfoSharing.sharingConfigurations
 
         } else {
-            if (allData.isSelfCustomSharing) {
-                personalInfoSharing = allData.selfSharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations
-            } else {
-                if (this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared) {
-                    personalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations;
-                } else {
-                    personalInfoSharing = this.props.userSharingInfo.personalInfoSharing.sharingConfigurations;
-                }
+            if (allData.selfSharingConfiguration.customInfoSharing.sharingConfigurations.isShared){
+                personalInfoSharing = allData.selfSharingConfiguration.customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations
+            }else{
+                personalInfoSharing = allData.selfSharingConfiguration.personalInfoSharing.sharingConfigurations
             }
+            // if (allData.isSelfCustomSharing) {
+            //     personalInfoSharing = allData.selfSharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations
+            // } else {
+            //     if (this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared) {
+            //         personalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.personalInfoSharing.sharingConfigurations;
+            //     } else {
+            //         personalInfoSharing = this.props.userSharingInfo.personalInfoSharing.sharingConfigurations;
+            //     }
+            // }
         }
 
 
@@ -725,7 +751,7 @@ export default class PermissionSettings extends React.Component {
                             <TextInput
                                 style={style.inputStyle}
                                 editable={false}
-                                value='Birthdday'
+                                value='Birthday'
                             />
                         </View>
                         <View style={{ flex: 1 / 5, justifyContent: 'center', alignItems: 'flex-end' }}>
@@ -804,18 +830,22 @@ export default class PermissionSettings extends React.Component {
         let { isConfChanged, sharingConfiguration, allData } = this.state;
         let professionalInfoSharing = {};
         if (isConfChanged) {
-            professionalInfoSharing = sharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations
-
+            professionalInfoSharing = sharingConfiguration.professionalInfoSharing.sharingConfigurations
         } else {
-            if (allData.isSelfCustomSharing) {
-                professionalInfoSharing = allData.selfSharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations
-            } else {
-                if (this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared) {
-                    professionalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations;
-                } else {
-                    professionalInfoSharing = this.props.userSharingInfo.professionalInfoSharing.sharingConfigurations;
-                }
+            if (allData.selfSharingConfiguration.customInfoSharing.sharingConfigurations.isShared){
+                professionalInfoSharing = allData.selfSharingConfiguration.customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations
+            }else{
+                professionalInfoSharing = allData.selfSharingConfiguration.professionalInfoSharing.sharingConfigurations
             }
+            // if (allData.isSelfCustomSharing) {
+            //     professionalInfoSharing = allData.selfSharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations
+            // } else {
+            //     if (this.props.userSharingInfo.customInfoSharing.sharingConfigurations.isShared) {
+            //         professionalInfoSharing = this.props.userSharingInfo.customInfoSharing.sharingConfigurations.professionalInfoSharing.sharingConfigurations;
+            //     } else {
+            //         professionalInfoSharing = this.props.userSharingInfo.professionalInfoSharing.sharingConfigurations;
+            //     }
+            // }
         }
 
         // if (allData.isCustomSharing) {

@@ -20,7 +20,6 @@ export default class AuthLoadingScreen extends React.Component {
         }
     }
     componentDidMount() {
-        console.log('coming here');
         this.props.fetchAppVersion();
         // this._bootstrapAsync();
     }

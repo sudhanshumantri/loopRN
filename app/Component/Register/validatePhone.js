@@ -123,10 +123,15 @@ export default class ValidatePhone extends React.Component {
                                 <Button color='black'
                                     containerStyle={{ marginTop: 10, width: Dimensions.get('window').width * 0.85, }}
                                     buttonStyle={{ borderRadius: 20, marginTop: 10, backgroundColor: 'black' }}
-                                    title='Next'
+                                    title='Request OTP'
                                     titleStyle={{ fontWeight: 'bold', color: 'white' }}
                                     onPress={this.handleSubmit} />
-
+                                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('Login') }}
+                                    style={{ justifyContent: "center", alignItems: 'center', marginTop: 20, flexDirection: 'row' }}>
+                                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 14, lineHeight: 20 }}>Have an Account?</Text>
+                                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 14, lineHeight: 20 }}> Sign In</Text>
+                                </TouchableOpacity>
+                                
                             </View>
 
                         </View >

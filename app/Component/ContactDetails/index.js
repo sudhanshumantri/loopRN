@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity, Linking, PermissionsAndroid, Platform, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, Image, Dimensions, TouchableOpacity, Linking, PermissionsAndroid, Platform, Switch, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { Card, Input, Avatar, Button, CheckBox, Icon, Divider } from 'react-native-elements';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { showMessage, hideMessage } from "react-native-flash-message";
@@ -28,7 +28,8 @@ export default class ContactsDetails extends React.Component {
             gender: undefined,
             isDateTimePickerVisible: false,
             userInfo: '',
-            allData: ''
+            allData: '',
+            showFullSizeImage: false,
 
 
 
@@ -43,7 +44,7 @@ export default class ContactsDetails extends React.Component {
     }
 
     handLinking = (url, extraurl) => {
-        if (extraurl) {
+        if (extraurl && extraurl.trim().length>0) {
             if (extraurl == 'no-url-provided') {
 
             } else {
@@ -52,8 +53,52 @@ export default class ContactsDetails extends React.Component {
             }
         }
         else if (url && url.trim().length > 0) {
-            Linking.openURL(url)
+          //  console.log(url)
+            Linking.openURL(url.trim())
         }
+    }
+    handleGpayRedirection = (upiId) => {
+        if (upiId == 'no-url-provided') {
+
+        } else {
+            let { profilePicture, name, aboutMe } = this.state.userInfo;
+            // upiId='sudhanshusingh787-1@okaxis';
+            let link = 'tez://upi/pay?pa='+upiId+'&pn='+name+'&tn=&mc=&tr=&am=5&cu=INR';
+            console.log(link);
+            const supported = Linking.canOpenURL(link);
+            if (supported) {
+                Linking.openURL(link);
+            }
+        }
+
+
+    }
+    handlePaytmRedirection = (upiId) => {
+        if (upiId == 'no-url-provided') {
+
+        } else {
+            let { profilePicture, name, aboutMe } = this.state.userInfo;
+            let link = 'paytmmp://pay?pa=' + upiId + '&pn=' + name + '&tn=&am=5&cu=INR';
+            const supported = Linking.canOpenURL(link);
+            if (supported) {
+             //   console.log('inside man');
+                Linking.openURL(link);
+            } else {
+                console.log('paytm app not found');
+            }
+        }
+
+    }
+    showImageFullSize = () => {
+        this.setState({
+            showFullSizeImage: true
+        }, () => {
+            let timer = setTimeout(() => {
+                this.setState({
+                    showFullSizeImage: false
+                });
+            }, 1000);
+        })
     }
 
     renderProfileImage = () => {
@@ -71,8 +116,7 @@ export default class ContactsDetails extends React.Component {
                                 uri: profilePicture ? profilePicture : 'no-img',
                             }}
                             overlayContainerStyle={{ backgroundColor: 'rgb(20, 41, 82)' }}
-                            // onEditPress={this.handleImageChange}
-                            // onPress={this.showImageFullSize}
+                            onPress={this.showImageFullSize}
                             size={70}
                         >
                         </Avatar>
@@ -91,14 +135,13 @@ export default class ContactsDetails extends React.Component {
 
     }
     renderSocialAndContactInfo = () => {
-        let { name, phone, email, professionalEmail, instaLink, fbLink, linkedinLink, telegramLink, twitterLink } = this.state.userInfo;
+        let { name, phone, email, paytmLink, gpay, professionalEmail, instaLink, fbLink, linkedinLink, telegramLink, twitterLink } = this.state.userInfo;
         let allData = this.state.allData;
         let socialMediaSharing = {};
         if (allData) {
             if (allData.isCustomSharing) {
-               
-                socialMediaSharing = allData.sharingConfiguration.sharingConfigurations.socialMediaSharing.sharingConfigurations
-                //select from the sharingConfiguration
+                socialMediaSharing = allData.sharingConfiguration.socialMediaSharing.sharingConfigurations
+                //select from the sharingConfigurationf
             } else {
                 //get the data from the sharingPreferencesId
                 if (allData.sharingPreferencesId.customInfoSharing.sharingConfigurations.isShared) {
@@ -109,7 +152,7 @@ export default class ContactsDetails extends React.Component {
                     //find the shared info and do that shared needs
                 }
             }
-
+        //   console.log(fbLink,lin);
             return (
                 <View>{socialMediaSharing.isShared && (
                     <View style={{ marginTop: 10 }}>
@@ -118,13 +161,26 @@ export default class ContactsDetails extends React.Component {
                             <View style={style.iconContainer}>
                                 <Avatar
                                     source={
-                                        require('../../../assets/icons/Call.png')
+                                        (socialMediaSharing.isShared && socialMediaSharing.phone) ?
+                                            require('../../../assets/icons/V_Call.png') : require('../../../assets/icons/BW_V_Call.png')
                                     }
-                                    onPress={() => Linking.openURL(`tel:${phone}`)}
+                                    onPress={() => (socialMediaSharing.isShared && socialMediaSharing.phone) ? Linking.openURL(`tel:${phone}`) : ''}
                                     size={60}
                                 >
                                 </Avatar>
                                 <Text style={style.iconLabel}>Phone</Text>
+                            </View>
+                            <View style={style.iconContainer}>
+                                <Avatar
+                                    source={
+                                        (socialMediaSharing.isShared && socialMediaSharing.phone) ?
+                                            require('../../../assets/icons/V_WhatsApp.png') : require('../../../assets/icons/BW_V_WhatsApp.png')
+                                    }
+                                    onPress={() => (socialMediaSharing.isShared && socialMediaSharing.phone) ? this.handLinking('https://wa.me/91' + phone) : ''}
+                                    size={60}
+                                >
+                                </Avatar>
+                                <Text style={style.iconLabel}>Whatsapp</Text>
                             </View>
                             <View style={style.iconContainer}>
                                 <Avatar
@@ -170,7 +226,7 @@ export default class ContactsDetails extends React.Component {
                                         (socialMediaSharing.isShared && socialMediaSharing.fbLink && fbLink && fbLink.trim().length) > 0 ? require('../../../assets/icons/V_Facebook.png') : require('../../../assets/icons/BW_V_Facebook.png')
 
                                     }
-                                    onPress={() => this.handLinking(fbLink, (socialMediaSharing.isShared && socialMediaSharing.fbLink && fbLink && fbLink.trim().length > 0) ? fbLink : 'no-url-provided')}
+                                    onPress={() => this.handLinking(fbLink, (socialMediaSharing.isShared && socialMediaSharing.fbLink && fbLink && fbLink.trim().length > 0) ? '' : 'no-url-provided')}
 
                                     // onPress={() => this.handLinking(fbLink)}
                                     size={60}
@@ -184,7 +240,7 @@ export default class ContactsDetails extends React.Component {
                                         (socialMediaSharing.isShared && socialMediaSharing.linkedinLink && linkedinLink && linkedinLink.trim().length) > 0 ? require('../../../assets/icons/V_LinkedIn.png') : require('../../../assets/icons/BW_V_LinkedIn.png')
 
                                     }
-                                    onPress={() => this.handLinking(linkedinLink, (socialMediaSharing.isShared && socialMediaSharing.linkedinLink && linkedinLink && linkedinLink.trim().length > 0) ? fbLink : 'no-url-provided')}
+                                    onPress={() => this.handLinking(linkedinLink, (socialMediaSharing.isShared && socialMediaSharing.linkedinLink && linkedinLink && linkedinLink.trim().length > 0) ? '' : 'no-url-provided')}
                                     size={60}
                                 >
                                 </Avatar>
@@ -196,6 +252,8 @@ export default class ContactsDetails extends React.Component {
                                         (twitterLink && twitterLink.trim().length) > 0 ? require('../../../assets/icons/V_Twitter.png') : require('../../../assets/icons/BW_V_Twitter.png')
 
                                     }
+                                    onPress={() => this.handLinking('https://twitter.com/', (socialMediaSharing.isShared && socialMediaSharing.twitterLink && twitterLink && twitterLink.trim().length > 0) ? twitterLink : 'no-url-provided')}
+
                                     // onPress={this.handleImageChange}
                                     size={60}
                                 >
@@ -208,11 +266,40 @@ export default class ContactsDetails extends React.Component {
                                         (telegramLink && telegramLink.trim().length) > 0 ? require('../../../assets/icons/V_Telegram.png') : require('../../../assets/icons/BW_V_Telegram.png')
 
                                     }
-                                    // onPress={this.handleImageChange}
+                                    onPress={() => this.handLinking('https://t.me/', (socialMediaSharing.isShared && socialMediaSharing.telegramLink && telegramLink && telegramLink.trim().length > 0) ? telegramLink : 'no-url-provided')}
+
+                                    // 
                                     size={60}
                                 >
                                 </Avatar>
                                 <Text style={style.iconLabel}>Telegram</Text>
+                            </View>
+                            <View style={style.iconContainer}>
+                                <Avatar
+                                    source={
+                                        (paytmLink && paytmLink.trim().length) > 0 ? require('../../../assets/icons/V_Paytm.png') : require('../../../assets/icons/BW_V_Paytm.png')
+
+                                    }
+                                    onPress={() => this.handlePaytmRedirection((paytmLink && paytmLink.trim().length) > 0 ? paytmLink : 'no-url-provided')}
+
+                                    // 
+                                    size={60}
+                                >
+                                </Avatar>
+                                <Text style={style.iconLabel}>Paytm</Text>
+                            </View>
+                            <View style={style.iconContainer}>
+                                <Avatar
+                                    source={
+                                        (gpay && gpay.trim().length) > 0 ? require('../../../assets/icons/V_GPay.png') : require('../../../assets/icons/BW_V_GPay.png')
+
+                                    }
+                                    onPress={() => this.handleGpayRedirection((gpay && gpay.trim().length) > 0 ? gpay : 'no-url-provided')}
+                                    // 
+                                    size={60}
+                                >
+                                </Avatar>
+                                <Text style={style.iconLabel}>Gpay</Text>
                             </View>
                         </View>
                         <View
@@ -227,12 +314,12 @@ export default class ContactsDetails extends React.Component {
         let { userInfo, } = this.props;
         let { dob, gender, homeLocation, currentLocation, relationshipStatus, hobbies } = this.state.userInfo;
         let allData = this.state.allData;
-        let formattedDob=dob;
+        let formattedDob = dob;
         let personalInfoSharing = {};
         if (allData) {
             if (allData.isCustomSharing) {
-                personalInfoSharing = allData.sharingConfiguration.sharingConfigurations.personalInfoSharing.sharingConfigurations
-              
+                personalInfoSharing = allData.sharingConfiguration.personalInfoSharing.sharingConfigurations
+
                 //select from the sharingConfiguration
             } else {
                 //get the data from the sharingPreferencesId
@@ -243,9 +330,9 @@ export default class ContactsDetails extends React.Component {
                     //find the shared info and do that shared needs
                 }
             }
-            if(dob && dob!=''){
-                var d = moment(dob,'DD-MM-YY');
-                formattedDob=d.format('MMM DD');
+            if (dob && dob != '') {
+                var d = moment(dob, 'DD-MM-YY');
+                formattedDob = d.format('MMM DD');
             }
             return (
                 <View>
@@ -350,8 +437,8 @@ export default class ContactsDetails extends React.Component {
         let allData = this.state.allData;
         if (allData) {
             if (allData.isCustomSharing) {
-                professionalInfoSharing = allData.sharingConfiguration.sharingConfigurations.professionalInfoSharing.sharingConfigurations
-              
+                professionalInfoSharing = allData.sharingConfiguration.professionalInfoSharing.sharingConfigurations
+
                 //select from the sharingConfiguration
             } else {
                 //get the data from the sharingPreferencesId
@@ -494,6 +581,7 @@ export default class ContactsDetails extends React.Component {
     }
     render() {
         let { error, isLoading, userInfo, } = this.props;
+        let { profilePicture, name, aboutMe } = this.state.userInfo;
         return (
             <View
                 style={style.conatiner}>
@@ -501,6 +589,30 @@ export default class ContactsDetails extends React.Component {
                     showsVerticalScrollIndicator={false}
                     style={{ marginBottom: 10, paddingLeft: 10, paddingRight: 10 }}
                 >
+                    {this.state.showFullSizeImage &&
+                        <Modal
+                            visible={this.state.showFullSizeImage}
+                            transparent={true}
+                        >
+                            <View style={{
+                                flex: 1,
+                                justifyContent: "center",
+                                alignItems: "center",
+                                marginTop: 22
+                            }}>
+                                <Image
+                                    style={{ width: Dimensions.get('window').width, height: 300, resizeMode: 'contain', }}
+                                    source={{
+
+                                        uri: profilePicture ? profilePicture : 'no-img',
+                                    }}
+                                />
+                            </View>
+
+                        </Modal>
+
+
+                    }
                     {this.renderProfileImage()}
                     {this.renderSocialAndContactInfo()}
                     {this.renderPersonalInfo()}

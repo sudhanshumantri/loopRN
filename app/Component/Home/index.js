@@ -10,8 +10,12 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { Card, Avatar, Divider, Icon, Badge, Button } from 'react-native-elements';
+import GetLocation from 'react-native-get-location';
+import Geocoder from 'react-native-geocoding';
+
 import Spinner from 'react-native-loading-spinner-overlay';
 import style from './style';
+Geocoder.init("AIzaSyChteq7t9y3jVwV3_4zHkNHiGS5xecp1xM");
 export default class Home extends React.Component {
     constructor() {
         super()
@@ -22,6 +26,24 @@ export default class Home extends React.Component {
     }
     componentDidMount() {
         this.props.fetchUserInfo();
+        GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 15000,
+        })
+            .then(location => {
+                console.log(location.latitude, location.longitude);
+                Geocoder.from(location.latitude, location.longitude)
+                    .then(json => {
+                        console.log(json.results[0].address_components[1].short_name);
+                        var addressComponent = json.results[0].address_components[0].short_name;
+                        console.log(addressComponent);
+                    })
+                    .catch(error => console.warn(error));
+            })
+            .catch(error => {
+                const { code, message } = error;
+                console.warn(code, message);
+            })
     }
     handleSharingPreferenceChange = (type) => {
         this.props.updateUserSharingInfo({ sharingType: type })
@@ -61,11 +83,11 @@ export default class Home extends React.Component {
                 <View style={style.qrCodeBottomSectionRight}>
                     <View style={style.verticalLine}>
                         <View style={style.verticalLineTextContainer}>
-                            <TouchableOpacity style={[isAllShared ? style.activeShared : '',style.touchableStyle]} onPress={() => this.handleSharingPreferenceChange('isAllShared')}><Text>All</Text></TouchableOpacity>
-                            <TouchableOpacity style={[personalInfoSharing ? style.activeShared : '',style.touchableStyle]} onPress={() => this.handleSharingPreferenceChange('personalInfoSharing')}><Text>Personal</Text></TouchableOpacity>
-                            <TouchableOpacity style={[professionalInfoSharing ? style.activeShared : '',style.touchableStyle]} onPress={() => this.handleSharingPreferenceChange('professionalInfoSharing')}><Text>Professional</Text></TouchableOpacity>
+                            <TouchableOpacity style={[isAllShared ? style.activeShared : '', style.touchableStyle]} onPress={() => this.handleSharingPreferenceChange('isAllShared')}><Text>All</Text></TouchableOpacity>
+                            <TouchableOpacity style={[personalInfoSharing ? style.activeShared : '', style.touchableStyle]} onPress={() => this.handleSharingPreferenceChange('personalInfoSharing')}><Text>Personal</Text></TouchableOpacity>
+                            <TouchableOpacity style={[professionalInfoSharing ? style.activeShared : '', style.touchableStyle]} onPress={() => this.handleSharingPreferenceChange('professionalInfoSharing')}><Text>Professional</Text></TouchableOpacity>
                             {hasCustomSharing && (
-                                <TouchableOpacity style={[customInfoSharing ? style.activeShared : '',style.touchableStyle]}onPress={() => this.handleSharingPreferenceChange('customInfoSharing')}><Text>Custom</Text></TouchableOpacity>
+                                <TouchableOpacity style={[customInfoSharing ? style.activeShared : '', style.touchableStyle]} onPress={() => this.handleSharingPreferenceChange('customInfoSharing')}><Text>Custom</Text></TouchableOpacity>
                             )}
                         </View>
 
@@ -125,7 +147,7 @@ export default class Home extends React.Component {
     // Render any loading content that you like here
     render() {
         let { error, isLoading, userInfo, userSharingInfo, isInformationSharingUpdate } = this.props;
-      //  console.log(userSharingInfo);
+        //  console.log(userSharingInfo);
         if (error) {
             return (
                 <View style={{ padding: 20, flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', }}>
