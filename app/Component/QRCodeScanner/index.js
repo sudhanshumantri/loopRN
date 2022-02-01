@@ -139,7 +139,8 @@ export default class QRCodeScan extends Component {
             givenName: userInfo.name
         }
         try {
-            
+
+        
             if (Platform.OS === 'android') {
                 const granted = await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
