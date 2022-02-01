@@ -49,13 +49,11 @@ export default class QRCodeScan extends Component {
         };
     }
     componentDidMount() {
-
         GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
-        })
-            .then(location => {
-                console.log(location.latitude, location.longitude);
+        }).then(location => {
+               // console.log(location.latitude, location.longitude);
                 Geocoder.from(location.latitude, location.longitude)
                     .then(json => {
                         let locationName = json.results[0].address_components[0].short_name + ',' + json.results[0].address_components[1].short_name
